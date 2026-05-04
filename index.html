@@ -1,155 +1,335 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Sarkari Jobs Alert</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SarkariAlert Pro | Centralized Job Feed</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --accent: #38bdf8;
+            --text: #f8fafc;
+            --text-dim: #94a3b8;
+            --success: #22c55e;
+            --glass: rgba(30, 41, 59, 0.7);
+        }
 
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: Arial; background: #0c1730; color: #fff; padding-bottom: 80px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text); 
+            line-height: 1.6;
+            padding-bottom: 100px;
+        }
 
-header { padding: 15px; background: #111e40; display: flex; justify-content: space-between; }
-button { background: #1a3a6e; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; }
+        /* --- Header Section --- */
+        header { 
+            padding: 1.25rem 5%; 
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
 
-#status { padding: 10px; color: orange; }
-.source-status { padding: 10px; }
-.badge { margin-right: 5px; font-size: 12px; }
-.badge.ok { color: #4caf50; }
-.badge.err { color: red; }
+        .logo { font-size: 1.5rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 10px; }
+        .logo i { color: var(--accent); }
 
-.jobs { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 15px; padding: 15px; }
+        .btn-refresh { 
+            background: var(--accent); 
+            color: #0f172a; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 10px; 
+            font-weight: 600;
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-.card { background: #172454; padding: 15px; border-radius: 10px; }
-.card h3 { font-size: 14px; margin-bottom: 8px; }
-.card p { font-size: 12px; color: #8899cc; }
-.card a { color: gold; text-decoration: none; }
+        .btn-refresh:hover { transform: scale(1.05); filter: brightness(1.1); }
 
-.load-more {
-  display: block;
-  margin: 20px auto;
-  padding: 10px 20px;
-}
-</style>
+        /* --- Search & Status --- */
+        .search-section {
+            max-width: 800px;
+            margin: 40px auto 20px;
+            padding: 0 20px;
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 16px 20px 16px 50px;
+            background: var(--surface);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        #searchInput:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1); }
+
+        .search-box i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-dim);
+        }
+
+        #status { text-align: center; color: var(--text-dim); font-size: 0.9rem; margin: 15px 0; }
+        
+        .source-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .badge {
+            background: var(--surface);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            border: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge.ok { border-color: var(--success); color: var(--success); }
+        .badge.err { border-color: #ef4444; color: #ef4444; }
+
+        /* --- Job Cards --- */
+        .jobs-container { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
+            gap: 25px; 
+            padding: 0 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .job-card { 
+            background: var(--surface); 
+            padding: 24px; 
+            border-radius: 20px; 
+            border: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .job-card:hover { 
+            transform: translateY(-8px); 
+            border-color: var(--accent);
+            background: rgba(30, 41, 59, 0.5);
+        }
+
+        .job-card h3 { 
+            font-size: 1.1rem; 
+            margin-bottom: 15px; 
+            color: #fff;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .job-info { margin-bottom: 20px; }
+        .info-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            font-size: 0.85rem; 
+            color: var(--text-dim);
+            margin-bottom: 8px;
+        }
+        .info-item i { color: var(--accent); width: 14px; }
+
+        .btn-view { 
+            display: block;
+            text-align: center;
+            padding: 12px;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent);
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-view:hover { background: var(--accent); color: var(--bg); }
+
+        .load-more {
+            display: block;
+            margin: 50px auto;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 12px 35px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .load-more:hover { background: var(--accent); color: var(--bg); }
+
+        @media (max-width: 600px) {
+            header { flex-direction: column; gap: 15px; text-align: center; }
+            .jobs-container { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 
 <body>
 
 <header>
-  <h2>🇮🇳 SarkariAlert</h2>
-  <button onclick="loadJobs()">🔄 Refresh</button>
+    <div class="logo"><i class="fa-solid fa-building-columns"></i> 🇮🇳 Sarkari<span>Alert</span></div>
+    <button class="btn-refresh" onclick="loadJobs()"><i class="fa-solid fa-sync-alt"></i> Refresh Feed</button>
 </header>
 
-<div id="status">Loading...</div>
-<div id="source-status"></div>
-<div id="jobs" class="jobs"></div>
+<div class="search-section">
+    <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" placeholder="Search by job title or organization..." onkeyup="filterJobs()">
+    </div>
+</div>
 
-<button id="loadMoreBtn" class="load-more" onclick="loadMore()">Load More</button>
+<div id="status">Syncing latest government notifications...</div>
+<div id="source-status" class="source-grid"></div>
+
+<main id="jobs" class="jobs-container"></main>
+
+<button id="loadMoreBtn" class="load-more" onclick="loadMore()">View Older Notifications</button>
 
 <script>
 const RSS2JSON = "https://api.rss2json.com/v1/api.json?rss_url=";
-
 const SOURCES = [
-  { name: "FreeJobAlert", url: "https://www.freejobalert.com/feed/" },
-  { name: "SarkariJobFind", url: "https://www.sarkarijobfind.com/feed/" },
-  { name: "RojgarResult", url: "https://www.rojgarresult.com/feed/" },
-  { name: "SarkariExam", url: "https://www.sarkariexam.com/feed/" },
-  { name: "SarkariResult", url: "https://www.sarkariresult.com/rssfeed.xml" }
+    { name: "FreeJobAlert", url: "https://www.freejobalert.com/feed/" },
+    { name: "SarkariJobFind", url: "https://www.sarkarijobfind.com/feed/" },
+    { name: "RojgarResult", url: "https://www.rojgarresult.com/feed/" },
+    { name: "SarkariExam", url: "https://www.sarkariexam.com/feed/" },
+    { name: "SarkariResult", url: "https://www.sarkariresult.com/rssfeed.xml" }
 ];
 
 let allJobs = [];
-let visibleCount = 30;
-
-function esc(s) {
-  return String(s).replace(/[&<>"]/g, c =>
-    ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c])
-  );
-}
+let filteredJobs = [];
+let visibleCount = 24;
 
 function setBadge(name, state) {
-  const el = document.createElement("span");
-  el.className = "badge " + state;
-  el.textContent = (state==="ok"?"✓ ":state==="err"?"✗ ":"… ") + name;
-  document.getElementById("source-status").appendChild(el);
+    const container = document.getElementById("source-status");
+    let el = document.getElementById(`badge-${name}`);
+    if (!el) {
+        el = document.createElement("span");
+        el.id = `badge-${name}`;
+        container.appendChild(el);
+    }
+    el.className = "badge " + state;
+    el.innerHTML = `<i class="fa-solid ${state === 'ok' ? 'fa-check-circle' : state === 'err' ? 'fa-times-circle' : 'fa-circle-notch fa-spin'}"></i> ${name}`;
 }
 
 async function fetchFeed(source) {
-  setBadge(source.name, "loading");
-  try {
-    const res = await fetch(RSS2JSON + encodeURIComponent(source.url));
-    const data = await res.json();
-
-    if (data.status !== "ok") throw "Feed error";
-
-    setBadge(source.name, "ok");
-
-    return data.items.map(item => ({
-      title: item.title,
-      source: source.name,
-      date: item.pubDate,
-      link: item.link
-    }));
-
-  } catch (e) {
-    setBadge(source.name, "err");
-    return [];
-  }
+    setBadge(source.name, "loading");
+    try {
+        const res = await fetch(RSS2JSON + encodeURIComponent(source.url));
+        const data = await res.json();
+        if (data.status !== "ok") throw "Err";
+        setBadge(source.name, "ok");
+        return data.items.map(item => ({
+            title: item.title,
+            source: source.name,
+            date: item.pubDate,
+            link: item.link
+        }));
+    } catch (e) {
+        setBadge(source.name, "err");
+        return [];
+    }
 }
 
-function removeDuplicates(jobs) {
-  const seen = new Set();
-  return jobs.filter(job => {
-    if (seen.has(job.link)) return false;
-    seen.add(job.link);
-    return true;
-  });
+function filterJobs() {
+    const query = document.getElementById("searchInput").value.toLowerCase();
+    filteredJobs = allJobs.filter(job => 
+        job.title.toLowerCase().includes(query) || 
+        job.source.toLowerCase().includes(query)
+    );
+    visibleCount = 24;
+    renderJobs();
 }
 
 function renderJobs() {
-  const container = document.getElementById("jobs");
-  const list = allJobs.slice(0, visibleCount);
+    const container = document.getElementById("jobs");
+    const list = filteredJobs.slice(0, visibleCount);
 
-  container.innerHTML = list.map(job => `
-    <div class="card">
-      <h3>${esc(job.title)}</h3>
-      <p>🏢 ${job.source}</p>
-      <p>📅 ${job.date ? new Date(job.date).toDateString() : ""}</p>
-      <a href="${job.link}" target="_blank">View →</a>
-    </div>
-  `).join("");
+    if (list.length === 0) {
+        container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-dim); margin-top: 50px;">
+            <i class="fa-solid fa-folder-open fa-3x"></i><p style="margin-top:10px">No matching jobs found.</p>
+        </div>`;
+    } else {
+        container.innerHTML = list.map(job => `
+            <div class="job-card">
+                <div>
+                    <h3>${job.title}</h3>
+                    <div class="job-info">
+                        <div class="info-item"><i class="fa-solid fa-landmark"></i> <span>${job.source}</span></div>
+                        <div class="info-item"><i class="fa-solid fa-calendar"></i> <span>${job.date ? new Date(job.date).toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'}) : "Recently"}</span></div>
+                    </div>
+                </div>
+                <a href="${job.link}" class="btn-view" target="_blank">View Notification <i class="fa-solid fa-chevron-right" style="font-size:10px"></i></a>
+            </div>
+        `).join("");
+    }
 
-  document.getElementById("loadMoreBtn").style.display =
-    visibleCount >= allJobs.length ? "none" : "block";
+    document.getElementById("loadMoreBtn").style.display =
+        visibleCount >= filteredJobs.length ? "none" : "block";
 }
 
 function loadMore() {
-  visibleCount += 30;
-  renderJobs();
+    visibleCount += 24;
+    renderJobs();
 }
 
 async function loadJobs() {
-  allJobs = [];
-  visibleCount = 30;
+    allJobs = [];
+    document.getElementById("status").innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Refreshing live database...';
+    
+    const results = await Promise.all(SOURCES.map(fetchFeed));
+    results.forEach(r => allJobs.push(...r));
 
-  document.getElementById("jobs").innerHTML = "";
-  document.getElementById("source-status").innerHTML = "";
-
-  document.getElementById("status").textContent = "Fetching jobs...";
-
-  const results = await Promise.all(SOURCES.map(fetchFeed));
-
-  results.forEach(r => allJobs.push(...r));
-
-  allJobs = removeDuplicates(allJobs);
-
-  allJobs.sort((a,b) => new Date(b.date) - new Date(a.date));
-
-  document.getElementById("status").textContent =
-    "Loaded " + allJobs.length + " jobs";
-
-  renderJobs();
+    // Cleanup: Remove duplicates and Sort
+    const seen = new Set();
+    allJobs = allJobs.filter(j => seen.has(j.link) ? false : seen.add(j.link));
+    allJobs.sort((a,b) => new Date(b.date) - new Date(a.date));
+    
+    filteredJobs = [...allJobs];
+    document.getElementById("status").textContent = `Tracking ${allJobs.length} active job listings`;
+    renderJobs();
 }
 
+// Init
 loadJobs();
 </script>
 
