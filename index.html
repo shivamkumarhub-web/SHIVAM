@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>day1-app</title>
+  </head>
+  <body>
+
+    <div class="kum">
+  <video src="window.mp4" autoplay loop muted></video>
+</div>
+
+<div class="main">
+<div class="button">Log-in</div>
+<div class="button">Sign Up</div></div> 
+<img style="width: 70px; height: 40px;" src="Google-Logo-700x394 copy 2.png" alt=""><br>
+<hr>
+
+<h1>Shivam Kumar</h1>
+
+
+
+<form class="form" >
+<fieldset>
+
+  <legend>Login</legend>
+
+  <Label>Emailid:</Label>
+  <input type="email" id="mail" placeholder="Type your Email Address..."> <br> <br>
+  <Label>Password:</Label>
+  <input type="password" id="pwd" placeholder="Type your Password..."> <br><br>
+
+  <button class="btn" type="button"  >Login</button>
+
+
+</fieldset>
+
+
+</form>
+
+
+<div class="high1" style="height: 100vh;"></div>
+<style>
+/* Video background */
+.kum video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1; /* Push video behind everything */
+}
+
+/* Text styling */
+h1, h2 {
+  position: relative;
+  color: white; /* Make text visible on video */
+  text-align: center;
+  margin-top: 30px;
+}
+
+.main{
+  position: fixed;
+  top: 0;
+  padding: 10px;
+  right: 20px;
+  display: flex;
+  /* border: 2px solid black;
+  border-width: 1px; */
+  gap: 10px;
+  justify-content: end;
+  align-items: end;
+}
+
+.button{
+  border: 1px solid black;
+  background-color: aqua;
+}
+
+.form{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+:hover.form{
+  display: flex;
+  
+  background-color: rgba(172, 168, 162, 0.399);
+}
+
+.btn{
+  margin-right: 50px ;
+}
+</style>
+
+<a href="www.google.com" class="h1" target="_self"><h1>Shivam Kumar</h1></a>
+
+<footer style="text-align: center; position: sticky; width: 100%;">Made with 💕 in INDIA</footer>
+<hr>
+<footer style="text-align: center;">@2026 All Copyrights reserved</footer>
+
+<hr>
+
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
