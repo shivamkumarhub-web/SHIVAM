@@ -60,6 +60,7 @@
         }
 
         .btn-refresh:hover { transform: scale(1.05); filter: brightness(1.1); }
+        .btn-refresh:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .search-section {
             max-width: 800px;
@@ -180,10 +181,6 @@
 
         .btn-view:hover { background: var(--accent); color: var(--bg); }
 
-        .load-more {
-            display: none; /* Hidden - we use infinite scroll now */
-        }
-
         @media (max-width: 600px) {
             header { flex-direction: column; gap: 15px; text-align: center; }
             .jobs-container { grid-template-columns: 1fr; }
@@ -195,7 +192,7 @@
 
 <header>
     <div class="logo"><i class="fa-solid fa-building-columns"></i> 🇮🇳 Sarkari<span>Alert</span></div>
-    <button class="btn-refresh" onclick="loadJobs()"><i class="fa-solid fa-sync-alt"></i> Refresh Feed</button>
+    <button class="btn-refresh" id="refreshBtn" onclick="loadJobs()"><i class="fa-solid fa-sync-alt"></i> Refresh Feed</button>
 </header>
 
 <div class="search-section">
@@ -210,24 +207,28 @@
 
 <main id="jobs" class="jobs-container"></main>
 
-<button id="loadMoreBtn" class="load-more" onclick="loadMore()">View Older Notifications</button>
-
 <script>
-const RSS2JSON = "https://api.rss2json.com/v1/api.json?count=100&rss_url=";
 const SOURCES = [
     { name: "FreeJobAlert", url: "https://www.freejobalert.com/feed/" },
     { name: "SarkariJobFind", url: "https://www.sarkarijobfind.com/feed/" },
     { name: "RojgarResult", url: "https://www.rojgarresult.com/feed/" },
     { name: "SarkariExam", url: "https://www.sarkariexam.com/feed/" },
     { name: "SarkariResult", url: "https://www.sarkariresult.com/rssfeed.xml" },
-    { name: "Adda247 Jobs", url: "https://www.adda247.com/jobs/feed/" },
-    { name: "Jagran Josh", url: "https://www.jagranjosh.com/rss/jobs.xml" }
+    { name: "Adda247 Jobs", url: "https://www.adda247.com/jobs/feed/" }
 ];
 
 let allJobs = [];
 let filteredJobs = [];
 let visibleCount = 50;
 let isLoadingMore = false;
+let isLoading = false;
+
+// Multiple CORS proxies - if one fails, try next
+const PROXIES = [
+    url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
+    url => `https://api.rss2json.com/v1/api.json?count=100&rss_url=${encodeURIComponent(url)}`,
+    url => `https://corsproxy.io/?${encodeURIComponent(url)}`
+];
 
 function setBadge(name, state) {
     const container = document.getElementById("source-status");
@@ -241,23 +242,54 @@ function setBadge(name, state) {
     el.innerHTML = `<i class="fa-solid ${state === 'ok' ? 'fa-check-circle' : state === 'err' ? 'fa-times-circle' : 'fa-circle-notch fa-spin'}"></i> ${name}`;
 }
 
+function parseRSS(xmlText) {
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(xmlText, "text/xml");
+    const items = [...xml.querySelectorAll("item")];
+    return items.map(item => ({
+        title: item.querySelector("title")?.textContent || "No Title",
+        link: item.querySelector("link")?.textContent || "#",
+        pubDate: item.querySelector("pubDate")?.textContent || new Date().toISOString()
+    }));
+}
+
 async function fetchFeed(source) {
     setBadge(source.name, "loading");
-    try {
-        const res = await fetch(RSS2JSON + encodeURIComponent(source.url));
-        const data = await res.json();
-        if (data.status !== "ok") throw "Err";
-        setBadge(source.name, "ok");
-        return data.items.map(item => ({
-            title: item.title,
-            source: source.name,
-            date: item.pubDate,
-            link: item.link
-        }));
-    } catch (e) {
-        setBadge(source.name, "err");
-        return [];
+    
+    for (let i = 0; i < PROXIES.length; i++) {
+        try {
+            const res = await fetch(PROXIES[i](source.url));
+            let items = [];
+            
+            if (i === 1) {
+                // rss2json format
+                const data = await res.json();
+                if (data.status !== "ok") throw "RSS2JSON failed";
+                items = data.items;
+            } else {
+                // allorigins or corsproxy - returns raw XML
+                const data = await res.json();
+                const xmlContent = data.contents || await res.text();
+                items = parseRSS(xmlContent);
+            }
+            
+            setBadge(source.name, "ok");
+            return items.map(item => ({
+                title: item.title,
+                source: source.name,
+                date: item.pubDate || item.pub_date,
+                link: item.link
+            }));
+        } catch (e) {
+            if (i === PROXIES.length - 1) {
+                setBadge(source.name, "err");
+                console.error(`Failed ${source.name}:`, e);
+                return [];
+            }
+            // Try next proxy
+        }
     }
+    return [];
 }
 
 function filterJobs() {
@@ -287,6 +319,7 @@ function renderJobs() {
                         <div class="info-item"><i class="fa-solid fa-landmark"></i> <span>${job.source}</span></div>
                         <div class="info-item"><i class="fa-solid fa-calendar"></i> <span>${job.date ? new Date(job.date).toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'}) : "Recently"}</span></div>
                     </div>
+                </div>
                 <a href="${job.link}" class="btn-view" target="_blank">View Notification <i class="fa-solid fa-chevron-right" style="font-size:10px"></i></a>
             </div>
         `).join("");
@@ -294,8 +327,11 @@ function renderJobs() {
 }
 
 async function loadJobs() {
+    if (isLoading) return;
+    isLoading = true;
+    document.getElementById("refreshBtn").disabled = true;
     allJobs = [];
-    document.getElementById("status").innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Fetching maximum jobs from all sources...';
+    document.getElementById("status").innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Fetching from multiple proxies...';
     document.getElementById("source-status").innerHTML = "";
     
     const results = await Promise.all(SOURCES.map(fetchFeed));
@@ -309,10 +345,12 @@ async function loadJobs() {
     filteredJobs = [...allJobs];
     visibleCount = 50;
     document.getElementById("status").textContent = `Showing ${allJobs.length} unique jobs from ${totalFetched} total posts`;
+    document.getElementById("refreshBtn").disabled = false;
+    isLoading = false;
     renderJobs();
 }
 
-// Infinite scroll - loads 50 more jobs when you reach near bottom
+// Infinite scroll
 window.addEventListener('scroll', () => {
     if (isLoadingMore) return;
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
