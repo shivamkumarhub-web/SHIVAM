@@ -1,111 +1,157 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>day1-app</title>
-  </head>
-  <body>
+<head>
+<meta charset="UTF-8">
+<title>Sarkari Jobs Alert</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <div class="kum">
-  <video src="window.mp4" autoplay loop muted></video>
-</div>
-
-<div class="main">
-<div class="button">Log-in</div>
-<div class="button">Sign Up</div></div> 
-<img style="width: 70px; height: 40px;" src="Google-Logo-700x394 copy 2.png" alt=""><br>
-<hr>
-
-<h1>Shivam Kumar</h1>
-
-
-
-<form class="form" >
-<fieldset>
-
-  <legend>Login</legend>
-
-  <Label>Emailid:</Label>
-  <input type="email" id="mail" placeholder="Type your Email Address..."> <br> <br>
-  <Label>Password:</Label>
-  <input type="password" id="pwd" placeholder="Type your Password..."> <br><br>
-
-  <button class="btn" type="button"  >Login</button>
-
-
-</fieldset>
-
-
-</form>
-
-
-<div class="high1" style="height: 100vh;"></div>
 <style>
-/* Video background */
-.kum video {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -1; /* Push video behind everything */
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Arial; background: #0c1730; color: #fff; padding-bottom: 80px; }
 
-/* Text styling */
-h1, h2 {
-  position: relative;
-  color: white; /* Make text visible on video */
-  text-align: center;
-  margin-top: 30px;
-}
+header { padding: 15px; background: #111e40; display: flex; justify-content: space-between; }
+button { background: #1a3a6e; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; }
 
-.main{
-  position: fixed;
-  top: 0;
-  padding: 10px;
-  right: 20px;
-  display: flex;
-  /* border: 2px solid black;
-  border-width: 1px; */
-  gap: 10px;
-  justify-content: end;
-  align-items: end;
-}
+#status { padding: 10px; color: orange; }
+.source-status { padding: 10px; }
+.badge { margin-right: 5px; font-size: 12px; }
+.badge.ok { color: #4caf50; }
+.badge.err { color: red; }
 
-.button{
-  border: 1px solid black;
-  background-color: aqua;
-}
+.jobs { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 15px; padding: 15px; }
 
-.form{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+.card { background: #172454; padding: 15px; border-radius: 10px; }
+.card h3 { font-size: 14px; margin-bottom: 8px; }
+.card p { font-size: 12px; color: #8899cc; }
+.card a { color: gold; text-decoration: none; }
 
-:hover.form{
-  display: flex;
-  
-  background-color: rgba(172, 168, 162, 0.399);
-}
-
-.btn{
-  margin-right: 50px ;
+.load-more {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
 }
 </style>
+</head>
 
-<a href="www.google.com" class="h1" target="_self"><h1>Shivam Kumar</h1></a>
+<body>
 
-<footer style="text-align: center; position: sticky; width: 100%;">Made with 💕 in INDIA</footer>
-<hr>
-<footer style="text-align: center;">@2026 All Copyrights reserved</footer>
+<header>
+  <h2>🇮🇳 SarkariAlert</h2>
+  <button onclick="loadJobs()">🔄 Refresh</button>
+</header>
 
-<hr>
+<div id="status">Loading...</div>
+<div id="source-status"></div>
+<div id="jobs" class="jobs"></div>
 
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<button id="loadMoreBtn" class="load-more" onclick="loadMore()">Load More</button>
+
+<script>
+const RSS2JSON = "https://api.rss2json.com/v1/api.json?rss_url=";
+
+const SOURCES = [
+  { name: "FreeJobAlert", url: "https://www.freejobalert.com/feed/" },
+  { name: "SarkariJobFind", url: "https://www.sarkarijobfind.com/feed/" },
+  { name: "RojgarResult", url: "https://www.rojgarresult.com/feed/" },
+  { name: "SarkariExam", url: "https://www.sarkariexam.com/feed/" },
+  { name: "SarkariResult", url: "https://www.sarkariresult.com/rssfeed.xml" }
+];
+
+let allJobs = [];
+let visibleCount = 30;
+
+function esc(s) {
+  return String(s).replace(/[&<>"]/g, c =>
+    ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c])
+  );
+}
+
+function setBadge(name, state) {
+  const el = document.createElement("span");
+  el.className = "badge " + state;
+  el.textContent = (state==="ok"?"✓ ":state==="err"?"✗ ":"… ") + name;
+  document.getElementById("source-status").appendChild(el);
+}
+
+async function fetchFeed(source) {
+  setBadge(source.name, "loading");
+  try {
+    const res = await fetch(RSS2JSON + encodeURIComponent(source.url));
+    const data = await res.json();
+
+    if (data.status !== "ok") throw "Feed error";
+
+    setBadge(source.name, "ok");
+
+    return data.items.map(item => ({
+      title: item.title,
+      source: source.name,
+      date: item.pubDate,
+      link: item.link
+    }));
+
+  } catch (e) {
+    setBadge(source.name, "err");
+    return [];
+  }
+}
+
+function removeDuplicates(jobs) {
+  const seen = new Set();
+  return jobs.filter(job => {
+    if (seen.has(job.link)) return false;
+    seen.add(job.link);
+    return true;
+  });
+}
+
+function renderJobs() {
+  const container = document.getElementById("jobs");
+  const list = allJobs.slice(0, visibleCount);
+
+  container.innerHTML = list.map(job => `
+    <div class="card">
+      <h3>${esc(job.title)}</h3>
+      <p>🏢 ${job.source}</p>
+      <p>📅 ${job.date ? new Date(job.date).toDateString() : ""}</p>
+      <a href="${job.link}" target="_blank">View →</a>
+    </div>
+  `).join("");
+
+  document.getElementById("loadMoreBtn").style.display =
+    visibleCount >= allJobs.length ? "none" : "block";
+}
+
+function loadMore() {
+  visibleCount += 30;
+  renderJobs();
+}
+
+async function loadJobs() {
+  allJobs = [];
+  visibleCount = 30;
+
+  document.getElementById("jobs").innerHTML = "";
+  document.getElementById("source-status").innerHTML = "";
+
+  document.getElementById("status").textContent = "Fetching jobs...";
+
+  const results = await Promise.all(SOURCES.map(fetchFeed));
+
+  results.forEach(r => allJobs.push(...r));
+
+  allJobs = removeDuplicates(allJobs);
+
+  allJobs.sort((a,b) => new Date(b.date) - new Date(a.date));
+
+  document.getElementById("status").textContent =
+    "Loaded " + allJobs.length + " jobs";
+
+  renderJobs();
+}
+
+loadJobs();
+</script>
+
+</body>
 </html>
