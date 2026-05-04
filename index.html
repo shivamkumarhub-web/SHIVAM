@@ -1,212 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SarkariAlert Pro | Centralized Job Feed</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg: #0f172a;
-            --surface: #1e293b;
-            --accent: #38bdf8;
-            --text: #f8fafc;
-            --text-dim: #94a3b8;
-            --success: #22c55e;
-            --glass: rgba(30, 41, 59, 0.7);
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: var(--bg); 
-            color: var(--text); 
-            line-height: 1.6;
-            padding-bottom: 100px;
-        }
-
-        header { 
-            padding: 1.25rem 5%; 
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .logo { font-size: 1.5rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 10px; }
-        .logo i { color: var(--accent); }
-
-        .btn-refresh { 
-            background: var(--accent); 
-            color: #0f172a; 
-            border: none; 
-            padding: 10px 20px; 
-            border-radius: 10px; 
-            font-weight: 600;
-            cursor: pointer; 
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-refresh:hover { transform: scale(1.05); filter: brightness(1.1); }
-        .btn-refresh:disabled { opacity: 0.5; cursor: not-allowed; }
-
-        .search-section {
-            max-width: 800px;
-            margin: 40px auto 20px;
-            padding: 0 20px;
-        }
-
-        .search-box {
-            position: relative;
-            width: 100%;
-        }
-
-        #searchInput {
-            width: 100%;
-            padding: 16px 20px 16px 50px;
-            background: var(--surface);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 15px;
-            color: white;
-            font-size: 1rem;
-            outline: none;
-            transition: 0.3s;
-        }
-
-        #searchInput:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1); }
-
-        .search-box i {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-dim);
-        }
-
-        #status { text-align: center; color: var(--text-dim); font-size: 0.9rem; margin: 15px 0; }
-        
-        .source-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-
-        .badge {
-            background: var(--surface);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            border: 1px solid rgba(255,255,255,0.05);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .badge.ok { border-color: var(--success); color: var(--success); }
-        .badge.err { border-color: #ef4444; color: #ef4444; }
-        .badge.loading { border-color: var(--accent); color: var(--accent); }
-
-        .jobs-container { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
-            gap: 25px; 
-            padding: 0 5%;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .job-card { 
-            background: var(--surface); 
-            padding: 24px; 
-            border-radius: 20px; 
-            border: 1px solid rgba(255,255,255,0.05);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .job-card:hover { 
-            transform: translateY(-8px); 
-            border-color: var(--accent);
-            background: rgba(30, 41, 59, 0.5);
-        }
-
-        .job-card h3 { 
-            font-size: 1.1rem; 
-            margin-bottom: 15px; 
-            color: #fff;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .job-info { margin-bottom: 20px; }
-        .info-item { 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-            font-size: 0.85rem; 
-            color: var(--text-dim);
-            margin-bottom: 8px;
-        }
-        .info-item i { color: var(--accent); width: 14px; }
-
-        .btn-view { 
-            display: block;
-            text-align: center;
-            padding: 12px;
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--accent);
-            text-decoration: none;
-            border-radius: 12px;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-
-        .btn-view:hover { background: var(--accent); color: var(--bg); }
-
-        @media (max-width: 600px) {
-            header { flex-direction: column; gap: 15px; text-align: center; }
-            .jobs-container { grid-template-columns: 1fr; }
-        }
-    </style>
-</head>
-
-<body>
-
-<header>
-    <div class="logo"><i class="fa-solid fa-building-columns"></i> 🇮🇳 Sarkari<span>Alert</span></div>
-    <button class="btn-refresh" id="refreshBtn" onclick="loadJobs()"><i class="fa-solid fa-sync-alt"></i> Refresh Feed</button>
-</header>
-
-<div class="search-section">
-    <div class="search-box">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="searchInput" placeholder="Search by job title or organization..." onkeyup="filterJobs()">
-    </div>
-</div>
-
-<div id="status">Syncing latest government notifications...</div>
-<div id="source-status" class="source-grid"></div>
-
-<main id="jobs" class="jobs-container"></main>
-
 <script>
 const SOURCES = [
     { name: "FreeJobAlert", url: "https://www.freejobalert.com/feed/" },
@@ -220,152 +11,153 @@ const SOURCES = [
 let allJobs = [];
 let filteredJobs = [];
 let visibleCount = 50;
-let isLoadingMore = false;
-let isLoading = false;
 
-// Multiple CORS proxies - if one fails, try next
 const PROXIES = [
     url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
-    url => `https://api.rss2json.com/v1/api.json?count=100&rss_url=${encodeURIComponent(url)}`,
     url => `https://corsproxy.io/?${encodeURIComponent(url)}`
 ];
 
 function setBadge(name, state) {
     const container = document.getElementById("source-status");
-    let el = document.getElementById(`badge-${name.replace(/\s+/g, '-')}`);
+    let el = document.getElementById(`badge-${name}`);
     if (!el) {
         el = document.createElement("span");
-        el.id = `badge-${name.replace(/\s+/g, '-')}`;
+        el.id = `badge-${name}`;
         container.appendChild(el);
     }
     el.className = "badge " + state;
-    el.innerHTML = `<i class="fa-solid ${state === 'ok' ? 'fa-check-circle' : state === 'err' ? 'fa-times-circle' : 'fa-circle-notch fa-spin'}"></i> ${name}`;
+    el.innerHTML = `${name} (${state})`;
 }
 
 function parseRSS(xmlText) {
     const parser = new DOMParser();
     const xml = parser.parseFromString(xmlText, "text/xml");
     const items = [...xml.querySelectorAll("item")];
+
     return items.map(item => ({
         title: item.querySelector("title")?.textContent || "No Title",
         link: item.querySelector("link")?.textContent || "#",
-        pubDate: item.querySelector("pubDate")?.textContent || new Date().toISOString()
+        date: item.querySelector("pubDate")?.textContent ||
+              item.querySelector("published")?.textContent ||
+              new Date().toISOString()
     }));
 }
 
 async function fetchFeed(source) {
     setBadge(source.name, "loading");
-    
-    for (let i = 0; i < PROXIES.length; i++) {
+
+    for (let proxy of PROXIES) {
         try {
-            const res = await fetch(PROXIES[i](source.url));
-            let items = [];
-            
-            if (i === 1) {
-                // rss2json format
-                const data = await res.json();
-                if (data.status !== "ok") throw "RSS2JSON failed";
-                items = data.items;
-            } else {
-                // allorigins or corsproxy - returns raw XML
-                const data = await res.json();
-                const xmlContent = data.contents || await res.text();
-                items = parseRSS(xmlContent);
+            const res = await fetch(proxy(source.url));
+            const text = await res.text();
+
+            let xmlContent;
+
+            try {
+                const json = JSON.parse(text);
+                xmlContent = json.contents || text;
+            } catch {
+                xmlContent = text;
             }
-            
+
+            const jobs = parseRSS(xmlContent);
+
             setBadge(source.name, "ok");
-            return items.map(item => ({
-                title: item.title,
+
+            return jobs.map(job => ({
+                ...job,
                 source: source.name,
-                date: item.pubDate || item.pub_date,
-                link: item.link
+                priority: getPriority(job.title)
             }));
-        } catch (e) {
-            if (i === PROXIES.length - 1) {
-                setBadge(source.name, "err");
-                console.error(`Failed ${source.name}:`, e);
-                return [];
-            }
-            // Try next proxy
+
+        } catch (err) {
+            console.log("Retrying proxy...");
         }
     }
+
+    setBadge(source.name, "err");
     return [];
 }
 
+// 🧠 AI-like priority ranking
+function getPriority(title) {
+    title = title.toLowerCase();
+
+    if (title.includes("apply") || title.includes("online form")) return 3;
+    if (title.includes("admit card") || title.includes("result")) return 2;
+    return 1;
+}
+
+// 🔍 Search filter
 function filterJobs() {
-    const query = document.getElementById("searchInput").value.toLowerCase();
-    filteredJobs = allJobs.filter(job => 
-        job.title.toLowerCase().includes(query) || 
-        job.source.toLowerCase().includes(query)
+    const q = document.getElementById("searchInput").value.toLowerCase();
+
+    filteredJobs = allJobs.filter(j =>
+        j.title.toLowerCase().includes(q) ||
+        j.source.toLowerCase().includes(q)
     );
+
     visibleCount = 50;
     renderJobs();
 }
 
+// 🎨 Render jobs
 function renderJobs() {
     const container = document.getElementById("jobs");
+
     const list = filteredJobs.slice(0, visibleCount);
 
-    if (list.length === 0) {
-        container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-dim); margin-top: 50px;">
-            <i class="fa-solid fa-folder-open fa-3x"></i><p style="margin-top:10px">No matching jobs found.</p>
-        </div>`;
-    } else {
-        container.innerHTML = list.map(job => `
-            <div class="job-card">
-                <div>
-                    <h3>${job.title}</h3>
-                    <div class="job-info">
-                        <div class="info-item"><i class="fa-solid fa-landmark"></i> <span>${job.source}</span></div>
-                        <div class="info-item"><i class="fa-solid fa-calendar"></i> <span>${job.date ? new Date(job.date).toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'}) : "Recently"}</span></div>
-                    </div>
-                </div>
-                <a href="${job.link}" class="btn-view" target="_blank">View Notification <i class="fa-solid fa-chevron-right" style="font-size:10px"></i></a>
-            </div>
-        `).join("");
+    if (!list.length) {
+        container.innerHTML = "<h2 style='text-align:center'>No jobs found</h2>";
+        return;
     }
+
+    container.innerHTML = list.map(job => `
+        <div class="job-card">
+            <h3>${job.title}</h3>
+
+            <div class="info-item">${job.source}</div>
+            <div class="info-item">${new Date(job.date).toLocaleDateString()}</div>
+
+            <a href="${job.link}" target="_blank" class="btn-view">View Job</a>
+        </div>
+    `).join("");
 }
 
+// 🚀 Load jobs
 async function loadJobs() {
-    if (isLoading) return;
-    isLoading = true;
-    document.getElementById("refreshBtn").disabled = true;
-    allJobs = [];
-    document.getElementById("status").innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Fetching from multiple proxies...';
-    document.getElementById("source-status").innerHTML = "";
-    
-    const results = await Promise.all(SOURCES.map(fetchFeed));
-    results.forEach(r => allJobs.push(...r));
+    document.getElementById("status").innerText = "Fetching jobs...";
 
-    const totalFetched = allJobs.length;
-    const seen = new Set();
-    allJobs = allJobs.filter(j => seen.has(j.link) ? false : seen.add(j.link));
-    allJobs.sort((a,b) => new Date(b.date) - new Date(a.date));
-    
+    const results = await Promise.all(SOURCES.map(fetchFeed));
+
+    allJobs = results.flat();
+
+    // ✅ Proper duplicate removal
+    const map = new Map();
+    allJobs.forEach(j => map.set(j.link, j));
+    allJobs = Array.from(map.values());
+
+    // ✅ Sort by priority + date
+    allJobs.sort((a, b) => {
+        if (b.priority !== a.priority) return b.priority - a.priority;
+        return new Date(b.date) - new Date(a.date);
+    });
+
     filteredJobs = [...allJobs];
-    visibleCount = 50;
-    document.getElementById("status").textContent = `Showing ${allJobs.length} unique jobs from ${totalFetched} total posts`;
-    document.getElementById("refreshBtn").disabled = false;
-    isLoading = false;
+
+    document.getElementById("status").innerText =
+        `Loaded ${allJobs.length} jobs`;
+
     renderJobs();
 }
 
-// Infinite scroll
-window.addEventListener('scroll', () => {
-    if (isLoadingMore) return;
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
-        if (visibleCount < filteredJobs.length) {
-            isLoadingMore = true;
-            visibleCount += 50;
-            renderJobs();
-            setTimeout(() => isLoadingMore = false, 300);
-        }
+// 📜 Infinite scroll
+window.addEventListener("scroll", () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+        visibleCount += 20;
+        renderJobs();
     }
 });
 
-// Init
 loadJobs();
 </script>
-
-</body>
-</html>
