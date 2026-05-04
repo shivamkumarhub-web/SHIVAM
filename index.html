@@ -28,7 +28,6 @@
             padding-bottom: 100px;
         }
 
-        /* --- Header Section --- */
         header { 
             padding: 1.25rem 5%; 
             background: var(--glass);
@@ -62,7 +61,6 @@
 
         .btn-refresh:hover { transform: scale(1.05); filter: brightness(1.1); }
 
-        /* --- Search & Status --- */
         .search-section {
             max-width: 800px;
             margin: 40px auto 20px;
@@ -119,8 +117,8 @@
 
         .badge.ok { border-color: var(--success); color: var(--success); }
         .badge.err { border-color: #ef4444; color: #ef4444; }
+        .badge.loading { border-color: var(--accent); color: var(--accent); }
 
-        /* --- Job Cards --- */
         .jobs-container { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
@@ -183,19 +181,8 @@
         .btn-view:hover { background: var(--accent); color: var(--bg); }
 
         .load-more {
-            display: block;
-            margin: 50px auto;
-            background: transparent;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 12px 35px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.3s;
+            display: none; /* Hidden - we use infinite scroll now */
         }
-
-        .load-more:hover { background: var(--accent); color: var(--bg); }
 
         @media (max-width: 600px) {
             header { flex-direction: column; gap: 15px; text-align: center; }
@@ -226,25 +213,28 @@
 <button id="loadMoreBtn" class="load-more" onclick="loadMore()">View Older Notifications</button>
 
 <script>
-const RSS2JSON = "https://api.rss2json.com/v1/api.json?rss_url=";
+const RSS2JSON = "https://api.rss2json.com/v1/api.json?count=100&rss_url=";
 const SOURCES = [
     { name: "FreeJobAlert", url: "https://www.freejobalert.com/feed/" },
     { name: "SarkariJobFind", url: "https://www.sarkarijobfind.com/feed/" },
     { name: "RojgarResult", url: "https://www.rojgarresult.com/feed/" },
     { name: "SarkariExam", url: "https://www.sarkariexam.com/feed/" },
-    { name: "SarkariResult", url: "https://www.sarkariresult.com/rssfeed.xml" }
+    { name: "SarkariResult", url: "https://www.sarkariresult.com/rssfeed.xml" },
+    { name: "Adda247 Jobs", url: "https://www.adda247.com/jobs/feed/" },
+    { name: "Jagran Josh", url: "https://www.jagranjosh.com/rss/jobs.xml" }
 ];
 
 let allJobs = [];
 let filteredJobs = [];
-let visibleCount = 24;
+let visibleCount = 50;
+let isLoadingMore = false;
 
 function setBadge(name, state) {
     const container = document.getElementById("source-status");
-    let el = document.getElementById(`badge-${name}`);
+    let el = document.getElementById(`badge-${name.replace(/\s+/g, '-')}`);
     if (!el) {
         el = document.createElement("span");
-        el.id = `badge-${name}`;
+        el.id = `badge-${name.replace(/\s+/g, '-')}`;
         container.appendChild(el);
     }
     el.className = "badge " + state;
@@ -276,7 +266,7 @@ function filterJobs() {
         job.title.toLowerCase().includes(query) || 
         job.source.toLowerCase().includes(query)
     );
-    visibleCount = 24;
+    visibleCount = 50;
     renderJobs();
 }
 
@@ -297,37 +287,43 @@ function renderJobs() {
                         <div class="info-item"><i class="fa-solid fa-landmark"></i> <span>${job.source}</span></div>
                         <div class="info-item"><i class="fa-solid fa-calendar"></i> <span>${job.date ? new Date(job.date).toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'}) : "Recently"}</span></div>
                     </div>
-                </div>
                 <a href="${job.link}" class="btn-view" target="_blank">View Notification <i class="fa-solid fa-chevron-right" style="font-size:10px"></i></a>
             </div>
         `).join("");
     }
-
-    document.getElementById("loadMoreBtn").style.display =
-        visibleCount >= filteredJobs.length ? "none" : "block";
-}
-
-function loadMore() {
-    visibleCount += 24;
-    renderJobs();
 }
 
 async function loadJobs() {
     allJobs = [];
-    document.getElementById("status").innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Refreshing live database...';
+    document.getElementById("status").innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Fetching maximum jobs from all sources...';
+    document.getElementById("source-status").innerHTML = "";
     
     const results = await Promise.all(SOURCES.map(fetchFeed));
     results.forEach(r => allJobs.push(...r));
 
-    // Cleanup: Remove duplicates and Sort
+    const totalFetched = allJobs.length;
     const seen = new Set();
     allJobs = allJobs.filter(j => seen.has(j.link) ? false : seen.add(j.link));
     allJobs.sort((a,b) => new Date(b.date) - new Date(a.date));
     
     filteredJobs = [...allJobs];
-    document.getElementById("status").textContent = `Tracking ${allJobs.length} active job listings`;
+    visibleCount = 50;
+    document.getElementById("status").textContent = `Showing ${allJobs.length} unique jobs from ${totalFetched} total posts`;
     renderJobs();
 }
+
+// Infinite scroll - loads 50 more jobs when you reach near bottom
+window.addEventListener('scroll', () => {
+    if (isLoadingMore) return;
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+        if (visibleCount < filteredJobs.length) {
+            isLoadingMore = true;
+            visibleCount += 50;
+            renderJobs();
+            setTimeout(() => isLoadingMore = false, 300);
+        }
+    }
+});
 
 // Init
 loadJobs();
