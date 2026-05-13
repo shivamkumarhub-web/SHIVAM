@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Up Animation</title>
+  <style>
+    .sentence {
+      display: flex;
+      align-items: center;
+      gap: 8px; /* space between parts */
+      font-size: 1.5rem;
+    }
+
+    #changingItem {
+      color: rebeccapurple;
+      transition: all 0.4s ease-in-out;
+      display: inline-block;
+      position: relative;
+      min-width: 220px;   /* keeps space constant */
+      text-align: center; /* centers text inside reserved space */
+      white-space: nowrap; /* prevents wrapping */
+      justify-content: center;
+      text-align: center;
+    }
+
+    /* Hidden state (before change) */
+    .hide {
+      opacity: 0;
+      transform: translateY(20px); /* move down */
+    }
+
+    /* Visible state (after change) */
+    .show {
+      opacity: 1;
+      transform: translateY(0); /* move up into place */
+    }
+    .shivam{
+      margin: center;
+      justify-content: center;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="sentence">
+    <label class="shivam">Hii 👋 My name is SHIVAM KUMAR , I am</label>
+    <h1 id="changingItem" class="show">JAVA FULL STACK!</h1>
+    <label>DEVELOPER</label>
+  </div>
+
+  <script>
+    const texts = [
+      "WEB-APPLICATION",
+      "WEB-SITES & PAGE",
+      "JAVA FULL STACK!",
+      "    FRONT-END  ",
+      "    BACK-END  "
+    ];
+
+    const textElement = document.getElementById("changingItem");
+    let index = 0;
+
+    function changeText() {
+      // Animate out
+      textElement.classList.remove("show");
+      textElement.classList.add("hide");
+
+      setTimeout(() => {
+        // Update text
+        index = (index + 1) % texts.length;
+        textElement.innerText = texts[index];
+
+        // Animate in
+        textElement.classList.remove("hide");
+        textElement.classList.add("show");
+      }, 500); // wait for hide animation
+    }
+
+    setInterval(changeText, 3000);
+  </script>
+</body>
+</html>
