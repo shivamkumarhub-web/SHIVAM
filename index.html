@@ -3,76 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> Shivam - Register || Login Page </title>
-<a style = "text-align:center;" href="Shivam-About-me-and-About-my-Careers.html">Access About Page</a>
-<h1 style="text-align: center;">We Are Updating this Page, Come back Again...</h1>
-
-  <p>Thank you for your Patience.....</p>
+  <title>SHIVAM - Register & Login Page</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-
   <link rel="stylesheet" href="style.css">
-
-
 </head>
 <body>
-  
-<div class="container" id="signup">
-<h1 class="form-title">Register</h1>
-<form method="post" action="">
-<div class="main-class">
-<i class="fas fa-user"></i><label for="">First Name:</label><input type="text" placeholder="Enter first name..." required> <br><br>
+  <!-- Sign Up Form -->
+  <div class="container" id="signUp" style="display: none;">
+    <h1 class="form-title">Register</h1>
+    <form method="post" action="">
+      <div class="input-group">
+        <i class="fas fa-user"></i>
+        <input type="text" name="fName" id="fName" placeholder="Enter first name" required>
+        <label for="fName">First Name</label>
+      </div>
 
-<i class="fas fa-user"></i><label for="">Last Name: </label><input type="text" placeholder="Enter last Name..." required>
+      <div class="input-group">
+        <i class="fas fa-user"></i>
+        <input type="text" name="lName" id="lName" placeholder="Enter Last name" required>
+        <label for="lName">Last Name</label>
+      </div>
 
-<br><br>
+      <div class="input-group">
+        <i class="fas fa-envelope"></i>
+        <input type="email" name="email" id="signUpEmail" placeholder="Enter your Email..." required>
+        <label for="signUpEmail">Enter Email</label>
+      </div>
 
-<i class="fas fa-envelope"></i><label for="">Email: </label><input type="email" placeholder="Enter your Email id..." required>
+      <div class="input-group">
+        <i class="fas fa-lock"></i>
+        <input type="password" name="password" id="signUpPassword" placeholder="Enter Password" required>
+        <label for="signUpPassword">Enter Password</label>
+      </div>
 
-<br><br>
-<i class="fas fa-lock"></i> <label for="">Password: </label> <input type="password" placeholder="Enter your Password" required>
-<br>
-<input type="submit" class="btn" value="Sign Up" name="signUp">
-</div>
+      <input type="submit" class="btn" value="Sign Up" name="signUp">
 
-  
-</form>
+      <p>-------or-------</p>
+      <div class="icons">
+        <i class="fab fa-google"></i>
+        <i class="fab fa-facebook"></i>
+      </div>
 
-<p class="or">------------or------------</p>
+      <div class="links">
+        <p>Already Have Account?</p>
+        <button type="button" id="signInButton">Sign In</button>
+      </div>
+    </form>
+  </div>
 
-<div class="icons">
-<i style="color: aqua ;" class="fab fa-google"></i>
-<i style="color: blue;" class="fab fa-facebook"></i>
-<i style="color: rgb(255, 0, 0);" class="fab fa-youtube"></i>
-<i class="fab fa-snapchat"></i>
-<i class="fab fa-twitter"></i>
-<i class="fab fa-meta"></i>
-<i class="fab fa-amazon"></i>
+  <!-- Sign In Form -->
+  <div class="container" id="signIn">
+    <h1 class="form-title">Sign In</h1>
+    <form method="post" action="">
+      <div class="input-group">
+        <i class="fas fa-envelope"></i>
+        <input type="email" name="email" id="signInEmail" placeholder="Enter your Email..." required>
+        <label for="signInEmail">Enter Email</label>
+      </div>
 
-</div>
+      <div class="input-group">
+        <i class="fas fa-lock"></i>
+        <input type="password" name="password" id="signInPassword" placeholder="Enter Password" required>
+        <label for="signInPassword">Enter Password</label>
+      </div>
 
-<p>Already Have Account ? </p>
+      <p class="recover">
+        <a href="#">Recover Password</a>
+      </p>
 
-<button id="signInButton">Sign in</button>
+      <input type="submit" class="btn" value="Sign In" name="signIn">
 
-</div>
+      <p>-------or-------</p>
+      <div class="icons">
+        <i class="fab fa-google"></i>
+        <i class="fab fa-facebook"></i>
+      </div>
 
+      <div class="links">
+        <p>Don't Have Account Yet?</p>
+        <button type="button" id="signUpButton">Sign Up</button>
+      </div>
+    </form>
+  </div>
 
-<br><br><br><br><br>
-
-
-<h1>Sign In</h1>
-
-<i class="fas fa-envelope"></i><label for="">Email: </label><input type="email" placeholder="Enter your Email id..." required>
-
-<br><br>
-<i class="fas fa-lock"></i> <label for="">Password: </label> <input type="password" placeholder="Enter your Password" required>
-<br>
-<input type="submit" class="btn" value="Sign In" name="signUp">
-</div>
-
-  
-</form>
-
-
+  <script src="script.js"></script>
 </body>
 </html>
