@@ -11,6 +11,10 @@ body{
 
 }
 
+.orWord{
+  text-align: center;
+}
+
 .container{
   background: #fff;
   width: 450px;
