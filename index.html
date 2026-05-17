@@ -4,12 +4,9 @@
   <meta charset="UTF-8">
   <title>SHIVAM Home-Page</title>
   <style>
-
-//df
-    
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Professional font */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f4f6f9;
       color: #ffffff;
       display: flex;
@@ -22,55 +19,101 @@
       font-size: 2.5rem;
       font-weight: 700;
       margin-bottom: 1rem;
-      color: #ffffff;
+      color: inherit; /* Inherits color from parent during day/night toggle */
     }
     p {
       font-size: 1.2rem;
       line-height: 1.6;
       max-width: 700px;
-      margin: 0 auto;
-      color: #ffffff;
+      margin: 0 auto 20px auto;
+      color: inherit;
+    }
+    a {
+      color: #4285F4;
+      font-weight: bold;
+      text-decoration: none;
     }
   
     body, html { margin: 0; height: 100%; width: 100%; overflow: hidden; }
     canvas { display: block; }
+    
     .content {
       position: absolute; top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       color: white; text-align: center; z-index: 1;
-      font-family: Arial, sans-serif;
+      width: 90%;
+      max-width: 800px;
     }
     #toggleBtn {
       position: absolute; top: 20px; right: 20px;
       background: transparent; border: none;
       cursor: pointer; font-size: 2rem; z-index: 2;
     }
+
+    /* Styles for Firebase Authentication Elements */
+    .auth-section {
+      margin-top: 30px;
+    }
+    .auth-btn {
+      padding: 10px 24px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #googleBtn {
+      background-color: #4285F4;
+      color: white;
+    }
+    #googleBtn:hover {
+      background-color: #357ae8;
+    }
+    #logoutBtn {
+      background-color: #d9534f;
+      color: white;
+      display: none; /* Hidden by default until login */
+    }
+    #logoutBtn:hover {
+      background-color: #c9302c;
+    }
+    #userStatus {
+      font-size: 1rem;
+      font-style: italic;
+      margin-top: 5px;
+    }
   </style>
 </head>
 <body>
   <button id="toggleBtn">🌞</button>
+  
   <div class="content">
-
-
-
     <div>
-       <h1>Welcome to My Website</h1> <br><br>
-    <h1>Advanced Java Full Stack Developer</h1>
-    <p>
-      Hi, I’m <strong>Shivam Kumar</strong>, a passionate fresher with strong expertise in 
-      <strong>Java, Spring Boot, React, Tailwind CSS, and modern web security practices</strong>.  
-      I have built multiple full stack projects that demonstrate my ability to design scalable 
-      back‑end systems and craft professional, user‑friendly front‑end interfaces.  
-      Currently, I am actively seeking opportunities to start my career, contribute to innovative 
-      teams, and grow into a versatile developer who delivers impactful solutions.
-    </p>
+      <h1 id="welcomeGreeting">Welcome to My Website</h1> 
+      <br>
+      <h1>Advanced Java Full Stack Developer</h1>
+      <p>
+        Hi, I’m <strong>Shivam Kumar</strong>, a passionate fresher with strong expertise in 
+        <strong>Java, Spring Boot, React, Tailwind CSS, and modern web security practices</strong>.  
+        I have built multiple full stack projects that demonstrate my ability to design scalable 
+        back‑end systems and craft professional, user‑friendly front‑end interfaces.  
+        Currently, I am actively seeking opportunities to start my career, contribute to innovative 
+        teams, and grow into a versatile developer who delivers impactful solutions.
+      </p>
 
-    Go to Contact Page: <a href="Home.html">Contact</a>
-  </div>
-    
+      <div class="auth-section">
+        <button id="googleBtn">Sign in with Google</button>
+        <button id="logoutBtn">Sign Out</button>
+        <p id="userStatus"></p>
+      </div>
+      <br>
+      Go to Contact Page: <a href="Home.html">Contact</a>
+    </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+  
   <script>
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 2000);
@@ -96,6 +139,7 @@
     let isDay = true;
     scene.background = new THREE.Color(0x87ceeb); // sky blue for day
     starsMaterial.color.set(0x000000); // hide stars in day
+    document.querySelector(".content").style.color = "black"; // Set default text style for day
 
     const toggleBtn = document.getElementById("toggleBtn");
     toggleBtn.addEventListener("click", () => {
@@ -126,6 +170,69 @@
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyB49vgbQRfmg6XCj_A_ocyC7Vd9J_fgWbQ",
+      authDomain: "shivamportfolio-7c458.firebaseapp.com",
+      projectId: "shivamportfolio-7c458",
+      storageBucket: "shivamportfolio-7c458.firebasestorage.app",
+      messagingSenderId: "166581393688",
+      appId: "1:166581393688:web:7fb06e67d3640f120d666d",
+      measurementId: "G-79JLH2NZBL"
+    };
+
+    // Initialize Firebase Services
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    // DOM Elements References
+    const googleBtn = document.getElementById('googleBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const userStatus = document.getElementById('userStatus');
+    const welcomeGreeting = document.getElementById('welcomeGreeting');
+
+    // Google Login Trigger Event
+    googleBtn.addEventListener('click', () => {
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          console.log("Logged in successfully!", result.user);
+        })
+        .catch((error) => {
+          console.error("Login Error: ", error.message);
+          alert("Sign-in process failed. Please try again.");
+        });
+    });
+
+    // Logout Trigger Event
+    logoutBtn.addEventListener('click', () => {
+      signOut(auth).then(() => {
+        console.log("Logged out successfully.");
+      });
+    });
+
+    // Session State Monitor (Keeps track if user is logged in or out)
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // When logged in
+        welcomeGreeting.innerText = `Welcome, ${user.displayName}!`;
+        userStatus.innerText = `Account email: ${user.email}`;
+        googleBtn.style.display = 'none';
+        logoutBtn.style.display = 'inline-block';
+      } else {
+        // When logged out
+        welcomeGreeting.innerText = "Welcome to My Website";
+        userStatus.innerText = "";
+        googleBtn.style.display = 'inline-block';
+        logoutBtn.style.display = 'none';
+      }
     });
   </script>
 </body>
