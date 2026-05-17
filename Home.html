@@ -5,15 +5,35 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SHIVAM - Register & Login Page</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Styling to make your existing social icon elements clickable */
+    .google-btn-icon {
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      color: #df4b3b; /* Google red color */
+      cursor: pointer;
+      transition: transform 0.2s;
+      padding: 0 10px;
+    }
+    .google-btn-icon:hover {
+      transform: scale(1.1);
+    }
+    .facebook-icon {
+      font-size: 1.8rem;
+      color: #3b5998;
+      cursor: pointer;
+      padding: 0 10px;
+    }
+  </style>
 </head>
 
 <body>
-  <!-- Sign Up Form -->
   <div class="container" id="signUp" style="display: none;">
     <h1 class="form-title">Register</h1>
-    <form method="post" action="">
+    <form method="post" action="" onsubmit="event.preventDefault();">
       <div class="input-group">
         <i class="fas fa-user"></i>
         <input type="text" name="fName" id="fName" placeholder="Enter first name" required>
@@ -43,8 +63,10 @@
       <p class="orWord">-------or-------</p>
       
       <div class="icons">
-        <i class="fab fa-google"></i>
-        <i class="fab fa-facebook"></i>
+        <button type="button" class="google-btn-icon targetGoogleLogin">
+          <i class="fab fa-google"></i>
+        </button>
+        <i class="fab fa-facebook facebook-icon"></i>
       </div>
 
       <div class="links">
@@ -54,10 +76,9 @@
     </form>
   </div>
 
-  <!-- Sign In Form -->
   <div class="container" id="signIn">
     <h1 class="form-title">Sign In</h1>
-    <form method="post" action="">
+    <form method="post" action="" onsubmit="event.preventDefault();">
       <div class="input-group">
         <i class="fas fa-envelope"></i>
         <input type="email" name="email" id="signInEmail" placeholder="Enter your Email..." required>
@@ -76,27 +97,70 @@
 
       <input type="submit" class="btn" value="Sign In" name="signIn">
 
-        <p class="orWord">-------or-------</p>
+      <p class="orWord">-------or-------</p>
+      
       <div class="icons">
-        <i class="fab fa-google"></i>
-        <i class="fab fa-facebook"></i>
+        <button type="button" class="google-btn-icon targetGoogleLogin">
+          <i class="fab fa-google"></i>
+        </button>
+        <i class="fab fa-facebook facebook-icon"></i>
       </div>
 
       <div class="links">
         <p>Don't Have Account Yet?</p>
         <button type="button" id="signUpButton">Sign Up</button>
       </div>
-
     </form>
-
-
   </div>
-
-
 
   <script src="script.js"></script>
 
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
+    // Your active Firebase web configuration keys
+    const firebaseConfig = {
+      apiKey: "AIzaSyB49vgbQRfmg6XCj_A_ocyC7Vd9J_fgWbQ",
+      authDomain: "shivamportfolio-7c458.firebaseapp.com",
+      projectId: "shivamportfolio-7c458",
+      storageBucket: "shivamportfolio-7c458.firebasestorage.app",
+      messagingSenderId: "166581393688",
+      appId: "1:166581393688:web:7fb06e67d3640f120d666d",
+      measurementId: "G-79JLH2NZBL"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    // Select both Google buttons across Register and Login panes
+    const googleButtons = document.querySelectorAll('.targetGoogleLogin');
+
+    // Attach click events to both icons cleanly
+    googleButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            signInWithPopup(auth, provider)
+                .then((result) => {
+                    console.log("Authenticated User via Google: ", result.user);
+                    alert(`Welcome ${result.user.displayName}! Redirecting...`);
+                    // Redirect them to your main home landing page once verified
+                    window.location.href = "index.html"; 
+                })
+                .catch((error) => {
+                    console.error("Auth Error: ", error.message);
+                    alert("Google Sign-In dropped or encountered an error.");
+                });
+        });
+    });
+
+    // Check if user is already logged in on page mount
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            console.log("User is logged in as: ", user.email);
+        }
+    });
+  </script>
 </body>
-
 </html>
