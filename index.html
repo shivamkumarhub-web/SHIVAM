@@ -2,182 +2,500 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>SHIVAM Home-Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shivam Kumar | Full Stack Developer</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
-    body {
+    * {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f6f9;
-      color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-    }
-    h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      color: inherit; /* Inherits color from parent during day/night toggle */
-    }
-    p {
-      font-size: 1.2rem;
-      line-height: 1.6;
-      max-width: 700px;
-      margin: 0 auto 20px auto;
-      color: inherit;
-    }
-    a {
-      color: #4285F4;
-      font-weight: bold;
-      text-decoration: none;
-    }
-  
-    body, html { margin: 0; height: 100%; width: 100%; overflow: hidden; }
-    canvas { display: block; }
-    
-    .content {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      color: white; text-align: center; z-index: 1;
-      width: 90%;
-      max-width: 800px;
-    }
-    #toggleBtn {
-      position: absolute; top: 20px; right: 20px;
-      background: transparent; border: none;
-      cursor: pointer; font-size: 2rem; z-index: 2;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    /* Styles for Firebase Authentication Elements */
-    .auth-section {
-      margin-top: 30px;
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #333;
     }
-    .auth-btn {
-      padding: 10px 24px;
-      font-size: 16px;
-      font-weight: bold;
-      border: none;
-      border-radius: 5px;
+
+    /* Animated Background */
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+    .header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      padding: 1rem 0;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: #667eea;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .toggle-btn {
+      background: rgba(255,255,255,0.8);
+      border: 2px solid #667eea;
+      border-radius: 50px;
+      padding: 8px 16px;
       cursor: pointer;
-      transition: background 0.2s;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
     }
-    #googleBtn {
-      background-color: #4285F4;
+
+    .toggle-btn:hover {
+      background: #667eea;
       color: white;
+      transform: scale(1.05);
     }
-    #googleBtn:hover {
-      background-color: #357ae8;
-    }
-    #logoutBtn {
-      background-color: #d9534f;
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
       color: white;
-      display: none; /* Hidden by default until login */
+      position: relative;
     }
-    #logoutBtn:hover {
-      background-color: #c9302c;
+
+    .hero-content h1 {
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 800;
+      margin-bottom: 1rem;
+      line-height: 1.2;
     }
-    #userStatus {
+
+    .hero-subtitle {
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      margin-bottom: 2rem;
+      opacity: 0.95;
+    }
+
+    .hero-description {
+      font-size: 1.3rem;
+      max-width: 700px;
+      margin: 0 auto 3rem;
+      opacity: 0.9;
+      line-height: 1.7;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 16px 32px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-primary {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+
+    .btn-primary:hover {
+      background: white;
+      color: #333;
+      transform: translateY(-3px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.2);
+      transform: translateY(-3px);
+    }
+
+    /* Auth Section */
+    .auth-section {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .auth-btn {
+      padding: 12px 28px;
       font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #googleBtn {
+      background: #4285f4;
+      color: white;
+    }
+
+    #googleBtn:hover {
+      background: #357ae8;
+      transform: translateY(-2px);
+    }
+
+    #logoutBtn {
+      background: #ea4335;
+      color: white;
+      display: none;
+    }
+
+    #logoutBtn:hover {
+      background: #d93025;
+      transform: translateY(-2px);
+    }
+
+    #userStatus {
+      font-size: 0.95rem;
+      opacity: 0.9;
       font-style: italic;
-      margin-top: 5px;
+    }
+
+    /* Skills Section */
+    .skills-section {
+      padding: 120px 0 80px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 4rem;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .skill-card {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: all 0.4s ease;
+      border-top: 4px solid transparent;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+    }
+
+    .skill-card i {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .skill-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .hero-content h1 {
+        margin-bottom: 1rem;
+      }
+    }
+
+    /* Scroll animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in-up {
+      animation: fadeInUp 0.8s ease forwards;
     }
   </style>
 </head>
 <body>
-  <button id="toggleBtn">🌞</button>
-  
-  <div class="content">
-    <div>
-      <h1 id="welcomeGreeting">Welcome to My Website</h1> 
-      <br>
-      <h1>Advanced Java Full Stack Developer</h1>
-      <p>
-        Hi, I’m <strong>Shivam Kumar</strong>, a passionate fresher with strong expertise in 
-        <strong>Java, Spring Boot, React, Tailwind CSS, and modern web security practices</strong>.  
-        I have built multiple full stack projects that demonstrate my ability to design scalable 
-        back‑end systems and craft professional, user‑friendly front‑end interfaces.  
-        Currently, I am actively seeking opportunities to start my career, contribute to innovative 
-        teams, and grow into a versatile developer who delivers impactful solutions.
-      </p>
+  <!-- Background Canvas -->
+  <canvas id="bgCanvas"></canvas>
 
-      <div class="auth-section">
-        <button id="googleBtn">Sign in with Google</button>
-        <button id="logoutBtn">Sign Out</button>
-        <p id="userStatus"></p>
+  <!-- Header -->
+  <header class="header">
+    <nav class="nav">
+      <div class="logo">Shivam Kumar</div>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="toggle-btn" id="toggleBtn">🌞</button>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="container">
+      <div class="hero-content fade-in-up">
+        <h1 id="welcomeGreeting">Welcome to My Portfolio</h1>
+        <p class="hero-subtitle">Advanced Java Full Stack Developer</p>
+        <p class="hero-description">
+          Hi, I'm <strong>Shivam Kumar</strong>, a passionate developer specializing in scalable 
+          Java Spring Boot applications and modern React frontends. I craft robust, performant 
+          solutions that drive business success.
+        </p>
+        
+        <div class="cta-buttons">
+          <a href="#projects" class="btn btn-primary">
+            <i class="fas fa-rocket"></i>
+            View My Work
+          </a>
+          <a href="#contact" class="btn btn-secondary">
+            <i class="fas fa-envelope"></i>
+            Get In Touch
+          </a>
+        </div>
+
+        <div class="auth-section">
+          <button id="googleBtn" class="auth-btn">
+            <i class="fab fa-google"></i>
+            Sign in with Google
+          </button>
+          <button id="logoutBtn" class="auth-btn">
+            <i class="fas fa-sign-out-alt"></i>
+            Sign Out
+          </button>
+          <p id="userStatus"></p>
+        </div>
       </div>
-      <br>
-      Go to Contact Page: <a href="Home.html">Contact</a>
     </div>
-  </div>
+  </section>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+  <!-- Skills Section -->
+  <section class="skills-section" id="skills">
+    <div class="container">
+      <h2 class="section-title">Core Technologies</h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <i class="fab fa-java"></i>
+          <h3>Java & Spring Boot</h3>
+          <p>Expert in building scalable RESTful APIs, microservices, and enterprise applications</p>
+        </div>
+        <div class="skill-card">
+          <i class="fab fa-react"></i>
+          <h3>React & Modern JS</h3>
+          <p>Creating responsive UIs with React, TypeScript, and state-of-the-art tooling</p>
+        </div>
+        <div class="skill-card">
+          <i class="fas fa-database"></i>
+          <h3>Database Design</h3>
+          <p>PostgreSQL, MySQL, MongoDB, Redis - optimized for performance & scale</p>
+        </div>
+        <div class="skill-card">
+          <i class="fas fa-cloud"></i>
+          <h3>Cloud & DevOps</h3>
+          <p>AWS, Docker, CI/CD pipelines, and cloud-native development practices</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   
   <script>
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 2000);
-    const renderer = new THREE.WebGLRenderer();
+    // Enhanced Background Animation
+    const canvas = document.getElementById('bgCanvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // Stars
-    const starsGeometry = new THREE.BufferGeometry();
-    const starCount = 3000;
-    const positions = [];
-    for (let i = 0; i < starCount; i++) {
-      positions.push((Math.random() - 0.5) * 4000);
-      positions.push((Math.random() - 0.5) * 4000);
-      positions.push((Math.random() - 0.5) * 4000);
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 1;
+
+    // Floating particles
+    const particlesGeometry = new THREE.BufferGeometry();
+    const particlesCount = 200;
+    const posArray = new Float32Array(particlesCount * 3);
+
+    for(let i = 0; i < particlesCount * 3; i++) {
+      posArray[i] = (Math.random() - 0.5) * 5;
     }
-    starsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-    const starsMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 1 });
-    const starField = new THREE.Points(starsGeometry, starsMaterial);
-    scene.add(starField);
 
-    // Background colors
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    const particlesMaterial = new THREE.PointsMaterial({
+      size: 0.005,
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.8
+    });
+    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+    scene.add(particlesMesh);
+
+    // Day/Night toggle
     let isDay = true;
-    scene.background = new THREE.Color(0x87ceeb); // sky blue for day
-    starsMaterial.color.set(0x000000); // hide stars in day
-    document.querySelector(".content").style.color = "black"; // Set default text style for day
-
-    const toggleBtn = document.getElementById("toggleBtn");
-    toggleBtn.addEventListener("click", () => {
+    const toggleBtn = document.getElementById('toggleBtn');
+    
+    toggleBtn.addEventListener('click', () => {
       isDay = !isDay;
-      if (isDay) {
-        scene.background = new THREE.Color(0x87ceeb); // day sky
-        starsMaterial.color.set(0x000000); // hide stars
-        toggleBtn.innerText = "🌞"; // sun logo
-        document.querySelector(".content").style.color = "black"; // dark text for day
-      } else {
-        scene.background = new THREE.Color(0x000000); // night sky
-        starsMaterial.color.set(0xffffff); // show stars
-        toggleBtn.innerText = "🌙"; // moon logo
-        document.querySelector(".content").style.color = "white"; // light text for night
-      }
+      document.body.style.background = isDay 
+        ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+        : 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%)';
+      
+      toggleBtn.textContent = isDay ? '🌞' : '🌙';
+      particlesMaterial.color.setHex(isDay ? 0xffffff : 0x667eea);
     });
 
-    camera.position.z = 5;
-
+    // Animation loop
     function animate() {
       requestAnimationFrame(animate);
-      starField.rotation.y += 0.0005;
+      particlesMesh.rotation.y += 0.001;
+      particlesMesh.rotation.x += 0.0005;
       renderer.render(scene, camera);
     }
     animate();
 
+    // Responsive canvas
     window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
     });
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
   </script>
 
+  <!-- Firebase Authentication -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
-    // Your web app's Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyB49vgbQRfmg6XCj_A_ocyC7Vd9J_fgWbQ",
       authDomain: "shivamportfolio-7c458.firebaseapp.com",
@@ -188,49 +506,41 @@
       measurementId: "G-79JLH2NZBL"
     };
 
-    // Initialize Firebase Services
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
 
-    // DOM Elements References
     const googleBtn = document.getElementById('googleBtn');
     const logoutBtn = document.getElementById('logoutBtn');
     const userStatus = document.getElementById('userStatus');
     const welcomeGreeting = document.getElementById('welcomeGreeting');
 
-    // Google Login Trigger Event
     googleBtn.addEventListener('click', () => {
       signInWithPopup(auth, provider)
         .then((result) => {
-          console.log("Logged in successfully!", result.user);
+          console.log("Logged in:", result.user);
         })
         .catch((error) => {
-          console.error("Login Error: ", error.message);
-          alert("Sign-in process failed. Please try again.");
+          console.error("Auth error:", error);
         });
     });
 
-    // Logout Trigger Event
     logoutBtn.addEventListener('click', () => {
       signOut(auth).then(() => {
-        console.log("Logged out successfully.");
+        console.log("Logged out");
       });
     });
 
-    // Session State Monitor (Keeps track if user is logged in or out)
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // When logged in
-        welcomeGreeting.innerText = `Welcome, ${user.displayName}!`;
-        userStatus.innerText = `Account email: ${user.email}`;
+        welcomeGreeting.innerText = `Welcome back, ${user.displayName}!`;
+        userStatus.innerText = `Connected as: ${user.email}`;
         googleBtn.style.display = 'none';
-        logoutBtn.style.display = 'inline-block';
+        logoutBtn.style.display = 'flex';
       } else {
-        // When logged out
-        welcomeGreeting.innerText = "Welcome to My Website";
+        welcomeGreeting.innerText = "Welcome to My Portfolio";
         userStatus.innerText = "";
-        googleBtn.style.display = 'inline-block';
+        googleBtn.style.display = 'flex';
         logoutBtn.style.display = 'none';
       }
     });
