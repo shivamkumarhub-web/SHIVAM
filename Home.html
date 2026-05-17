@@ -1,132 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <title>Day/Night 3D Background</title>
-  <style>
-
-
-    
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Professional font */
-      background-color: #f4f6f9;
-      color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-    }
-    h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      color: #ffffff;
-    }
-    p {
-      font-size: 1.2rem;
-      line-height: 1.6;
-      max-width: 700px;
-      margin: 0 auto;
-      color: #ffffff;
-    }
-  
-    body, html { margin: 0; height: 100%; width: 100%; overflow: hidden; }
-    canvas { display: block; }
-    .content {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      color: white; text-align: center; z-index: 1;
-      font-family: Arial, sans-serif;
-    }
-    #toggleBtn {
-      position: absolute; top: 20px; right: 20px;
-      background: transparent; border: none;
-      cursor: pointer; font-size: 2rem; z-index: 2;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SHIVAM - Register & Login Page</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <button id="toggleBtn">🌞</button>
-  <div class="content">
+  <!-- Sign Up Form -->
+  <div class="container" id="signUp" style="display: none;">
+    <h1 class="form-title">Register</h1>
+    <form method="post" action="">
+      <div class="input-group">
+        <i class="fas fa-user"></i>
+        <input type="text" name="fName" id="fName" placeholder="Enter first name" required>
+        <label for="fName">First Name</label>
+      </div>
 
+      <div class="input-group">
+        <i class="fas fa-user"></i>
+        <input type="text" name="lName" id="lName" placeholder="Enter Last name" required>
+        <label for="lName">Last Name</label>
+      </div>
 
+      <div class="input-group">
+        <i class="fas fa-envelope"></i>
+        <input type="email" name="email" id="signUpEmail" placeholder="Enter your Email..." required>
+        <label for="signUpEmail">Enter Email</label>
+      </div>
 
-    <div>
-       <h1>Welcome to My Website</h1> <br><br>
-    <h1>Advanced Java Full Stack Developer</h1>
-    <p>
-      Hi, I’m <strong>Shivam Kumar</strong>, a passionate fresher with strong expertise in 
-      <strong>Java, Spring Boot, React, Tailwind CSS, and modern web security practices</strong>.  
-      I have built multiple full stack projects that demonstrate my ability to design scalable 
-      back‑end systems and craft professional, user‑friendly front‑end interfaces.  
-      Currently, I am actively seeking opportunities to start my career, contribute to innovative 
-      teams, and grow into a versatile developer who delivers impactful solutions.
-    </p>
+      <div class="input-group">
+        <i class="fas fa-lock"></i>
+        <input type="password" name="password" id="signUpPassword" placeholder="Enter Password" required>
+        <label for="signUpPassword">Enter Password</label>
+      </div>
 
-    Go to Contact Page: <a href="">Contact</a>
+      <input type="submit" class="btn" value="Sign Up" name="signUp">
+
+      <p class="orWord">-------or-------</p>
+      
+      <div class="icons">
+        <i class="fab fa-google"></i>
+        <i class="fab fa-facebook"></i>
+      </div>
+
+      <div class="links">
+        <p>Already Have Account?</p>
+        <button type="button" id="signInButton">Sign In</button>
+      </div>
+    </form>
   </div>
-    
+
+  <!-- Sign In Form -->
+  <div class="container" id="signIn">
+    <h1 class="form-title">Sign In</h1>
+    <form method="post" action="">
+      <div class="input-group">
+        <i class="fas fa-envelope"></i>
+        <input type="email" name="email" id="signInEmail" placeholder="Enter your Email..." required>
+        <label for="signInEmail">Enter Email</label>
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-lock"></i>
+        <input type="password" name="password" id="signInPassword" placeholder="Enter Password" required>
+        <label for="signInPassword">Enter Password</label>
+      </div>
+
+      <p class="recover">
+        <a href="recoverPassword.html">Recover Password</a>
+      </p>
+
+      <input type="submit" class="btn" value="Sign In" name="signIn">
+
+        <p class="orWord">-------or-------</p>
+      <div class="icons">
+        <i class="fab fa-google"></i>
+        <i class="fab fa-facebook"></i>
+      </div>
+
+      <div class="links">
+        <p>Don't Have Account Yet?</p>
+        <button type="button" id="signUpButton">Sign Up</button>
+      </div>
+
+    </form>
+
+
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
-  <script>
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 2000);
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
 
-    // Stars
-    const starsGeometry = new THREE.BufferGeometry();
-    const starCount = 3000;
-    const positions = [];
-    for (let i = 0; i < starCount; i++) {
-      positions.push((Math.random() - 0.5) * 4000);
-      positions.push((Math.random() - 0.5) * 4000);
-      positions.push((Math.random() - 0.5) * 4000);
-    }
-    starsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-    const starsMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 1 });
-    const starField = new THREE.Points(starsGeometry, starsMaterial);
-    scene.add(starField);
 
-    // Background colors
-    let isDay = true;
-    scene.background = new THREE.Color(0x87ceeb); // sky blue for day
-    starsMaterial.color.set(0x000000); // hide stars in day
+  <script src="script.js"></script>
 
-    const toggleBtn = document.getElementById("toggleBtn");
-    toggleBtn.addEventListener("click", () => {
-      isDay = !isDay;
-      if (isDay) {
-        scene.background = new THREE.Color(0x87ceeb); // day sky
-        starsMaterial.color.set(0x000000); // hide stars
-        toggleBtn.innerText = "🌞"; // sun logo
-        document.querySelector(".content").style.color = "black"; // dark text for day
-      } else {
-        scene.background = new THREE.Color(0x000000); // night sky
-        starsMaterial.color.set(0xffffff); // show stars
-        toggleBtn.innerText = "🌙"; // moon logo
-        document.querySelector(".content").style.color = "white"; // light text for night
-      }
-    });
 
-    camera.position.z = 5;
-
-    function animate() {
-      requestAnimationFrame(animate);
-      starField.rotation.y += 0.0005;
-      renderer.render(scene, camera);
-    }
-    animate();
-
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-  </script>
 </body>
+
 </html>
