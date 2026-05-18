@@ -1,11 +1,21 @@
-// 1. Add this to your existing imports
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
 import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-functions.js";
 
-// 2. Initialize Functions
-const functions = getFunctions(app);
-const portfolioChat = httpsCallable(functions, 'portfolioChat'); // This matches the "Flow" name from Genkit
+// Use your existing config from the HTML
+const firebaseConfig = {
+  apiKey: "AIzaSyB49vgbQRfmg6XCj_A_ocyC7Vd9J_fgWbQ",
+  authDomain: "shivamportfolio-7c458.firebaseapp.com",
+  projectId: "shivamportfolio-7c458",
+  storageBucket: "shivamportfolio-7c458.firebasestorage.app",
+  messagingSenderId: "166581393688",
+  appId: "1:166581393688:web:7fb06e67d3640f120d666d"
+};
 
-// 3. UI Logic for the Chatbox
+const app = initializeApp(firebaseConfig);
+const functions = getFunctions(app);
+const portfolioChat = httpsCallable(functions, 'portfolioChat');
+
+// UI Selectors
 const chatToggle = document.getElementById('chat-toggle');
 const chatWindow = document.getElementById('chat-window');
 const closeChat = document.getElementById('close-chat');
@@ -16,36 +26,35 @@ const chatMessages = document.getElementById('chat-messages');
 chatToggle.onclick = () => chatWindow.style.display = chatWindow.style.display === 'none' ? 'flex' : 'none';
 closeChat.onclick = () => chatWindow.style.display = 'none';
 
-async function handleSendMessage() {
+async function handleChat() {
   const text = userInput.value.trim();
   if (!text) return;
 
-  // Add User Message to UI
-  appendMessage('user', text);
+  appendMsg('user', text);
   userInput.value = '';
 
   try {
-    // Call the Genkit AI Flow
-    const result = await portfolioChat({ data: text });
-    appendMessage('ai', result.data);
+    const result = await portfolioChat({ text: text });
+    appendMsg('ai', result.data.text);
   } catch (error) {
     console.error("AI Error:", error);
-    appendMessage('ai', "Sorry, I'm having trouble connecting right now.");
+    appendMsg('ai', "I'm having trouble connecting to my brain. Please try again later.");
   }
 }
 
-function appendMessage(sender, text) {
-  const msg = document.createElement('div');
-  msg.style.padding = '10px';
-  msg.style.borderRadius = '10px';
-  msg.style.maxWidth = '80%';
-  msg.style.alignSelf = sender === 'user' ? 'flex-end' : 'flex-start';
-  msg.style.background = sender === 'user' ? '#667eea' : '#e9ecef';
-  msg.style.color = sender === 'user' ? 'white' : '#333';
-  msg.innerText = text;
-  chatMessages.appendChild(msg);
+function appendMsg(sender, text) {
+  const div = document.createElement('div');
+  div.innerText = text;
+  div.style.padding = '10px';
+  div.style.borderRadius = '10px';
+  div.style.marginBottom = '8px';
+  div.style.maxWidth = '85%';
+  div.style.alignSelf = sender === 'user' ? 'flex-end' : 'flex-start';
+  div.style.background = sender === 'user' ? '#667eea' : '#e9ecef';
+  div.style.color = sender === 'user' ? 'white' : '#333';
+  chatMessages.appendChild(div);
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-sendBtn.onclick = handleSendMessage;
-userInput.onkeypress = (e) => { if(e.key === 'Enter') handleSendMessage(); };
+sendBtn.onclick = handleChat;
+userInput.onkeypress = (e) => { if(e.key === 'Enter') handleChat(); };
