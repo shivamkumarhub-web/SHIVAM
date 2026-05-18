@@ -1,14 +1,14 @@
-import { genkit, z } from 'genkit';
+import { genkit } from 'genkit';
 import { googleAI, gemini15Flash } from '@genkit-ai/googleai';
 import { onCall } from 'firebase-functions/v2/https';
 
 const ai = genkit({
-  plugins: [googleAI({ apiKey: 'YOUR_GOOGLE_AI_API_KEY' })],
+  // No hardcoded key here; we will set it via Firebase Secrets
+  plugins: [googleAI()], 
   model: gemini15Flash,
 });
 
-// This is the "Brain" of your chatbot
-export const portfolioChat = onCall(async (request) => {
+export const portfolioChat = onCall({ secrets: ["GOOGLE_GENAI_API_KEY"] }, async (request) => {
   const userMessage = request.data.text;
 
   const response = await ai.generate({
