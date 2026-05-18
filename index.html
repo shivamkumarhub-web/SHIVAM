@@ -4,8 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shivam Kumar | Full Stack Developer</title>
+  
+  <script type="module" src="GeminiAi.js"></script>
+
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  
   <style>
     * {
       margin: 0;
@@ -274,7 +278,7 @@
       color: #333;
     }
 
-    /* ===================== PROJECTS SECTION ===================== */
+    /* Projects Section Styles Integrated */
     .projects-section {
       padding: 100px 0;
       background: #0d0d1a;
@@ -389,164 +393,38 @@
     .status-building { background: rgba(251, 191, 36, 0.1); color: #fbbf24; }
     .status-wip { background: rgba(248, 113, 113, 0.1); color: #f87171; }
 
-    .project-card-body {
-      padding: 0 2rem 1.5rem;
-    }
+    .project-card-body { padding: 0 2rem 1.5rem; }
+    .project-card-body h3 { font-family: 'Syne', sans-serif; font-size: 1.35rem; font-weight: 700; color: #f0f0ff; margin-bottom: 0.7rem; line-height: 1.3; }
+    .project-card-body p { font-size: 0.92rem; color: rgba(255,255,255,0.5); line-height: 1.65; margin-bottom: 1.4rem; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.6rem; }
+    .tag { font-size: 0.72rem; font-weight: 600; padding: 4px 11px; border-radius: 50px; letter-spacing: 0.03em; text-transform: uppercase; }
+    .project-card-footer { padding: 1.2rem 2rem; border-top: 1px solid rgba(255,255,255,0.06); display: flex; gap: 1rem; }
+    
+    .proj-btn { flex: 1; padding: 10px 0; border-radius: 12px; font-size: 0.85rem; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; transition: all 0.25s ease; display: flex; align-items: center; justify-content: center; gap: 7px; }
+    .proj-btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.6); }
+    .proj-btn-outline:hover { border-color: rgba(255,255,255,0.3); color: white; }
+    .proj-btn-filled { border: none; color: #0d0d1a; font-weight: 700; }
 
-    .project-card-body h3 {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.35rem;
-      font-weight: 700;
-      color: #f0f0ff;
-      margin-bottom: 0.7rem;
-      line-height: 1.3;
-    }
-
-    .project-card-body p {
-      font-size: 0.92rem;
-      color: rgba(255,255,255,0.5);
-      line-height: 1.65;
-      margin-bottom: 1.4rem;
-    }
-
-    .project-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 1.6rem;
-    }
-
-    .tag {
-      font-size: 0.72rem;
-      font-weight: 600;
-      padding: 4px 11px;
-      border-radius: 50px;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-    }
-
-    .project-card-footer {
-      padding: 1.2rem 2rem;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      display: flex;
-      gap: 1rem;
-    }
-
-    .proj-btn {
-      flex: 1;
-      padding: 10px 0;
-      border-radius: 12px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      text-align: center;
-      transition: all 0.25s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-    }
-
-    .proj-btn-outline {
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.12);
-      color: rgba(255,255,255,0.6);
-    }
-
-    .proj-btn-outline:hover {
-      border-color: rgba(255,255,255,0.3);
-      color: white;
-    }
-
-    .proj-btn-filled {
-      border: none;
-      color: #0d0d1a;
-      font-weight: 700;
-    }
-
-    /* Card-specific color themes */
+    /* Theme colors */
     .card-ai .project-icon-wrap { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
     .card-ai .proj-btn-filled { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
     .card-ai .tag { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
-
     .card-food .project-icon-wrap { background: linear-gradient(135deg, #f97316, #ef4444); }
     .card-food .proj-btn-filled { background: linear-gradient(135deg, #f97316, #ef4444); }
     .card-food .tag { background: rgba(249, 115, 22, 0.15); color: #fb923c; }
 
-    .card-ecom .project-icon-wrap { background: linear-gradient(135deg, #06b6d4, #0ea5e9); }
-    .card-ecom .proj-btn-filled { background: linear-gradient(135deg, #06b6d4, #0ea5e9); }
-    .card-ecom .tag { background: rgba(6, 182, 212, 0.15); color: #67e8f9; }
+    /* Overlay */
+    .coming-soon-overlay { position: absolute; inset: 0; background: rgba(13, 13, 26, 0.72); backdrop-filter: blur(3px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; border-radius: 24px; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
+    .project-card:hover .coming-soon-overlay { opacity: 1; }
+    .featured-badge { position: absolute; top: 16px; right: 16px; background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #0d0d1a; font-size: 0.65rem; font-weight: 800; padding: 4px 10px; border-radius: 50px; text-transform: uppercase; }
 
-    .card-chat .project-icon-wrap { background: linear-gradient(135deg, #10b981, #059669); }
-    .card-chat .proj-btn-filled { background: linear-gradient(135deg, #10b981, #059669); }
-    .card-chat .tag { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; }
-
-    .card-analytics .project-icon-wrap { background: linear-gradient(135deg, #f59e0b, #d97706); }
-    .card-analytics .proj-btn-filled { background: linear-gradient(135deg, #f59e0b, #d97706); }
-    .card-analytics .tag { background: rgba(245, 158, 11, 0.15); color: #fcd34d; }
-
-    /* COMING SOON overlay on card-ecom / card-chat / card-analytics */
-    .coming-soon-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(13, 13, 26, 0.72);
-      backdrop-filter: blur(3px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      border-radius: 24px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
-    }
-
-    .project-card:hover .coming-soon-overlay {
-      opacity: 1;
-    }
-
-    .coming-soon-overlay span {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: white;
-      letter-spacing: 0.05em;
-    }
-
-    .coming-soon-overlay small {
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.5);
-    }
-
-    /* Featured badge */
-    .featured-badge {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      background: linear-gradient(135deg, #fbbf24, #f59e0b);
-      color: #0d0d1a;
-      font-size: 0.65rem;
-      font-weight: 800;
-      padding: 4px 10px;
-      border-radius: 50px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    /* Responsive */
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .cta-buttons { flex-direction: column; align-items: center; }
       .projects-grid { grid-template-columns: 1fr; }
     }
 
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     .fade-in-up { animation: fadeInUp 0.8s ease forwards; }
   </style>
 </head>
@@ -566,16 +444,14 @@
     </nav>
   </header>
 
-  <!-- Hero -->
   <section class="hero" id="home">
     <div class="container">
       <div class="hero-content fade-in-up">
-        <h1 style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;" iwelcomeGreetingd="">Welcome to My Portfolio</h1>
+        <h1 id="welcomeGreeting" style="font-family: system-ui, sans-serif;">Welcome to My Portfolio</h1>
         <p class="hero-subtitle">Advanced Java Full Stack Developer</p>
         <p class="hero-description">
           Hi, I'm <strong>Shivam Kumar</strong>, a passionate developer specializing in scalable 
-          Java Spring Boot applications and modern React frontends. I craft robust, performant 
-          solutions that drive business success.
+          Java Spring Boot applications and modern React frontends.
         </p>
         <div class="cta-buttons">
           <a href="#projects" class="btn btn-primary">
@@ -598,7 +474,6 @@
     </div>
   </section>
 
-  <!-- Skills -->
   <section class="skills-section" id="skills">
     <div class="container">
       <h2 class="section-title">Core Technologies</h2>
@@ -606,240 +481,89 @@
         <div class="skill-card">
           <i class="fab fa-java"></i>
           <h3>Java & Spring Boot</h3>
-          <p>Expert in building scalable RESTful APIs, microservices, and enterprise applications</p>
+          <p>Expert in building scalable RESTful APIs and microservices.</p>
         </div>
         <div class="skill-card">
           <i class="fab fa-react"></i>
           <h3>React & Modern JS</h3>
-          <p>Creating responsive UIs with React, TypeScript, and state-of-the-art tooling</p>
-        </div>
-        <div class="skill-card">
-          <i class="fas fa-database"></i>
-          <h3>Database Design</h3>
-          <p>PostgreSQL, MySQL, MongoDB, Redis - optimized for performance & scale</p>
-        </div>
-        <div class="skill-card">
-          <i class="fas fa-cloud"></i>
-          <h3>Cloud & DevOps</h3>
-          <p>AWS, Docker, CI/CD pipelines, and cloud-native development practices</p>
+          <p>Creating responsive UIs with state-of-the-art tooling.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- =================== PROJECTS SECTION =================== -->
   <section class="projects-section" id="projects">
     <div class="container">
       <h2 class="section-title">Featured Projects</h2>
-      <p class="projects-subtitle">Real-world applications built with modern tech stacks</p>
-
       <div class="projects-grid">
-
-        <!-- 1. AI Jobs Finder -->
         <div class="project-card card-ai">
           <span class="featured-badge">⭐ Featured</span>
           <div class="project-card-header">
-            <div class="project-icon-wrap">
-              <i class="fas fa-brain" style="color:white;font-size:1.4rem"></i>
-            </div>
-            <span class="project-status status-live">
-              <span class="status-dot"></span> Live
-            </span>
+            <div class="project-icon-wrap"><i class="fas fa-brain" style="color:white;"></i></div>
+            <span class="project-status status-live"><span class="status-dot"></span> Live</span>
           </div>
           <div class="project-card-body">
             <h3>AI Jobs Finder</h3>
-            <p>An intelligent job discovery platform powered by AI that matches candidates to relevant job postings using NLP. Aggregates listings from multiple sources, filters by skills, and generates personalized cover letters with one click.</p>
-            <div class="project-tags">
-              <span class="tag">Spring Boot</span>
-              <span class="tag">React</span>
-              <span class="tag">OpenAI API</span>
-              <span class="tag">PostgreSQL</span>
-              <span class="tag">Redis</span>
-            </div>
+            <p>Intelligent job discovery platform powered by AI matching.</p>
           </div>
           <div class="project-card-footer">
-            <a href="#" class="proj-btn proj-btn-outline"><i class="fab fa-github"></i> Code</a>
-            <a href="https://shivamkumarhub-web.github.io/shivam-portfolio/" class="proj-btn proj-btn-filled"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+            <a href="#" class="proj-btn proj-btn-outline">Code</a>
+            <a href="https://shivamkumarhub-web.github.io/shivam-portfolio/" class="proj-btn proj-btn-filled">Live Demo</a>
           </div>
         </div>
-
-        <!-- 2. Full Stack Food Order App -->
-        <div class="project-card card-food">
-          <span class="featured-badge">⭐ Featured</span>
-          <div class="project-card-header">
-            <div class="project-icon-wrap">
-              <i class="fas fa-utensils" style="color:white;font-size:1.4rem"></i>
-            </div>
-            <span class="project-status status-live">
-              <span class="status-dot"></span> Live
-            </span>
-          </div>
-          <div class="project-card-body">
-            <h3>Full Stack Food Order App</h3>
-            <p>End-to-end food ordering platform with real-time order tracking, dynamic cart, invoice generation, and bill split functionality. Supports restaurant management dashboards and customer-facing ordering flows with payment gateway integration.</p>
-            <div class="project-tags">
-              <span class="tag">React</span>
-              <span class="tag">Java Spring</span>
-              <span class="tag">MySQL</span>
-              <span class="tag">Razorpay</span>
-              <span class="tag">WebSocket</span>
-            </div>
-          </div>
-          <div class="project-card-footer">
-            <a href="#" class="proj-btn proj-btn-outline"><i class="fab fa-github"></i> Code</a>
-            <a href="#" class="proj-btn proj-btn-filled"><i class="fas fa-external-link-alt"></i> Live Demo</a>
-          </div>
-        </div>
-
-        <!-- 3. E-Commerce Platform (Coming Soon) -->
-        <div class="project-card card-ecom">
-          <div class="project-card-header">
-            <div class="project-icon-wrap">
-              <i class="fas fa-shopping-bag" style="color:white;font-size:1.4rem"></i>
-            </div>
-            <span class="project-status status-building">
-              <span class="status-dot"></span> Building
-            </span>
-          </div>
-          <div class="project-card-body">
-            <h3>Smart E-Commerce Platform</h3>
-            <p>A scalable multi-vendor e-commerce marketplace with AI-driven product recommendations, inventory management, and advanced analytics dashboard for sellers.</p>
-            <div class="project-tags">
-              <span class="tag">Microservices</span>
-              <span class="tag">React</span>
-              <span class="tag">Kafka</span>
-              <span class="tag">Docker</span>
-              <span class="tag">AWS</span>
-            </div>
-          </div>
-          <div class="project-card-footer">
-            <a href="#" class="proj-btn proj-btn-outline"><i class="fab fa-github"></i> Code</a>
-            <a href="#" class="proj-btn proj-btn-filled"><i class="fas fa-clock"></i> Coming Soon</a>
-          </div>
-          <div class="coming-soon-overlay">
-            <i class="fas fa-hammer" style="font-size:2.5rem;color:#67e8f9;"></i>
-            <span>In Development</span>
-            <small>Expected Q3 2025</small>
-          </div>
-        </div>
-
-        <!-- 4. Real-Time Chat App (Coming Soon) -->
-        <div class="project-card card-chat">
-          <div class="project-card-header">
-            <div class="project-icon-wrap">
-              <i class="fas fa-comments" style="color:white;font-size:1.4rem"></i>
-            </div>
-            <span class="project-status status-building">
-              <span class="status-dot"></span> Building
-            </span>
-          </div>
-          <div class="project-card-body">
-            <h3>Real-Time Chat Application</h3>
-            <p>A feature-rich messaging app with group chats, media sharing, read receipts, and end-to-end encryption. Built with WebSockets for sub-second message delivery at scale.</p>
-            <div class="project-tags">
-              <span class="tag">WebSocket</span>
-              <span class="tag">Spring Boot</span>
-              <span class="tag">MongoDB</span>
-              <span class="tag">React</span>
-              <span class="tag">JWT Auth</span>
-            </div>
-          </div>
-          <div class="project-card-footer">
-            <a href="#" class="proj-btn proj-btn-outline"><i class="fab fa-github"></i> Code</a>
-            <a href="#" class="proj-btn proj-btn-filled"><i class="fas fa-clock"></i> Coming Soon</a>
-          </div>
-          <div class="coming-soon-overlay">
-            <i class="fas fa-hammer" style="font-size:2.5rem;color:#6ee7b7;"></i>
-            <span>In Development</span>
-            <small>Expected Q3 2025</small>
-          </div>
-        </div>
-
-        <!-- 5. Analytics Dashboard (Coming Soon) -->
-        <div class="project-card card-analytics">
-          <div class="project-card-header">
-            <div class="project-icon-wrap">
-              <i class="fas fa-chart-line" style="color:white;font-size:1.4rem"></i>
-            </div>
-            <span class="project-status status-wip">
-              <span class="status-dot"></span> Planned
-            </span>
-          </div>
-          <div class="project-card-body">
-            <h3>Business Analytics Dashboard</h3>
-            <p>A powerful data visualization platform for SMBs to track KPIs, revenue trends, and customer behavior through interactive charts, exportable reports, and AI-generated insights.</p>
-            <div class="project-tags">
-              <span class="tag">D3.js</span>
-              <span class="tag">Spring Boot</span>
-              <span class="tag">PostgreSQL</span>
-              <span class="tag">Python ML</span>
-              <span class="tag">REST API</span>
-            </div>
-          </div>
-          <div class="project-card-footer">
-            <a href="#" class="proj-btn proj-btn-outline"><i class="fab fa-github"></i> Code</a>
-            <a href="#" class="proj-btn proj-btn-filled"><i class="fas fa-clock"></i> Coming Soon</a>
-          </div>
-          <div class="coming-soon-overlay">
-            <i class="fas fa-drafting-compass" style="font-size:2.5rem;color:#fcd34d;"></i>
-            <span>Planned</span>
-            <small>Scoping in progress</small>
-          </div>
-        </div>
-
       </div>
     </div>
   </section>
+
+  <div id="ai-chat-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; font-family: 'DM Sans', sans-serif;">
+    <button id="chat-toggle" style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); border: none; color: white; font-size: 24px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+      <i class="fas fa-robot"></i>
+    </button>
+    
+    <div id="chat-window" style="display: none; width: 320px; height: 450px; background: white; border-radius: 15px; position: absolute; bottom: 80px; right: 0; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+      <div style="background: linear-gradient(135deg, #667eea, #764ba2); padding: 15px; color: white; font-weight: bold; display: flex; justify-content: space-between; align-items: center;">
+        <span>AI Assistant</span>
+        <i class="fas fa-times" id="close-chat" style="cursor: pointer;"></i>
+      </div>
+      <div id="chat-messages" style="flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #f8f9fa; color: #333; font-size: 14px;">
+        <div style="background: #e9ecef; padding: 10px; border-radius: 10px; align-self: flex-start;">Hi! How can I help you today?</div>
+      </div>
+      <div style="padding: 10px; border-top: 1px solid #eee; display: flex; gap: 5px;">
+        <input type="text" id="user-input" placeholder="Ask about Shivam..." style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 20px; outline: none;">
+        <button id="send-btn" style="background: #667eea; color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer;">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <script>
     const canvas = document.getElementById('bgCanvas');
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 1;
 
     const particlesGeometry = new THREE.BufferGeometry();
-    const particlesCount = 200;
-    const posArray = new Float32Array(particlesCount * 3);
-    for(let i = 0; i < particlesCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 5; }
+    const posArray = new Float32Array(200 * 3);
+    for(let i = 0; i < 600; i++) { posArray[i] = (Math.random() - 0.5) * 5; }
     particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    const particlesMaterial = new THREE.PointsMaterial({ size: 0.005, color: 0xffffff, transparent: true, opacity: 0.8 });
+    const particlesMaterial = new THREE.PointsMaterial({ size: 0.005, color: 0xffffff });
     const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particlesMesh);
 
     let isDay = true;
     document.getElementById('toggleBtn').addEventListener('click', () => {
       isDay = !isDay;
-      document.body.style.background = isDay
-        ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-        : 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%)';
+      document.body.style.background = isDay ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#0f0f23';
       document.getElementById('toggleBtn').textContent = isDay ? '🌞' : '🌙';
-      particlesMaterial.color.setHex(isDay ? 0xffffff : 0x667eea);
     });
 
-    (function animate() {
-      requestAnimationFrame(animate);
-      particlesMesh.rotation.y += 0.001;
-      particlesMesh.rotation.x += 0.0005;
-      renderer.render(scene, camera);
-    })();
-
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
-      });
-    });
+    function animate() { requestAnimationFrame(animate); particlesMesh.rotation.y += 0.001; renderer.render(scene, camera); }
+    animate();
   </script>
 
   <script type="module">
@@ -852,28 +576,25 @@
       projectId: "shivamportfolio-7c458",
       storageBucket: "shivamportfolio-7c458.firebasestorage.app",
       messagingSenderId: "166581393688",
-      appId: "1:166581393688:web:7fb06e67d3640f120d666d",
-      measurementId: "G-79JLH2NZBL"
+      appId: "1:166581393688:web:7fb06e67d3640f120d666d"
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
+
     const googleBtn = document.getElementById('googleBtn');
     const logoutBtn = document.getElementById('logoutBtn');
     const userStatus = document.getElementById('userStatus');
     const welcomeGreeting = document.getElementById('welcomeGreeting');
 
-    googleBtn.addEventListener('click', () => {
-      signInWithPopup(auth, provider).catch(err => console.error("Auth error:", err));
-    });
-
+    googleBtn.addEventListener('click', () => signInWithPopup(auth, provider));
     logoutBtn.addEventListener('click', () => signOut(auth));
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
         welcomeGreeting.innerText = `Welcome back, ${user.displayName}!`;
-        userStatus.innerText = `Connected as: ${user.email}`;
+        userStatus.innerText = `Connected: ${user.email}`;
         googleBtn.style.display = 'none';
         logoutBtn.style.display = 'flex';
       } else {
