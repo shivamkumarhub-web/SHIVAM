@@ -4,12 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shivam Kumar | Full Stack Developer</title>
-  
-<link rel="stylesheet" href="GeminiAi.js">
 
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
-  
+
   <style>
     * {
       margin: 0;
@@ -35,7 +33,7 @@
       z-index: -1;
     }
 
-    .container {
+   .container {
       position: relative;
       z-index: 1;
       max-width: 1200px;
@@ -44,7 +42,7 @@
     }
 
     /* Header */
-    .header {
+   .header {
       position: fixed;
       top: 0;
       width: 100%;
@@ -55,7 +53,7 @@
       box-shadow: 0 2px 20px rgba(0,0,0,0.1);
     }
 
-    .nav {
+   .nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -64,7 +62,7 @@
       padding: 0 20px;
     }
 
-    .logo {
+   .logo {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
       font-size: 1.8rem;
       font-weight: 800;
@@ -74,13 +72,13 @@
       background-clip: text;
     }
 
-    .nav-links {
+   .nav-links {
       display: flex;
       list-style: none;
       gap: 2rem;
     }
 
-    .nav-links a {
+   .nav-links a {
       text-decoration: none;
       color: #333;
       font-weight: 500;
@@ -88,9 +86,9 @@
       position: relative;
     }
 
-    .nav-links a:hover { color: #667eea; }
+   .nav-links a:hover { color: #667eea; }
 
-    .nav-links a::after {
+   .nav-links a::after {
       content: '';
       position: absolute;
       width: 0;
@@ -101,9 +99,9 @@
       transition: width 0.3s ease;
     }
 
-    .nav-links a:hover::after { width: 100%; }
+   .nav-links a:hover::after { width: 100%; }
 
-    .toggle-btn {
+   .toggle-btn {
       background: rgba(255,255,255,0.8);
       border: 2px solid #667eea;
       border-radius: 50px;
@@ -113,14 +111,14 @@
       transition: all 0.3s ease;
     }
 
-    .toggle-btn:hover {
+   .toggle-btn:hover {
       background: #667eea;
       color: white;
       transform: scale(1.05);
     }
 
     /* Hero */
-    .hero {
+   .hero {
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -129,7 +127,7 @@
       color: white;
     }
 
-    .hero-content h1 {
+   .hero-content h1 {
       font-family: 'Syne', sans-serif;
       font-size: clamp(2.5rem, 5vw, 4.5rem);
       font-weight: 800;
@@ -137,13 +135,13 @@
       line-height: 1.2;
     }
 
-    .hero-subtitle {
+   .hero-subtitle {
       font-size: clamp(1.2rem, 3vw, 1.8rem);
       margin-bottom: 2rem;
       opacity: 0.95;
     }
 
-    .hero-description {
+   .hero-description {
       font-size: 1.2rem;
       max-width: 700px;
       margin: 0 auto 3rem;
@@ -151,14 +149,14 @@
       line-height: 1.7;
     }
 
-    .cta-buttons {
+   .cta-buttons {
       display: flex;
       gap: 1.5rem;
       justify-content: center;
       flex-wrap: wrap;
     }
 
-    .btn {
+   .btn {
       padding: 16px 32px;
       font-size: 1.1rem;
       font-weight: 600;
@@ -172,31 +170,31 @@
       gap: 10px;
     }
 
-    .btn-primary {
+   .btn-primary {
       background: rgba(255,255,255,0.2);
       color: white;
       border: 2px solid rgba(255,255,255,0.3);
     }
 
-    .btn-primary:hover {
+   .btn-primary:hover {
       background: white;
       color: #333;
       transform: translateY(-3px);
       box-shadow: 0 20px 40px rgba(0,0,0,0.3);
     }
 
-    .btn-secondary {
+   .btn-secondary {
       background: rgba(255,255,255,0.1);
       color: white;
       border: 2px solid rgba(255,255,255,0.2);
     }
 
-    .btn-secondary:hover {
+   .btn-secondary:hover {
       background: rgba(255,255,255,0.2);
       transform: translateY(-3px);
     }
 
-    .auth-section {
+   .auth-section {
       margin-top: 2rem;
       display: flex;
       flex-direction: column;
@@ -204,7 +202,7 @@
       gap: 1rem;
     }
 
-    .auth-btn {
+   .auth-btn {
       padding: 12px 28px;
       font-size: 1rem;
       font-weight: 600;
@@ -224,13 +222,13 @@
     #userStatus { font-size: 0.95rem; opacity: 0.9; font-style: italic; }
 
     /* Skills Section */
-    .skills-section {
+   .skills-section {
       padding: 120px 0 80px;
       background: rgba(255,255,255,0.95);
       backdrop-filter: blur(10px);
     }
 
-    .section-title {
+   .section-title {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
       text-align: center;
       font-size: 3rem;
@@ -241,7 +239,7 @@
       -webkit-text-fill-color: transparent;
     }
 
-    .skills-grid {
+   .skills-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 2rem;
@@ -249,7 +247,7 @@
       margin: 0 auto;
     }
 
-    .skill-card {
+   .skill-card {
       background: white;
       padding: 2.5rem;
       border-radius: 20px;
@@ -258,12 +256,12 @@
       transition: all 0.4s ease;
     }
 
-    .skill-card:hover {
+   .skill-card:hover {
       transform: translateY(-10px);
       box-shadow: 0 30px 60px rgba(0,0,0,0.15);
     }
 
-    .skill-card i {
+   .skill-card i {
       font-size: 3.5rem;
       margin-bottom: 1.5rem;
       background: linear-gradient(135deg, #667eea, #764ba2);
@@ -271,7 +269,7 @@
       -webkit-text-fill-color: transparent;
     }
 
-    .skill-card h3 {
+   .skill-card h3 {
       font-family: 'Syne', sans-serif;
       font-size: 1.5rem;
       margin-bottom: 1rem;
@@ -279,14 +277,14 @@
     }
 
     /* Projects Section Styles Integrated */
-    .projects-section {
+   .projects-section {
       padding: 100px 0;
       background: #0d0d1a;
       position: relative;
       overflow: hidden;
     }
 
-    .projects-section::before {
+   .projects-section::before {
       content: '';
       position: absolute;
       top: -120px;
@@ -297,7 +295,7 @@
       clip-path: ellipse(55% 100% at 50% 0%);
     }
 
-    .projects-section .section-title {
+   .projects-section.section-title {
       color: white;
       background: linear-gradient(135deg, #a78bfa, #67e8f9);
       -webkit-background-clip: text;
@@ -305,7 +303,7 @@
       margin-bottom: 1rem;
     }
 
-    .projects-subtitle {
+   .projects-subtitle {
       text-align: center;
       color: rgba(255,255,255,0.5);
       font-size: 1.1rem;
@@ -313,7 +311,7 @@
       letter-spacing: 0.05em;
     }
 
-    .projects-grid {
+   .projects-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
       gap: 2rem;
@@ -321,7 +319,7 @@
       margin: 0 auto;
     }
 
-    .project-card {
+   .project-card {
       background: #12122a;
       border: 1px solid rgba(103, 232, 249, 0.1);
       border-radius: 24px;
@@ -331,20 +329,20 @@
       cursor: pointer;
     }
 
-    .project-card:hover {
+   .project-card:hover {
       transform: translateY(-12px) scale(1.02);
       border-color: rgba(103, 232, 249, 0.4);
       box-shadow: 0 30px 70px rgba(103, 232, 249, 0.12), 0 0 0 1px rgba(167, 139, 250, 0.2);
     }
 
-    .project-card-header {
+   .project-card-header {
       padding: 2rem 2rem 1.2rem;
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
     }
 
-    .project-icon-wrap {
+   .project-icon-wrap {
       width: 56px;
       height: 56px;
       border-radius: 16px;
@@ -355,7 +353,7 @@
       flex-shrink: 0;
     }
 
-    .project-status {
+   .project-status {
       display: flex;
       align-items: center;
       gap: 6px;
@@ -366,15 +364,15 @@
       letter-spacing: 0.04em;
     }
 
-    .status-dot {
+   .status-dot {
       width: 7px;
       height: 7px;
       border-radius: 50%;
     }
 
-    .status-live .status-dot { background: #4ade80; animation: pulse-green 1.5s infinite; }
-    .status-building .status-dot { background: #fbbf24; animation: pulse-yellow 1.5s infinite; }
-    .status-wip .status-dot { background: #f87171; animation: pulse-red 1.5s infinite; }
+   .status-live.status-dot { background: #4ade80; animation: pulse-green 1.5s infinite; }
+   .status-building.status-dot { background: #fbbf24; animation: pulse-yellow 1.5s infinite; }
+   .status-wip.status-dot { background: #f87171; animation: pulse-red 1.5s infinite; }
 
     @keyframes pulse-green {
       0%, 100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.5); }
@@ -389,43 +387,49 @@
       50% { box-shadow: 0 0 0 5px rgba(248, 113, 113, 0); }
     }
 
-    .status-live { background: rgba(74, 222, 128, 0.1); color: #4ade80; }
-    .status-building { background: rgba(251, 191, 36, 0.1); color: #fbbf24; }
-    .status-wip { background: rgba(248, 113, 113, 0.1); color: #f87171; }
+   .status-live { background: rgba(74, 222, 128, 0.1); color: #4ade80; }
+   .status-building { background: rgba(251, 191, 36, 0.1); color: #fbbf24; }
+   .status-wip { background: rgba(248, 113, 113, 0.1); color: #f87171; }
 
-    .project-card-body { padding: 0 2rem 1.5rem; }
-    .project-card-body h3 { font-family: 'Syne', sans-serif; font-size: 1.35rem; font-weight: 700; color: #f0f0ff; margin-bottom: 0.7rem; line-height: 1.3; }
-    .project-card-body p { font-size: 0.92rem; color: rgba(255,255,255,0.5); line-height: 1.65; margin-bottom: 1.4rem; }
-    .project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.6rem; }
-    .tag { font-size: 0.72rem; font-weight: 600; padding: 4px 11px; border-radius: 50px; letter-spacing: 0.03em; text-transform: uppercase; }
-    .project-card-footer { padding: 1.2rem 2rem; border-top: 1px solid rgba(255,255,255,0.06); display: flex; gap: 1rem; }
-    
-    .proj-btn { flex: 1; padding: 10px 0; border-radius: 12px; font-size: 0.85rem; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; transition: all 0.25s ease; display: flex; align-items: center; justify-content: center; gap: 7px; }
-    .proj-btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.6); }
-    .proj-btn-outline:hover { border-color: rgba(255,255,255,0.3); color: white; }
-    .proj-btn-filled { border: none; color: #0d0d1a; font-weight: 700; }
+   .project-card-body { padding: 0 2rem 1.5rem; }
+   .project-card-body h3 { font-family: 'Syne', sans-serif; font-size: 1.35rem; font-weight: 700; color: #f0f0ff; margin-bottom: 0.7rem; line-height: 1.3; }
+   .project-card-body p { font-size: 0.92rem; color: rgba(255,255,255,0.5); line-height: 1.65; margin-bottom: 1.4rem; }
+   .project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.6rem; }
+   .tag { font-size: 0.72rem; font-weight: 600; padding: 4px 11px; border-radius: 50px; letter-spacing: 0.03em; text-transform: uppercase; }
+   .project-card-footer { padding: 1.2rem 2rem; border-top: 1px solid rgba(255,255,255,0.06); display: flex; gap: 1rem; }
+
+   .proj-btn { flex: 1; padding: 10px 0; border-radius: 12px; font-size: 0.85rem; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; transition: all 0.25s ease; display: flex; align-items: center; justify-content: center; gap: 7px; }
+   .proj-btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.6); }
+   .proj-btn-outline:hover { border-color: rgba(255,255,255,0.3); color: white; }
+   .proj-btn-filled { border: none; color: #0d0d1a; font-weight: 700; }
 
     /* Theme colors */
-    .card-ai .project-icon-wrap { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
-    .card-ai .proj-btn-filled { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
-    .card-ai .tag { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
-    .card-food .project-icon-wrap { background: linear-gradient(135deg, #f97316, #ef4444); }
-    .card-food .proj-btn-filled { background: linear-gradient(135deg, #f97316, #ef4444); }
-    .card-food .tag { background: rgba(249, 115, 22, 0.15); color: #fb923c; }
+   .card-ai.project-icon-wrap { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+   .card-ai.proj-btn-filled { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+   .card-ai.tag { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
+   .card-food.project-icon-wrap { background: linear-gradient(135deg, #f97316, #ef4444); }
+   .card-food.proj-btn-filled { background: linear-gradient(135deg, #f97316, #ef4444); }
+   .card-food.tag { background: rgba(249, 115, 22, 0.15); color: #fb923c; }
+
+    /* Contact Section */
+   .contact-section input:focus,.contact-section textarea:focus {
+      border-color: #667eea!important;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
 
     /* Overlay */
-    .coming-soon-overlay { position: absolute; inset: 0; background: rgba(13, 13, 26, 0.72); backdrop-filter: blur(3px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; border-radius: 24px; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
-    .project-card:hover .coming-soon-overlay { opacity: 1; }
-    .featured-badge { position: absolute; top: 16px; right: 16px; background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #0d0d1a; font-size: 0.65rem; font-weight: 800; padding: 4px 10px; border-radius: 50px; text-transform: uppercase; }
+   .coming-soon-overlay { position: absolute; inset: 0; background: rgba(13, 13, 26, 0.72); backdrop-filter: blur(3px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; border-radius: 24px; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
+   .project-card:hover.coming-soon-overlay { opacity: 1; }
+   .featured-badge { position: absolute; top: 16px; right: 16px; background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #0d0d1a; font-size: 0.65rem; font-weight: 800; padding: 4px 10px; border-radius: 50px; text-transform: uppercase; }
 
     @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .cta-buttons { flex-direction: column; align-items: center; }
-      .projects-grid { grid-template-columns: 1fr; }
+     .nav-links { display: none; }
+     .cta-buttons { flex-direction: column; align-items: center; }
+     .projects-grid { grid-template-columns: 1fr; }
     }
 
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-    .fade-in-up { animation: fadeInUp 0.8s ease forwards; }
+   .fade-in-up { animation: fadeInUp 0.8s ease forwards; }
   </style>
 </head>
 <body>
@@ -450,7 +454,7 @@
         <h1 id="welcomeGreeting" style="font-family: system-ui, sans-serif;">Welcome to My Portfolio</h1>
         <p class="hero-subtitle">Advanced Java Full Stack Developer</p>
         <p class="hero-description">
-          Hi, I'm <strong>Shivam Kumar</strong>, a passionate developer specializing in scalable 
+          Hi, I'm <strong>Shivam Kumar</strong>, a passionate developer specializing in scalable
           Java Spring Boot applications and modern React frontends.
         </p>
         <div class="cta-buttons">
@@ -515,11 +519,41 @@
     </div>
   </section>
 
+  <section class="contact-section" id="contact" style="padding: 100px 0; background: rgba(255,255,255,0.97);">
+    <div class="container">
+      <h2 class="section-title">Get In Touch</h2>
+      <p style="text-align: center; color: #555; max-width: 600px; margin: 0 auto 3rem; font-size: 1.1rem;">
+        Have a project in mind or want to collaborate? Send me a message and I’ll get back to you.
+      </p>
+
+      <form id="portfolioContact" style="max-width: 600px; margin: 0 auto; background: white; padding: 3rem; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.1);">
+        <div style="margin-bottom: 1.5rem;">
+          <label for="contactName" style="display: block; font-weight: 600; margin-bottom: 8px; color: #333;">Your Name</label>
+          <input type="text" id="contactName" placeholder="Enter your name" required
+                 style="width: 100%; padding: 14px 18px; border: 2px solid #e0e0e0; border-radius: 12px; font-size: 1rem; font-family: 'DM Sans', sans-serif; outline: none; transition: all 0.3s;">
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+          <label for="contactMessage" style="display: block; font-weight: 600; margin-bottom: 8px; color: #333;">Message</label>
+          <textarea id="contactMessage" placeholder="Write your message here..." rows="5" required
+                    style="width: 100%; padding: 14px 18px; border: 2px solid #e0e0e0; border-radius: 12px; font-size: 1rem; font-family: 'DM Sans', sans-serif; outline: none; resize: vertical; transition: all 0.3s;"></textarea>
+        </div>
+
+        <button type="submit" id="submitBtn" class="btn btn-primary"
+                style="width: 100%; background: linear-gradient(135deg, #667eea, #764ba2); border: none; color: white;">
+          <i class="fas fa-paper-plane"></i> Send to Firestore
+        </button>
+
+        <div id="status" style="margin-top: 1rem; text-align: center; font-weight: 600; min-height: 24px;"></div>
+      </form>
+    </div>
+  </section>
+
   <div id="ai-chat-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; font-family: 'DM Sans', sans-serif;">
     <button id="chat-toggle" style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); border: none; color: white; font-size: 24px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
       <i class="fas fa-robot"></i>
     </button>
-    
+
     <div id="chat-window" style="display: none; width: 320px; height: 450px; background: white; border-radius: 15px; position: absolute; bottom: 80px; right: 0; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
       <div style="background: linear-gradient(135deg, #667eea, #764ba2); padding: 15px; color: white; font-weight: bold; display: flex; justify-content: space-between; align-items: center;">
         <span>AI Assistant</span>
@@ -538,7 +572,9 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script type="module" src="script.js"></script>
   <script>
+    // Three.js background
     const canvas = document.getElementById('bgCanvas');
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -557,52 +593,22 @@
 
     let isDay = true;
     document.getElementById('toggleBtn').addEventListener('click', () => {
-      isDay = !isDay;
-      document.body.style.background = isDay ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#0f0f23';
-      document.getElementById('toggleBtn').textContent = isDay ? '🌞' : '🌙';
+      isDay =!isDay;
+      document.body.style.background = isDay? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#0f0f23';
+      document.getElementById('toggleBtn').textContent = isDay? '🌞' : '🌙';
     });
 
     function animate() { requestAnimationFrame(animate); particlesMesh.rotation.y += 0.001; renderer.render(scene, camera); }
     animate();
-  </script>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyB49vgbQRfmg6XCj_A_ocyC7Vd9J_fgWbQ",
-      authDomain: "shivamportfolio-7c458.firebaseapp.com",
-      projectId: "shivamportfolio-7c458",
-      storageBucket: "shivamportfolio-7c458.firebasestorage.app",
-      messagingSenderId: "166581393688",
-      appId: "1:166581393688:web:7fb06e67d3640f120d666d"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
-
-    const googleBtn = document.getElementById('googleBtn');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const userStatus = document.getElementById('userStatus');
-    const welcomeGreeting = document.getElementById('welcomeGreeting');
-
-    googleBtn.addEventListener('click', () => signInWithPopup(auth, provider));
-    logoutBtn.addEventListener('click', () => signOut(auth));
-
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        welcomeGreeting.innerText = `Welcome back, ${user.displayName}!`;
-        userStatus.innerText = `Connected: ${user.email}`;
-        googleBtn.style.display = 'none';
-        logoutBtn.style.display = 'flex';
-      } else {
-        welcomeGreeting.innerText = "Welcome to My Portfolio";
-        userStatus.innerText = "";
-        googleBtn.style.display = 'flex';
-        logoutBtn.style.display = 'none';
-      }
+    // Chat toggle
+    document.getElementById('chat-toggle').addEventListener('click', () => {
+      document.getElementById('chat-window').style.display = 'flex';
+      document.getElementById('chat-toggle').style.display = 'none';
+    });
+    document.getElementById('close-chat').addEventListener('click', () => {
+      document.getElementById('chat-window').style.display = 'none';
+      document.getElementById('chat-toggle').style.display = 'block';
     });
   </script>
 </body>
