@@ -276,7 +276,7 @@
       color: #333;
     }
 
-    /* Projects Section Styles Integrated */
+    /* Projects Section */
    .projects-section {
       padding: 100px 0;
       background: #0d0d1a;
@@ -351,6 +351,7 @@
       justify-content: center;
       font-size: 1.6rem;
       flex-shrink: 0;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
     }
 
    .project-status {
@@ -362,65 +363,84 @@
       padding: 5px 12px;
       border-radius: 50px;
       letter-spacing: 0.04em;
+      background: rgba(74, 222, 128, 0.1);
+      color: #4ade80;
     }
 
    .status-dot {
       width: 7px;
       height: 7px;
       border-radius: 50%;
+      background: #4ade80;
+      animation: pulse-green 1.5s infinite;
     }
-
-   .status-live.status-dot { background: #4ade80; animation: pulse-green 1.5s infinite; }
-   .status-building.status-dot { background: #fbbf24; animation: pulse-yellow 1.5s infinite; }
-   .status-wip.status-dot { background: #f87171; animation: pulse-red 1.5s infinite; }
 
     @keyframes pulse-green {
       0%, 100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.5); }
       50% { box-shadow: 0 0 0 5px rgba(74, 222, 128, 0); }
     }
-    @keyframes pulse-yellow {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.5); }
-      50% { box-shadow: 0 0 0 5px rgba(251, 191, 36, 0); }
-    }
-    @keyframes pulse-red {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.5); }
-      50% { box-shadow: 0 0 0 5px rgba(248, 113, 113, 0); }
-    }
-
-   .status-live { background: rgba(74, 222, 128, 0.1); color: #4ade80; }
-   .status-building { background: rgba(251, 191, 36, 0.1); color: #fbbf24; }
-   .status-wip { background: rgba(248, 113, 113, 0.1); color: #f87171; }
 
    .project-card-body { padding: 0 2rem 1.5rem; }
    .project-card-body h3 { font-family: 'Syne', sans-serif; font-size: 1.35rem; font-weight: 700; color: #f0f0ff; margin-bottom: 0.7rem; line-height: 1.3; }
    .project-card-body p { font-size: 0.92rem; color: rgba(255,255,255,0.5); line-height: 1.65; margin-bottom: 1.4rem; }
-   .project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.6rem; }
-   .tag { font-size: 0.72rem; font-weight: 600; padding: 4px 11px; border-radius: 50px; letter-spacing: 0.03em; text-transform: uppercase; }
    .project-card-footer { padding: 1.2rem 2rem; border-top: 1px solid rgba(255,255,255,0.06); display: flex; gap: 1rem; }
 
    .proj-btn { flex: 1; padding: 10px 0; border-radius: 12px; font-size: 0.85rem; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; transition: all 0.25s ease; display: flex; align-items: center; justify-content: center; gap: 7px; }
    .proj-btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.6); }
    .proj-btn-outline:hover { border-color: rgba(255,255,255,0.3); color: white; }
-   .proj-btn-filled { border: none; color: #0d0d1a; font-weight: 700; }
+   .proj-btn-filled { border: none; color: #0d0d1a; font-weight: 700; background: linear-gradient(135deg, #6366f1, #8b5cf6); }
 
-    /* Theme colors */
-   .card-ai.project-icon-wrap { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
-   .card-ai.proj-btn-filled { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
-   .card-ai.tag { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
-   .card-food.project-icon-wrap { background: linear-gradient(135deg, #f97316, #ef4444); }
-   .card-food.proj-btn-filled { background: linear-gradient(135deg, #f97316, #ef4444); }
-   .card-food.tag { background: rgba(249, 115, 22, 0.15); color: #fb923c; }
+   .featured-badge { position: absolute; top: 16px; right: 16px; background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #0d0d1a; font-size: 0.65rem; font-weight: 800; padding: 4px 10px; border-radius: 50px; text-transform: uppercase; }
 
     /* Contact Section */
-   .contact-section input:focus,.contact-section textarea:focus {
+   .contact-section {
+      padding: 100px 0;
+      background: rgba(255,255,255,0.97);
+    }
+
+    #contactName:focus, #contactEmail:focus, #contactMessage:focus {
       border-color: #667eea!important;
       box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     }
 
-    /* Overlay */
-   .coming-soon-overlay { position: absolute; inset: 0; background: rgba(13, 13, 26, 0.72); backdrop-filter: blur(3px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; border-radius: 24px; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
-   .project-card:hover.coming-soon-overlay { opacity: 1; }
-   .featured-badge { position: absolute; top: 16px; right: 16px; background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #0d0d1a; font-size: 0.65rem; font-weight: 800; padding: 4px 10px; border-radius: 50px; text-transform: uppercase; }
+    /* Chat styles */
+   .chat-message {
+      padding: 10px 14px;
+      border-radius: 12px;
+      max-width: 80%;
+      word-wrap: break-word;
+      animation: fadeInUp 0.3s ease;
+      margin-bottom: 8px;
+    }
+   .chat-message.user {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      align-self: flex-end;
+      margin-left: auto;
+    }
+   .chat-message.ai {
+      background: #e9ecef;
+      color: #333;
+      align-self: flex-start;
+    }
+   .typing-indicator {
+      display: flex;
+      gap: 4px;
+      padding: 10px;
+    }
+   .typing-indicator span {
+      width: 8px;
+      height: 8px;
+      background: #999;
+      border-radius: 50%;
+      animation: typing 1.4s infinite;
+    }
+   .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+   .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typing {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-10px); }
+    }
 
     @media (max-width: 768px) {
      .nav-links { display: none; }
@@ -504,7 +524,7 @@
           <span class="featured-badge">⭐ Featured</span>
           <div class="project-card-header">
             <div class="project-icon-wrap"><i class="fas fa-brain" style="color:white;"></i></div>
-            <span class="project-status status-live"><span class="status-dot"></span> Live</span>
+            <span class="project-status"><span class="status-dot"></span> Live</span>
           </div>
           <div class="project-card-body">
             <h3>AI Jobs Finder</h3>
@@ -519,7 +539,7 @@
     </div>
   </section>
 
-  <section class="contact-section" id="contact" style="padding: 100px 0; background: rgba(255,255,255,0.97);">
+  <section class="contact-section" id="contact">
     <div class="container">
       <h2 class="section-title">Get In Touch</h2>
       <p style="text-align: center; color: #555; max-width: 600px; margin: 0 auto 3rem; font-size: 1.1rem;">
@@ -530,6 +550,12 @@
         <div style="margin-bottom: 1.5rem;">
           <label for="contactName" style="display: block; font-weight: 600; margin-bottom: 8px; color: #333;">Your Name</label>
           <input type="text" id="contactName" placeholder="Enter your name" required
+                 style="width: 100%; padding: 14px 18px; border: 2px solid #e0e0e0; border-radius: 12px; font-size: 1rem; font-family: 'DM Sans', sans-serif; outline: none; transition: all 0.3s;">
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+          <label for="contactEmail" style="display: block; font-weight: 600; margin-bottom: 8px; color: #333;">Email Address</label>
+          <input type="email" id="contactEmail" placeholder="your.email@example.com" required
                  style="width: 100%; padding: 14px 18px; border: 2px solid #e0e0e0; border-radius: 12px; font-size: 1rem; font-family: 'DM Sans', sans-serif; outline: none; transition: all 0.3s;">
         </div>
 
@@ -554,17 +580,17 @@
       <i class="fas fa-robot"></i>
     </button>
 
-    <div id="chat-window" style="display: none; width: 320px; height: 450px; background: white; border-radius: 15px; position: absolute; bottom: 80px; right: 0; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+    <div id="chat-window" style="display: none; width: 350px; height: 500px; background: white; border-radius: 15px; position: absolute; bottom: 80px; right: 0; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
       <div style="background: linear-gradient(135deg, #667eea, #764ba2); padding: 15px; color: white; font-weight: bold; display: flex; justify-content: space-between; align-items: center;">
-        <span>AI Assistant</span>
+        <span>Shivam's AI Assistant</span>
         <i class="fas fa-times" id="close-chat" style="cursor: pointer;"></i>
       </div>
-      <div id="chat-messages" style="flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #f8f9fa; color: #333; font-size: 14px;">
-        <div style="background: #e9ecef; padding: 10px; border-radius: 10px; align-self: flex-start;">Hi! How can I help you today?</div>
+      <div id="chat-messages" style="flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #f8f9fa;">
+        <div class="chat-message ai">Hi! I'm Shivam's AI assistant. Ask me about his skills, projects, or experience!</div>
       </div>
-      <div style="padding: 10px; border-top: 1px solid #eee; display: flex; gap: 5px;">
-        <input type="text" id="user-input" placeholder="Ask about Shivam..." style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 20px; outline: none;">
-        <button id="send-btn" style="background: #667eea; color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer;">
+      <div style="padding: 10px; border-top: 1px solid #eee; display: flex; gap: 5px; background: white;">
+        <input type="text" id="user-input" placeholder="Ask about Shivam..." style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 20px; outline: none; font-family: 'DM Sans', sans-serif;">
+        <button id="send-btn" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer;">
           <i class="fas fa-paper-plane"></i>
         </button>
       </div>
@@ -573,7 +599,11 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <script type="module" src="script.js"></script>
-  <script>
+
+  <script type="module">
+    // === CONFIG: PASTE YOUR GEMINI API KEY HERE ===
+    const GEMINI_API_KEY = 'YOUR_GEMINI_API_KEY_HERE';
+
     // Three.js background
     const canvas = document.getElementById('bgCanvas');
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
@@ -584,7 +614,7 @@
     camera.position.z = 1;
 
     const particlesGeometry = new THREE.BufferGeometry();
-    const posArray = new Float32Array(200 * 3);
+    const posArray = new Float32Array(600);
     for(let i = 0; i < 600; i++) { posArray[i] = (Math.random() - 0.5) * 5; }
     particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
     const particlesMaterial = new THREE.PointsMaterial({ size: 0.005, color: 0xffffff });
@@ -598,17 +628,99 @@
       document.getElementById('toggleBtn').textContent = isDay? '🌞' : '🌙';
     });
 
-    function animate() { requestAnimationFrame(animate); particlesMesh.rotation.y += 0.001; renderer.render(scene, camera); }
+    function animate() {
+      requestAnimationFrame(animate);
+      particlesMesh.rotation.y += 0.001;
+      renderer.render(scene, camera);
+    }
     animate();
 
-    // Chat toggle
-    document.getElementById('chat-toggle').addEventListener('click', () => {
-      document.getElementById('chat-window').style.display = 'flex';
-      document.getElementById('chat-toggle').style.display = 'none';
+    // === GEMINI AI CHAT ===
+    const chatToggle = document.getElementById('chat-toggle');
+    const chatWindow = document.getElementById('chat-window');
+    const closeChat = document.getElementById('close-chat');
+    const chatMessages = document.getElementById('chat-messages');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
+
+    chatToggle.addEventListener('click', () => {
+      chatWindow.style.display = 'flex';
+      chatToggle.style.display = 'none';
     });
-    document.getElementById('close-chat').addEventListener('click', () => {
-      document.getElementById('chat-window').style.display = 'none';
-      document.getElementById('chat-toggle').style.display = 'block';
+
+    closeChat.addEventListener('click', () => {
+      chatWindow.style.display = 'none';
+      chatToggle.style.display = 'block';
+    });
+
+    const addMessage = (text, isUser) => {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `chat-message ${isUser? 'user' : 'ai'}`;
+      msgDiv.textContent = text;
+      chatMessages.appendChild(msgDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    };
+
+    const showTyping = () => {
+      const typing = document.createElement('div');
+      typing.className = 'typing-indicator';
+      typing.innerHTML = '<span></span><span></span>';
+      typing.id = 'typing';
+      chatMessages.appendChild(typing);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    };
+
+    const removeTyping = () => {
+      const typing = document.getElementById('typing');
+      if (typing) typing.remove();
+    };
+
+    const sendToGemini = async (userMessage) => {
+      if (GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY_HERE') {
+        return "Please add your Gemini API key in the code to enable AI chat. Get one free at aistudio.google.com";
+      }
+
+      const context = `You are Shivam Kumar's AI portfolio assistant. Shivam is an Advanced Java Full Stack Developer specializing in Java, Spring Boot, React, Firebase, and RESTful APIs. He builds scalable microservices and modern UIs. He lives in Vijayawada, India. Keep answers concise, friendly, and professional. If asked about contact, direct them to the contact form on this page.`;
+
+      try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [{ text: `${context}\n\nUser: ${userMessage}` }]
+            }]
+          })
+        });
+
+        const data = await response.json();
+        if (data.candidates && data.candidates[0].content) {
+          return data.candidates[0].content.parts[0].text;
+        } else {
+          return "I'm having trouble responding right now. Try asking about Shivam's skills or projects!";
+        }
+      } catch (error) {
+        console.error('Gemini Error:', error);
+        return "Sorry, I couldn't connect. Shivam is a Java Full Stack Developer skilled in Spring Boot, React, and Firebase!";
+      }
+    };
+
+    const handleSend = async () => {
+      const text = userInput.value.trim();
+      if (!text) return;
+
+      addMessage(text, true);
+      userInput.value = '';
+      showTyping();
+
+      const aiResponse = await sendToGemini(text);
+      removeTyping();
+      addMessage(aiResponse, false);
+    };
+
+    sendBtn.addEventListener('click', handleSend);
+    userInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') handleSend();
     });
   </script>
 </body>
