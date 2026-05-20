@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SHIVAM - Pitch to Google</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0A0A0B;
+    color: #F5F5F7;
+    overflow: hidden;
+  }
+.deck { width: 100vw; height: 100vh; position: relative; }
+.slide {
+    width: 100%; height: 100%; position: absolute; opacity: 0;
+    transition: opacity 0.4s ease; padding: 8vh 8vw;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+.slide.active { opacity: 1; z-index: 10; }
+  h1 { font-size: 5vw; font-weight: 800; line-height: 1.1; margin-bottom: 2vh; }
+  h2 { font-size: 3vw; font-weight: 600; color: #4285F4; margin-bottom: 3vh; }
+  h3 { font-size: 1.8vw; font-weight: 600; margin-bottom: 2vh; }
+  p, li { font-size: 1.5vw; line-height: 1.6; color: #D1D1D6; margin-bottom: 1.5vh; }
+  ul { margin-left: 2vw; }
+.tagline { font-size: 1.8vw; color: #4285F4; font-weight: 600; }
+.accent { color: #4285F4; }
+.footer { position: absolute; bottom: 4vh; font-size: 1vw; color: #6B7280; }
+.slide-num { position: absolute; bottom: 4vh; right: 8vw; font-size: 1vw; color: #6B7280; }
+  table { width: 100%; border-collapse: collapse; margin-top: 2vh; font-size: 1.2vw; }
+  th, td { padding: 1.5vh 1vw; text-align: left; border-bottom: 1px solid #27272A; }
+  th { color: #4285F4; font-weight: 600; }
+.grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2vw; margin-top: 3vh; }
+.card { background: #18181B; padding: 2vw; border-radius: 1vw; border: 1px solid #27272A; }
+.cta { background: #4285F4; color: white; padding: 1.5vh 2vw; border-radius: 0.5vw; display: inline-block; margin-top: 2vh; font-weight: 600; text-decoration: none; }
+.logo { font-weight: 800; font-size: 2vw; margin-bottom: 4vh; }
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <div class="slide active">
+    <div class="logo">SHIVAM</div>
+    <h1>Building a world-class ecosystem for <span class="accent">human connection</span></h1>
+    <p class="tagline">Wellness + Collaboration + Innovation in one seamless platform</p>
+    <div class="footer">CEO: Shivam Kumar | shivamkumarhub@gmail.com</div>
+    <div class="slide-num">1 / 10</div>
+  </div>
+
+  <div class="slide">
+    <h2>Our Vision</h2>
+    <h1>To create world-class apps that empower <span class="accent">growth, health, and human connection.</span></h1>
+    <p>We shape a digital environment where innovation meets compassion — and where everyone can move forward, together.</p>
+    <div class="slide-num">2 / 10</div>
+  </div>
+
+  <div class="slide">
+    <h2>The Problem</h2>
+    <h1>Digital life is <span class="accent">fragmented and disconnected</span></h1>
+    <ul>
+      <li><strong>Fragmented:</strong> Health apps don’t talk to work tools. Work tools ignore wellbeing.</li>
+      <li><strong>Dehumanizing:</strong> Current platforms optimize for engagement, not human flourishing.</li>
+      <li><strong>Incomplete:</strong> Competitors focus on single aspects of productivity or lifestyle.</li>
+    </ul>
+    <p style="margin-top:3vh;">Result: People are less healthy, less productive, and less connected than they should be.</p>
+    <div class="slide-num">3 / 10</div>
+  </div>
+
+  <div class="slide">
+    <h2>Our Solution: SHIVAM</h2>
+    <h1>A holistic, unified platform</h1>
+    <p>We solve fragmented digital experiences by integrating wellness, collaboration, and innovation into one seamless ecosystem.</p>
+    <div class="grid">
+      <div class="card"><h3>Secure</h3><p>Privacy-first architecture designed for trust</p></div>
+      <div class="card"><h3>Accessible</h3><p>Inclusive design for all abilities and backgrounds</p></div>
+      <div class="card"><h3>Human-Centered</h3><p>Experiences that inspire progress and strengthen communities</p></div>
+    </div>
+    <div class="slide-num">4 / 10</div>
+  </div>
+
+  <div class="slide">
+    <h2>Why SHIVAM Wins</h2>
+    <h1>We deliver what others don't: <span class="accent">the whole system</span></h1>
+    <table>
+      <tr><th></th><th>Competitors</th><th>SHIVAM</th></tr>
+      <tr><td><strong>Scope</strong></td><td>Single aspect: productivity OR lifestyle</td><td class="accent">Unified platform: wellness + collaboration + innovation</td></tr>
+      <tr><td><strong>Design</strong></td><td>Tool-first</td><td class="accent">Experience-first, human-centered</td></tr>
+      <tr><td><strong>Outcome</strong></td><td>Individual efficiency</td><td class="accent">Individuals and groups thrive together</td></tr>
+    </table>
+    <div class="slide-num">5 / 10</div>
+  </div>
+
+  <div class="slide">
+    <h2>Our Product Philosophy</h2>
+    <h1>Technology that transforms <span class="accent">everyday life</span></h1>
+    <ul>
+      <li><strong>Helping people stay healthier</strong> through integrated wellness, not separate fitness apps</li>
+      <li><strong>Grow smarter</strong> with collaboration tools that build knowledge, not just tasks</li>
+      <li><strong>Remain meaningfully connected</strong> through systems designed for community, not clicks</li>
+    </ul>
+    <a href="https://shivamkumarhub-web.github.io/SHIVAM/" target="_blank" class="cta">View Our Vision →</a>
+    <div class="slide-num">6 / 10</div>
+  </div>
+
+  <div class="slide">
+    <h2>Team</h2>
+    <h1>Driven by a clear vision and <span class="accent">commitment to excellence</span></h1>
+    <div class="grid">
+      <div class="card"><h3>Shivam Kumar</h3><p>CEO - Product vision & human-centered design</p></div>
+      <div class="card"><h3>Vasanth Narahari</h3><p>CTO - System architecture & engineering</p></div>
+      <div class="card"><h3>Minhaj</h3><p>Director - Strategy & community growth</p></div>
+    </div>
+    <p style="margin-top:3vh;">We are building with a strong mission and inclusive design.</p>
+    <div class="slide-num">7 / 10</div>
+  </div>
+
+  <div class="slide">
+    <h2>Current Status</h2>
+    <h1>We are open and <span class="accent">ready to build</span></h1>
+    <ul>
+      <li><strong>Stage:</strong> Pre-launch. Core vision and system design defined.</li>
+      <li><strong>Focus:</strong> Building world-class apps and system environments from the ground up.</li>
+      <li><strong>Commitment:</strong> Security, accessibility, and human-centered design are non-negotiable.</li>
+    </ul>
+    <p style="margin-top:3vh;">We have the vision and team. We’re seeking the right partners to build it right.</p>
+    <div class="slide-num">8 / 10</div>
+  </div>
+
+  <div class="slide">
+    <h2>The Ask for Google</h2>
+    <h1>We want your <span class="accent">direction and partnership</span></h1>
+    <p>SHIVAM is aligned with Google’s mission to organize the world’s information and make it universally accessible and useful — but for human wellbeing.</p>
+    <p style="margin-top:3vh;"><strong>We’re asking for:</strong></p>
+    <ul>
+      <li><strong>Technical guidance</strong> on building secure, scalable, human-centered systems at global scale</li>
+      <li><strong>Design mentorship</strong> from teams who’ve mastered inclusive, accessible UX</li>
+      <li><strong>Partnership opportunities</strong> to integrate with Android, Google Health, Workspace ecosystems</li>
+    </ul>
+    <p style="margin-top:3vh;">Help us shape a digital environment where innovation meets compassion.</p>
+    <div class="slide-num">9 / 10</div>
+  </div>
+
+  <div class="slide">
+    <h2>Let’s Build Together</h2>
+    <h1>A digital environment where <span class="accent">everyone can move forward, together.</span></h1>
+    <p style="margin-top:4vh; font-size:2vw;">We’re ready to create technology that transforms everyday life.</p>
+    <p class="footer">SHIVAM | CEO: Shivam Kumar | shivamkumarhub@gmail.com | https://shivamkumarhub-web.github.io/SHIVAM/</p>
+    <div class="slide-num">10 / 10</div>
+  </div>
+
+</div>
+<script>
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  function showSlide(n) {
+    slides[current].classList.remove('active');
+    current = (n + slides.length) % slides.length;
+    slides[current].classList.add('active');
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') showSlide(current + 1);
+    if (e.key === 'ArrowLeft') showSlide(current - 1);
+  });
+</script>
+</body>
+</html>
