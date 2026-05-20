@@ -1,19 +1,15 @@
-// Grab buttons
-const signUpButton = document.getElementById('signUpButton');
-const signInButton = document.getElementById('signInButton');
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 
-// Grab form containers
-const signInForm = document.getElementById('signIn');
-const signUpForm = document.getElementById('signUp');
+const firebaseConfig = {
+  apiKey: "AIzaSyB49vgbQRfmg6XCj_A_ocyC7Vd9J_fgWbQ",
+  authDomain: "shivamportfolio-7c458.firebaseapp.com",
+  projectId: "shivamportfolio-7c458",
+  storageBucket: "shivamportfolio-7c458.firebasestorage.app",
+  messagingSenderId: "166581393688",
+  appId: "1:166581393688:web:7fb06e67d3640f120d666d",
+  measurementId: "G-79JLH2NZBL"
+};
 
-// Show Sign Up form, hide Sign In
-signUpButton.addEventListener('click', function () {
-  signInForm.style.display = "none";
-  signUpForm.style.display = "block";
-});
-
-// Show Sign In form, hide Sign Up
-signInButton.addEventListener('click', function () {
-  signUpForm.style.display = "none";
-  signInForm.style.display = "block";
-});
+const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app); // This allows other files to use the DB
