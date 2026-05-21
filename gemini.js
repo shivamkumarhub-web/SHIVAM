@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
 
 // Use the Gemini API Key you restricted to your GitHub URL
 const genAI = new GoogleGenerativeAI("AIzaSyA9nDkn14FbemujZI_6VXIJnG_ok_SxJY0");
