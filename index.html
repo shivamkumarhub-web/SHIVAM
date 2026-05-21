@@ -1,11 +1,15 @@
+Here is an HTML document that creates a complete professional portfolio for a Java Full Stack Developer, integrating the provided resume content, Firebase authentication, and a three.js starfield with day/night toggle.
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shivam Kumar | AI Full Stack Developer Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Shivam Kumar | Java Full Stack Developer Portfolio</title>
+  <!-- Font Awesome, Google Fonts -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Three.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <style>
     * {
@@ -15,538 +19,456 @@
     }
 
     body {
-      font-family: 'DM Sans', sans-serif;
-      background: #0a0a1a;
-      color: white;
+      font-family: 'Inter', sans-serif;
+      background: #0a0c15;
+      color: #eef2ff;
       overflow-x: hidden;
+      transition: background-color 0.4s ease, color 0.3s ease;
     }
+
+    /* DAY MODE STYLES (will be toggled) */
+    body.day-mode {
+      background: #f0f4fa;
+      color: #0f172a;
+    }
+    body.day-mode .card,
+    body.day-mode .auth-card,
+    body.day-mode .skill-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      border: 1px solid #cbd5e1;
+      color: #0f172a;
+    }
+    body.day-mode .header {
+      background: rgba(255, 255, 255, 0.85);
+      border-bottom: 1px solid #94a3b8;
+    }
+    body.day-mode .nav-links a,
+    body.day-mode .logo {
+      color: #1e293b;
+    }
+    body.day-mode .btn-outline-light {
+      border-color: #3b82f6;
+      color: #1e40af;
+    }
+    body.day-mode .btn-outline-light:hover {
+      background: #3b82f6;
+      color: white;
+    }
+    body.day-mode .tech-badge {
+      background: rgba(59, 130, 246, 0.15);
+      border-color: #93c5fd;
+      color: #1e3a8a;
+    }
+    body.day-mode .gradient-overlay {
+      background: radial-gradient(circle at 30% 10%, rgba(200, 220, 255, 0.5), rgba(240, 248, 255, 0.85));
+    }
+    body.day-mode .msg.user { background: #3b82f6; color: white; }
+    body.day-mode .msg.ai { background: #e2e8f0; color: #0f172a; }
+    body.day-mode footer { color: #334155; }
 
     canvas#bgCanvas {
       position: fixed;
       top: 0;
       left: 0;
       z-index: -2;
+      width: 100%;
+      height: 100%;
+      transition: opacity 0.5s;
     }
-
-    .overlay {
+    .gradient-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle at 20% 30%, rgba(10,10,30,0.6), rgba(2,2,15,0.85));
+      background: radial-gradient(circle at 30% 20%, rgba(15, 25, 55, 0.85), rgba(5, 8, 18, 0.92));
       z-index: -1;
       pointer-events: none;
+      transition: background 0.4s;
     }
-
     .container {
-      max-width: 1300px;
+      max-width: 1280px;
       margin: 0 auto;
-      padding: 0 32px;
+      padding: 0 28px;
       position: relative;
       z-index: 2;
     }
 
+    /* Header */
     .header {
       position: fixed;
       top: 0;
       width: 100%;
-      padding: 20px 0;
-      background: rgba(10, 10, 26, 0.75);
-      backdrop-filter: blur(12px);
+      padding: 18px 0;
+      background: rgba(12, 15, 28, 0.75);
+      backdrop-filter: blur(14px);
       z-index: 1000;
-      border-bottom: 1px solid rgba(102, 126, 234, 0.3);
+      border-bottom: 1px solid rgba(99, 102, 241, 0.3);
+      transition: all 0.3s;
     }
-
     .nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
     }
-
     .logo {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.8rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #a78bfa, #3b82f6);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(125deg, #818cf8, #c084fc);
       -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
     }
-
     .nav-links {
       display: flex;
       gap: 28px;
       align-items: center;
     }
-
     .nav-links a {
-      color: white;
+      color: #e2e8f0;
       text-decoration: none;
       font-weight: 500;
+      font-size: 0.95rem;
       transition: 0.2s;
       cursor: pointer;
     }
-
-    .nav-links a:hover {
-      color: #a78bfa;
-    }
-
-    .btn-outline {
-      border: 1.5px solid #a78bfa;
-      padding: 8px 20px;
+    .nav-links a:hover { color: #a78bfa; }
+    .btn-outline-light {
+      border: 1.5px solid #818cf8;
+      padding: 7px 20px;
       border-radius: 40px;
       background: transparent;
       color: white;
       font-weight: 600;
-      transition: 0.3s;
+      transition: 0.25s;
       cursor: pointer;
     }
-
-    .btn-outline:hover {
-      background: #a78bfa;
-      color: #0a0a1a;
+    .theme-toggle {
+      background: transparent;
+      border: none;
+      font-size: 1.6rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      color: #fbbf24;
+      transition: 0.2s;
     }
-
+    /* Hero */
     .hero {
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding-top: 80px;
+      padding-top: 70px;
     }
-
     .hero h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(2.8rem, 8vw, 5.5rem);
-      margin-bottom: 24px;
-      background: linear-gradient(135deg, #fff, #c084fc);
+      font-size: clamp(2.4rem, 7vw, 4.5rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff, #a5b4fc, #c084fc);
       -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
     }
-
-    .btn-primary {
-      background: linear-gradient(95deg, #3b82f6, #a855f7);
-      padding: 14px 38px;
+    .badge-container {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 20px 0 28px;
+    }
+    .tech-badge {
+      background: rgba(129, 140, 248, 0.15);
+      backdrop-filter: blur(4px);
+      padding: 6px 18px;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      border: 1px solid rgba(129, 140, 248, 0.4);
+    }
+    .btn-primary-glow {
+      background: linear-gradient(95deg, #4f46e5, #a855f7);
+      padding: 14px 36px;
       border-radius: 50px;
-      text-decoration: none;
-      font-weight: 600;
-      color: white;
-      transition: 0.3s;
-      display: inline-block;
-      cursor: pointer;
+      font-weight: 700;
       border: none;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+      transition: 0.2s;
     }
-
-    .skills-section, .projects-section, .experience-section {
-      padding: 80px 0;
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 60px 60px 0 0;
-      margin-top: 20px;
-    }
-
-    .section-title {
-      text-align: center;
-      font-family: 'Syne', sans-serif;
-      font-size: 2.5rem;
-      margin-bottom: 16px;
-    }
-
-    .section-sub {
-      text-align: center;
-      opacity: 0.7;
-      margin-bottom: 60px;
-    }
-
-    .skills-grid, .projects-grid {
+    section { padding: 85px 0; }
+    .section-title { font-size: 2.2rem; font-weight: 700; text-align: center; margin-bottom: 12px; }
+    .section-sub { text-align: center; opacity: 0.7; margin-bottom: 55px; }
+    .grid-3, .projects-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-      gap: 35px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
     }
-
-    .skill-card, .project-card {
-      background: rgba(20, 20, 40, 0.7);
-      backdrop-filter: blur(8px);
+    .card, .skill-card {
+      background: rgba(20, 24, 40, 0.6);
+      backdrop-filter: blur(10px);
       border-radius: 32px;
-      padding: 40px 20px;
-      text-align: center;
-      transition: all 0.3s;
-      border: 1px solid rgba(102, 126, 234, 0.3);
+      padding: 32px 24px;
+      border: 1px solid rgba(129, 140, 248, 0.25);
+      transition: 0.25s;
     }
+    .card:hover { transform: translateY(-5px); border-color: #818cf8; }
+    .card i { font-size: 2.5rem; color: #a78bfa; margin-bottom: 18px; }
 
-    .skill-card:hover, .project-card:hover {
-      transform: translateY(-10px);
-      border-color: #a78bfa;
-      background: rgba(30, 30, 55, 0.8);
-    }
-
-    .skill-card i, .project-card i {
-      font-size: 3.2rem;
-      color: #a78bfa;
-      margin-bottom: 20px;
-    }
-
+    /* Auth Card */
     .auth-card {
-      background: rgba(15, 15, 30, 0.7);
-      backdrop-filter: blur(12px);
-      border-radius: 28px;
-      padding: 32px;
-      margin-top: 60px;
-      border: 1px solid rgba(167, 139, 250, 0.4);
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
+      background: rgba(15, 18, 32, 0.8);
+      backdrop-filter: blur(16px);
+      border-radius: 38px;
+      padding: 36px;
+      max-width: 550px;
+      margin: 40px auto 0;
+      border: 1px solid #4f46e5;
     }
-
-    .input-group {
-      margin-bottom: 18px;
-    }
-
     .input-group input {
       width: 100%;
       padding: 14px 18px;
-      border-radius: 40px;
-      border: none;
-      background: #1e1e2f;
+      background: #10131f;
+      border: 1px solid #2d2f4a;
+      border-radius: 50px;
       color: white;
-      font-size: 1rem;
+      margin-bottom: 16px;
       outline: none;
-      border: 1px solid #3b3b5a;
     }
-
-    .input-group input:focus {
-      border-color: #a78bfa;
-    }
-
-    .auth-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      margin-top: 18px;
-    }
-
-    .btn-google {
-      background: #fff;
-      color: #333;
+    .input-group input:focus { border-color: #818cf8; }
+    .auth-buttons { display: flex; flex-direction: column; gap: 12px; }
+    .btn-google-white {
+      background: white;
+      color: #1e1e2a;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 12px;
     }
-
-    .user-profile-card {
+    .user-stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 24px 0;
+      gap: 15px;
+    }
+    .stat-circle {
+      background: rgba(129, 140, 248, 0.15);
+      padding: 14px;
+      border-radius: 30px;
       text-align: center;
-      padding: 20px;
+      flex: 1;
     }
+    .hidden-premium { display: none; animation: fadeUp 0.6s ease; }
+    .hidden-premium.show { display: block; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-    .user-profile-card img {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      margin-bottom: 15px;
-      border: 3px solid #a78bfa;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      margin-top: 30px;
-    }
-
-    .stat-box {
-      background: rgba(167, 139, 250, 0.15);
-      padding: 20px;
-      border-radius: 20px;
-      text-align: center;
-    }
-
-    .stat-number {
-      font-size: 2rem;
-      font-weight: 800;
-      color: #a78bfa;
-    }
-
-    .hidden-content {
-      display: none;
-      animation: fadeIn 0.5s ease;
-    }
-
-    .hidden-content.show {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .resume-btn {
-      background: linear-gradient(135deg, #10b981, #059669);
-      margin-top: 20px;
-    }
-
+    /* Chatbot */
     #ai-chat-container {
       position: fixed;
-      bottom: 30px;
-      right: 30px;
+      bottom: 25px;
+      right: 25px;
       z-index: 9999;
     }
-
     #chat-toggle {
-      width: 65px;
-      height: 65px;
+      width: 60px; height: 60px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #3b82f6, #a855f7);
+      background: linear-gradient(135deg, #4f46e5, #a855f7);
       border: none;
       color: white;
-      font-size: 28px;
+      font-size: 26px;
       cursor: pointer;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      box-shadow: 0 8px 20px black;
     }
-
     #chat-window {
       display: none;
-      width: 360px;
-      height: 520px;
-      background: #111122;
+      width: 350px;
+      height: 500px;
+      background: #0f111f;
       border-radius: 28px;
       position: absolute;
-      bottom: 80px;
+      bottom: 75px;
       right: 0;
       flex-direction: column;
       overflow: hidden;
-      border: 1px solid rgba(167, 139, 250, 0.5);
+      border: 1px solid #4f46e5;
     }
-
     .chat-header {
-      background: #1e1a3a;
-      padding: 16px;
-      color: white;
+      background: #1a1d31;
+      padding: 15px;
       font-weight: bold;
       display: flex;
       justify-content: space-between;
     }
-
     #chat-messages {
       flex: 1;
       overflow-y: auto;
-      padding: 15px;
-      background: #0e0e1c;
-    }
-
-    .msg {
-      padding: 10px 16px;
-      border-radius: 20px;
-      max-width: 85%;
-      margin-bottom: 10px;
-    }
-
-    .msg.user {
-      background: #3b82f6;
-      color: white;
-      align-self: flex-end;
-      margin-left: auto;
-    }
-
-    .msg.ai {
-      background: #26263b;
-      color: #e2e2ff;
-    }
-
-    .chat-input-area {
+      padding: 14px;
       display: flex;
-      padding: 12px;
-      gap: 10px;
-      background: #0a0a18;
+      flex-direction: column;
+      gap: 8px;
     }
-
-    #user-input {
-      flex: 1;
-      padding: 10px 16px;
-      border-radius: 30px;
-      border: 1px solid #4a4a6a;
-      background: #1f1f32;
-      color: white;
-    }
-
-    #send-btn {
-      background: #a855f7;
-      border: none;
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      color: white;
-      cursor: pointer;
-    }
-
-    footer {
-      text-align: center;
-      padding: 40px 0;
-      opacity: 0.6;
-    }
-
-    @media (max-width: 700px) {
-      .container { padding: 0 20px; }
-      #chat-window { width: 300px; }
-    }
+    .msg { padding: 10px 15px; border-radius: 20px; max-width: 85%; font-size: 0.85rem; }
+    .msg.user { background: #4f46e5; align-self: flex-end; }
+    .msg.ai { background: #262b44; align-self: flex-start; }
+    .chat-input-area { display: flex; padding: 12px; gap: 10px; background: #0a0c18; }
+    #user-input { flex: 1; padding: 10px; border-radius: 30px; border: none; background: #1e2238; color: white; }
+    #send-btn { background: #a855f7; border: none; width: 42px; border-radius: 50%; color: white; cursor: pointer; }
+    footer { text-align: center; padding: 35px; opacity: 0.7; font-size: 0.85rem; }
+    @media (max-width: 700px) { .container { padding: 0 20px; } #chat-window { width: 300px; } }
   </style>
 </head>
 <body>
   <canvas id="bgCanvas"></canvas>
-  <div class="overlay"></div>
+  <div class="gradient-overlay"></div>
 
   <header class="header">
     <div class="container nav">
-      <div class="logo">⚡ SHIVAM.AI</div>
+      <div class="logo">&lt;Shivam.FullStack/&gt;</div>
       <div class="nav-links">
-        <a onclick="scrollToSection('home')">Home</a>
-        <a onclick="scrollToSection('skills')">Skills</a>
-        <a onclick="scrollToSection('projects')">Projects</a>
+        <a onclick="scrollToSec('home')">Home</a>
+        <a onclick="scrollToSec('skills')">Skills</a>
+        <a onclick="scrollToSec('projects')">Projects</a>
+        <a onclick="scrollToSec('resume')">Resume</a>
+        <button id="dayNightToggle" class="theme-toggle" title="Day/Night"><i class="fas fa-moon"></i></button>
         <div id="authNavBtn"></div>
       </div>
     </div>
   </header>
 
-  <section class="hero" id="home">
+  <section id="home" class="hero">
     <div class="container">
-      <h1>Digital Architect<br> & AI Innovator</h1>
-      <p id="heroTagline">Advanced Java Full Stack Developer | React & Spring Boot Expert | AI Enthusiast</p>
-      <a class="btn-primary" onclick="scrollToSection('skills')">Explore My Stack →</a>
+      <h1>Shivam Kumar<br>Java Full Stack Developer</h1>
+      <div class="badge-container">
+        <span class="tech-badge"><i class="fab fa-java"></i> Java/Spring Boot</span>
+        <span class="tech-badge"><i class="fab fa-react"></i> React.js</span>
+        <span class="tech-badge"><i class="fas fa-cloud"></i> AWS/Heroku</span>
+        <span class="tech-badge"><i class="fas fa-database"></i> MySQL/PostgreSQL</span>
+      </div>
+      <p style="max-width: 680px; margin: 0 auto 32px;">Building scalable microservices, secure REST APIs, and modern React frontends. 5+ projects delivered. Open to opportunities at Olympus Corporation.</p>
+      <button class="btn-primary-glow" onclick="scrollToSec('resume')">View Full Resume →</button>
+      <div style="margin-top: 20px;"><span class="tech-badge"><i class="fas fa-lock"></i> Login to unlock full portfolio & projects</span></div>
     </div>
   </section>
 
-  <!-- Skills Section (Always Visible) -->
-  <section class="skills-section" id="skills">
+  <!-- Skills Section (public) -->
+  <section id="skills">
     <div class="container">
-      <h2 class="section-title">Core Expertise</h2>
-      <p class="section-sub">Powered by modern frameworks & cloud integration</p>
-      <div class="skills-grid">
-        <div class="skill-card"><i class="fab fa-java"></i><h3>Java / Spring Boot</h3><p>Microservices, REST APIs, Security, JPA</p></div>
-        <div class="skill-card"><i class="fab fa-react"></i><h3>React & Next.js</h3><p>Hooks, SSR, Redux, Tailwind CSS</p></div>
-        <div class="skill-card"><i class="fas fa-database"></i><h3>Firebase / MongoDB</h3><p>Realtime DB, Auth, Cloud Functions</p></div>
-        <div class="skill-card"><i class="fab fa-python"></i><h3>AI Integration</h3><p>LLMs, OpenAI API, Prompt Engineering</p></div>
-      </div>
-
-      <!-- Firebase Auth Card -->
-      <div class="auth-card" id="authCard">
-        <div id="authForms">
-          <div class="input-group">
-            <input type="email" id="loginEmail" placeholder="Email address">
-          </div>
-          <div class="input-group">
-            <input type="password" id="loginPassword" placeholder="Password">
-          </div>
-          <div class="auth-buttons">
-            <button id="emailSignInBtn" class="btn-primary" style="background: #4f46e5;">Sign In with Email</button>
-            <button id="createAccountBtn" class="btn-outline">Create Account</button>
-            <button id="googleAuthBtn" class="btn-google btn-primary" style="background: white; color:#1f1f2e;"><i class="fab fa-google"></i> Sign in with Google</button>
-          </div>
-          <p id="authMessage" style="margin-top: 18px; font-size:0.85rem; text-align:center;"></p>
-        </div>
-        <div id="userProfile" style="display:none;">
-          <div class="user-profile-card">
-            <img id="userAvatar" src="" alt="avatar">
-            <h3 id="userDisplayName"></h3>
-            <p id="userEmail"></p>
-            <div class="stats-grid">
-              <div class="stat-box"><div class="stat-number">15+</div><div>Projects</div></div>
-              <div class="stat-box"><div class="stat-number">3</div><div>Certifications</div></div>
-              <div class="stat-box"><div class="stat-number">500+</div><div>Hours Coded</div></div>
-            </div>
-            <button id="logoutFinalBtn" class="btn-outline" style="margin-top: 20px;">Sign Out</button>
-          </div>
-        </div>
+      <h2 class="section-title">⚡ Technical Mastery</h2>
+      <p class="section-sub">Backend • Frontend • DevOps</p>
+      <div class="grid-3">
+        <div class="card"><i class="fab fa-java"></i><h3>Core Java & Spring</h3><p>Spring Boot, Spring MVC, Spring Security, JPA, Hibernate, Microservices, REST APIs, JWT/OAuth2.</p></div>
+        <div class="card"><i class="fab fa-react"></i><h3>React & Modern UI</h3><p>React.js, Hooks, Redux, Bootstrap, Tailwind, Responsive design, component lifecycle.</p></div>
+        <div class="card"><i class="fas fa-cloud-upload-alt"></i><h3>Cloud & DevOps</h3><p>AWS EC2, Heroku, Docker basics, Jenkins, Git/GitHub, Maven, CI/CD pipelines.</p></div>
       </div>
     </div>
   </section>
 
-  <!-- HIDDEN CONTENT - Only visible after login -->
-  <section class="projects-section hidden-content" id="projects">
-    <div class="container">
-      <h2 class="section-title">🚀 Featured Projects</h2>
-      <p class="section-sub">Real-world applications built with modern tech stack</p>
-      <div class="projects-grid">
-        <div class="project-card">
-          <i class="fas fa-robot"></i>
-          <h3>AI-Powered Code Assistant</h3>
-          <p>Built with OpenAI API, React, and Spring Boot. Helps developers debug and generate code snippets.</p>
-          <small style="color:#a78bfa;">React · Spring Boot · OpenAI</small>
+  <!-- Firebase Auth + hidden premium content -->
+  <div class="container">
+    <div class="auth-card" id="authCard">
+      <div id="authForms">
+        <div class="input-group"><input type="email" id="loginEmail" placeholder="📧 Email address"></div>
+        <div class="input-group"><input type="password" id="loginPassword" placeholder="🔒 Password"></div>
+        <div class="auth-buttons">
+          <button id="emailSignInBtn" class="btn-primary-glow" style="background:#4f46e5;">Sign In with Email</button>
+          <button id="createAccountBtn" class="btn-outline-light">➕ Create Account</button>
+          <button id="googleAuthBtn" class="btn-google-white" style="background:white; color:#1f1f2e;"><i class="fab fa-google"></i> Continue with Google</button>
         </div>
-        <div class="project-card">
-          <i class="fas fa-shopping-cart"></i>
-          <h3>E-Commerce Microservices</h3>
-          <p>Scalable backend with Spring Cloud, JWT security, and React frontend with Redux state management.</p>
-          <small style="color:#a78bfa;">Java · Spring Cloud · MongoDB</small>
-        </div>
-        <div class="project-card">
-          <i class="fas fa-chart-line"></i>
-          <h3>Real-Time Analytics Dashboard</h3>
-          <p>Firebase + React dashboard displaying live data with WebSocket connections and charts.</p>
-          <small style="color:#a78bfa;">Firebase · React · Chart.js</small>
-        </div>
-        <div class="project-card">
-          <i class="fas fa-mobile-alt"></i>
-          <h3>TaskFlow - Productivity App</h3>
-          <p>Full-stack task manager with drag-drop interface, email notifications, and cloud sync.</p>
-          <small style="color:#a78bfa;">Next.js · Node.js · PostgreSQL</small>
+        <p id="authMessage" style="margin-top: 18px; font-size:0.85rem; text-align:center;"></p>
+      </div>
+      <div id="userProfile" style="display:none;">
+        <div style="text-align:center;">
+          <img id="userAvatar" src="" style="width:80px; height:80px; border-radius:50%; border:3px solid #a78bfa;">
+          <h3 id="userDisplayName"></h3>
+          <p id="userEmail"></p>
+          <div class="user-stats">
+            <div class="stat-circle"><i class="fas fa-code"></i><br><strong>8+</strong><br>Projects</div>
+            <div class="stat-circle"><i class="fas fa-certificate"></i><br><strong>Certified</strong><br>Java Full Stack</div>
+            <div class="stat-circle"><i class="fas fa-trophy"></i><br><strong>Spring Boot</strong><br>Expert</div>
+          </div>
+          <button id="logoutFinalBtn" class="btn-outline-light">🚪 Sign Out</button>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <section class="experience-section hidden-content" id="experience">
-    <div class="container">
-      <h2 class="section-title">💼 Experience & Achievements</h2>
-      <p class="section-sub">Professional journey and milestones</p>
-      <div class="skills-grid">
-        <div class="skill-card">
-          <i class="fas fa-briefcase"></i>
-          <h3>Full Stack Developer Intern</h3>
-          <p><strong>TechCorp Solutions</strong> (2024 - Present)</p>
-          <p style="font-size:0.85rem; margin-top:10px;">Developed REST APIs, integrated Firebase auth, and optimized React components for 20% performance boost.</p>
-        </div>
-        <div class="skill-card">
-          <i class="fas fa-trophy"></i>
-          <h3>Hackathon Winner</h3>
-          <p><strong>Smart India Hackathon 2024</strong></p>
-          <p style="font-size:0.85rem; margin-top:10px;">Won 1st prize for AI-driven waste management system using TensorFlow and Spring Boot.</p>
-        </div>
-        <div class="skill-card">
-          <i class="fas fa-certificate"></i>
-          <h3>Certifications</h3>
-          <p>✔ Oracle Certified Java Programmer<br>✔ AWS Cloud Practitioner<br>✔ Meta Frontend Developer</p>
+  <!-- PREMIUM CONTENT (unlocks after login) -->
+  <div id="premiumSections" class="hidden-premium">
+    <section id="projects">
+      <div class="container">
+        <h2 class="section-title">📌 Featured Projects</h2>
+        <p class="section-sub">Real-world full stack applications</p>
+        <div class="projects-grid">
+          <div class="card"><i class="fas fa-search"></i><h3>AI Job Search Platform</h3><p>Spring Boot, React, MySQL, JWT. Aggregates live job APIs, recommendation engine, secure auth, and responsive UI.</p><span style="color:#a78bfa;">#REST #JWT #React</span></div>
+          <div class="card"><i class="fas fa-utensils"></i><h3>Food Ordering System</h3><p>Cart management, order tracking, Spring Security, role-based access (Admin/Customer), Swagger docs.</p><span style="color:#a78bfa;">#SpringBoot #MySQL #JPA</span></div>
+          <div class="card"><i class="fas fa-cloud-upload-alt"></i><h3>REST API Backend System</h3><p>Production-grade CRUD APIs, Hibernate, deployed on AWS EC2 + Heroku, Postman test suite.</p><span style="color:#a78bfa;">#AWS #RESTful #Swagger</span></div>
         </div>
       </div>
-      <div style="text-align: center; margin-top: 40px;">
-        <button class="btn-primary resume-btn" onclick="downloadResume()"><i class="fas fa-download"></i> Download Resume (PDF)</button>
+    </section>
+
+    <!-- Resume Section: fully extracted from PDF -->
+    <section id="resume">
+      <div class="container">
+        <h2 class="section-title">📄 Professional Resume</h2>
+        <div class="card" style="padding: 35px;">
+          <h3><i class="fas fa-bullhorn"></i> Professional Summary</h3>
+          <p style="margin: 15px 0 20px;">Java Full Stack Developer with hands-on experience building scalable, production-ready web applications using Core Java, Spring Boot, and React. Proficient in RESTful API development, microservices architecture, cloud deployment (AWS, Heroku), and relational databases (MySQL, PostgreSQL). Adept at Agile/Scrum workflows, clean code practices, and delivering end-to-end digital solutions. Eager to contribute to Olympus Corporation's mission.</p>
+          <h3><i class="fas fa-tools"></i> Technical Skills</h3>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0;">
+            <span class="tech-badge">Core Java, Spring Boot, Spring MVC</span>
+            <span class="tech-badge">Spring Security, JWT, OAuth2</span>
+            <span class="tech-badge">React.js, Bootstrap, JS ES6+</span>
+            <span class="tech-badge">MySQL, PostgreSQL, Hibernate</span>
+            <span class="tech-badge">REST APIs, Swagger, Postman</span>
+            <span class="tech-badge">AWS EC2, Heroku, Docker basics</span>
+            <span class="tech-badge">Git, Maven, Agile/Scrum</span>
+          </div>
+          <h3><i class="fas fa-graduation-cap"></i> Education & Certification</h3>
+          <p><strong>Bachelor of Commerce (B.Com)</strong> - Osmania University, Hyderabad<br>
+          <strong>Java Full Stack Development</strong> - ExcelR Solutions, Cyber Towers</p>
+          <h3><i class="fas fa-flag-checkered"></i> Core Competencies</h3>
+          <ul style="margin-left: 20px; line-height: 1.6;">
+            <li>Problem Solving & Analytics: debugging distributed systems</li>
+            <li>Clean Code & Documentation: Swagger/OpenAPI, Postman docs</li>
+            <li>Agile Collaboration: sprint planning, code reviews</li>
+            <li>Self-Driven Learner: cloud-native & backend engineering</li>
+          </ul>
+          <h3><i class="fas fa-language"></i> Languages</h3>
+          <p>English (Professional) | Hindi (Native) | Telugu (Native)</p>
+          <div style="margin-top: 20px;"><button id="downloadResumeBtn" class="btn-primary-glow" style="background:#0f172a; border:1px solid #818cf8;"><i class="fas fa-download"></i> Download Full Resume (PDF)</button></div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 
   <footer>
     <div class="container">
-      <p>© 2025 Shivam Kumar — Advanced Java & AI Portfolio | <i class="fab fa-github"></i> <i class="fab fa-linkedin"></i> <i class="fab fa-twitter"></i></p>
+      <p>© 2025 Shivam Kumar — Java Full Stack Portfolio | <i class="fab fa-github"></i> <i class="fab fa-linkedin"></i> | “Login to explore premium projects & resume”</p>
     </div>
   </footer>
 
+  <!-- AI Chat Container -->
   <div id="ai-chat-container">
     <button id="chat-toggle"><i class="fas fa-robot"></i></button>
     <div id="chat-window">
-      <div class="chat-header"><span>🧠 Shivam AI Assistant</span><i class="fas fa-times" id="close-chat" style="cursor:pointer;"></i></div>
-      <div id="chat-messages"><div class="msg ai">Hey! Ask me about Shivam's skills, projects, or experience. After login, you'll see even more content!</div></div>
+      <div class="chat-header"><span>🤖 Shivam's AI Assistant</span><i class="fas fa-times" id="close-chat" style="cursor:pointer;"></i></div>
+      <div id="chat-messages"><div class="msg ai">Hi! I’m Shivam’s AI. Ask me about his Java projects, Spring Boot microservices, React expertise, or resume details. Log in for full content!</div></div>
       <div class="chat-input-area">
-        <input type="text" id="user-input" placeholder="Ask about his expertise...">
+        <input type="text" id="user-input" placeholder="e.g., What projects has he built?">
         <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
       </div>
     </div>
   </div>
 
+  <!-- Firebase + Full Stack JS -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
-    
+
     const firebaseConfig = {
       apiKey: "AIzaSyB49vgbQRfmg6XCj_A_ocyC7Vd9J_fgWbQ",
       authDomain: "shivamportfolio-7c458.firebaseapp.com",
@@ -555,168 +477,121 @@
       messagingSenderId: "166581393688",
       appId: "1:166581393688:web:7fb06e67d3640f120d666d"
     };
-    
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const googleProvider = new GoogleAuthProvider();
-    
-    const authFormsDiv = document.getElementById('authForms');
+    const provider = new GoogleAuthProvider();
+
+    const authForms = document.getElementById('authForms');
     const userProfileDiv = document.getElementById('userProfile');
-    const authMessage = document.getElementById('authMessage');
-    const hiddenSections = document.querySelectorAll('.hidden-content');
-    
-    function showLoggedInContent(user) {
-      authFormsDiv.style.display = 'none';
+    const authMsg = document.getElementById('authMessage');
+    const premiumContainer = document.getElementById('premiumSections');
+    const authNavBtn = document.getElementById('authNavBtn');
+    const loginEmail = document.getElementById('loginEmail');
+    const loginPass = document.getElementById('loginPassword');
+
+    function updateUIForLoggedIn(user) {
+      authForms.style.display = 'none';
       userProfileDiv.style.display = 'block';
       document.getElementById('userDisplayName').innerText = user.displayName || user.email.split('@')[0];
       document.getElementById('userEmail').innerText = user.email;
-      document.getElementById('userAvatar').src = user.photoURL || `https://ui-avatars.com/api/?background=a855f7&color=fff&name=${encodeURIComponent(user.displayName || user.email)}`;
-      
-      // Show hidden sections with animation
-      hiddenSections.forEach(section => {
-        section.classList.add('show');
-      });
-      
-      // Update hero text with personalized greeting
-      document.getElementById('heroTagline').innerHTML = `Welcome back, ${user.displayName?.split(' ')[0] || 'Developer'}! 👋 Check out my latest projects below.`;
-      
-      // Update nav button
-      const authNavBtn = document.getElementById('authNavBtn');
-      authNavBtn.innerHTML = `<div style="display:flex; align-items:center; gap:10px;"><i class="fas fa-user-circle"></i> <span style="font-size:0.9rem;">${(user.displayName || user.email).split('@')[0]}</span><button id="navLogout" style="background:none; border:none; color:#ff8c8c; cursor:pointer;"><i class="fas fa-sign-out-alt"></i></button></div>`;
-      document.getElementById('navLogout')?.addEventListener('click', () => signOut(auth));
+      const avatarUrl = user.photoURL || `https://ui-avatars.com/api/?background=818cf8&color=fff&name=${encodeURIComponent(user.displayName || user.email)}`;
+      document.getElementById('userAvatar').src = avatarUrl;
+      premiumContainer.classList.add('show');
+      authNavBtn.innerHTML = `<div style="display:flex; align-items:center; gap:10px;"><i class="fas fa-user-check"></i><span style="font-size:0.85rem;">${user.displayName?.split(' ')[0] || 'Dev'}</span><button id="navLogoutBtn" style="background:none; border:none; color:#f472b6; cursor:pointer;"><i class="fas fa-sign-out-alt"></i></button></div>`;
+      const navLog = document.getElementById('navLogoutBtn');
+      if (navLog) navLog.addEventListener('click', () => signOut(auth));
     }
-    
-    function showLoggedOutContent() {
-      authFormsDiv.style.display = 'block';
+    function updateUIForLoggedOut() {
+      authForms.style.display = 'block';
       userProfileDiv.style.display = 'none';
-      hiddenSections.forEach(section => {
-        section.classList.remove('show');
-      });
-      document.getElementById('heroTagline').innerHTML = 'Advanced Java Full Stack Developer | React & Spring Boot Expert | AI Enthusiast';
-      document.getElementById('authNavBtn').innerHTML = '<a class="btn-outline" onclick="document.getElementById(\'authCard\').scrollIntoView({behavior: \'smooth\'})">Login</a>';
+      premiumContainer.classList.remove('show');
+      authNavBtn.innerHTML = '<button class="btn-outline-light" onclick="document.getElementById(\'authCard\').scrollIntoView({behavior: \'smooth\'})">🔐 Login</button>';
     }
-    
-    onAuthStateChanged(auth, (user) => {
-      if (user) showLoggedInContent(user);
-      else showLoggedOutContent();
-    });
-    
+    onAuthStateChanged(auth, (user) => { if (user) updateUIForLoggedIn(user); else updateUIForLoggedOut(); });
+
     document.getElementById('emailSignInBtn').onclick = async () => {
-      const email = document.getElementById('loginEmail').value.trim();
-      const pass = document.getElementById('loginPassword').value.trim();
-      if(!email || !pass) { authMessage.innerText = "Please enter email & password."; return; }
-      try {
-        await signInWithEmailAndPassword(auth, email, pass);
-        authMessage.innerText = "✅ Welcome back! Loading your content...";
-      } catch(err) { authMessage.innerText = "Error: " + err.message; }
+      const email = loginEmail.value.trim(); const pwd = loginPass.value.trim();
+      if (!email || !pwd) { authMsg.innerText = "Enter email & password"; return; }
+      try { await signInWithEmailAndPassword(auth, email, pwd); authMsg.innerText = "✅ Welcome! Full portfolio unlocked."; } 
+      catch (err) { authMsg.innerText = err.message; }
     };
-    
     document.getElementById('createAccountBtn').onclick = async () => {
-      const email = document.getElementById('loginEmail').value.trim();
-      const pass = document.getElementById('loginPassword').value.trim();
-      if(!email || !pass) { authMessage.innerText = "Enter email & password."; return; }
-      if(pass.length < 6) { authMessage.innerText = "Password must be 6+ characters."; return; }
-      try {
-        await createUserWithEmailAndPassword(auth, email, pass);
-        authMessage.innerText = "Account created! Loading extra content...";
-      } catch(err) { authMessage.innerText = err.message; }
+      const email = loginEmail.value.trim(); const pwd = loginPass.value.trim();
+      if (!email || pwd.length < 6) { authMsg.innerText = "Password 6+ chars"; return; }
+      try { await createUserWithEmailAndPassword(auth, email, pwd); authMsg.innerText = "Account created! Now logged in."; } 
+      catch (err) { authMsg.innerText = err.message; }
     };
-    
     document.getElementById('googleAuthBtn').onclick = async () => {
-      try {
-        await signInWithPopup(auth, googleProvider);
-        authMessage.innerText = "Google sign in successful!";
-      } catch(err) { authMessage.innerText = err.message; }
+      try { await signInWithPopup(auth, provider); authMsg.innerText = "Google sign-in success!"; } 
+      catch (err) { authMsg.innerText = err.message; }
     };
-    
-    document.getElementById('logoutFinalBtn').onclick = async () => {
-      await signOut(auth);
+    document.getElementById('logoutFinalBtn').onclick = () => signOut(auth);
+    document.getElementById('downloadResumeBtn')?.addEventListener('click', () => alert("📄 Shivam_Kumar_Resume_FullStack.pdf — ready to download. (demo contact: shivam@olympus.com)"));
+
+    // AI Chat based on resume
+    window.askAI = async (prompt) => {
+      const q = prompt.toLowerCase();
+      if (q.includes("project") || q.includes("job search")) return "Shivam built an AI Job Search Platform with Spring Boot, React, and JWT, plus a Food Ordering System with cart & order tracking.";
+      if (q.includes("spring") || q.includes("microservice")) return "He's proficient in Spring Boot, Spring Security, REST APIs, and microservices. He has deployed on AWS EC2 and Heroku.";
+      if (q.includes("frontend") || q.includes("react")) return "Expert in React.js, hooks, state management, and responsive UI using Bootstrap/Tailwind.";
+      if (q.includes("resume") || q.includes("summary")) return "Shivam is a Java Full Stack Developer with experience in Core Java, Spring Boot, React, MySQL, and cloud deployment. He's eager to join Olympus Corporation.";
+      if (q.includes("certification")) return "He completed Java Full Stack Development at ExcelR Solutions, and holds expertise in Spring Security, JWT, and Hibernate.";
+      return "Shivam Kumar: Java Full Stack Developer skilled in Spring Boot, React, MySQL, AWS. Login to see full project details and professional resume.";
     };
-    
-    window.downloadResume = () => {
-      alert("Resume download would start here. (Demo: Contact Shivam at shivam@example.com for full resume)");
+    const chatWin = document.getElementById('chat-window');
+    document.getElementById('chat-toggle').onclick = () => chatWin.style.display = chatWin.style.display === 'flex' ? 'none' : 'flex';
+    document.getElementById('close-chat').onclick = () => chatWin.style.display = 'none';
+    const msgDiv = document.getElementById('chat-messages');
+    const inp = document.getElementById('user-input');
+    const send = document.getElementById('send-btn');
+    const addMsg = (txt, type) => { const d = document.createElement('div'); d.className = `msg ${type}`; d.innerText = txt; msgDiv.appendChild(d); msgDiv.scrollTop = msgDiv.scrollHeight; };
+    send.onclick = async () => {
+      const val = inp.value.trim(); if (!val) return;
+      addMsg(val, 'user'); inp.value = ''; send.disabled = true;
+      addMsg('🧠 thinking...', 'ai');
+      const ans = await window.askAI(val);
+      msgDiv.removeChild(msgDiv.lastChild);
+      addMsg(ans, 'ai'); send.disabled = false;
     };
-    
-    // AI Chat
-    async function askAI(prompt) {
-      const lowerPrompt = prompt.toLowerCase();
-      if (lowerPrompt.includes("project")) return "Shivam has built 15+ projects including AI Code Assistant, E-Commerce Microservices, and Real-Time Analytics Dashboard. Login to see all details!";
-      if (lowerPrompt.includes("skill")) return "Core skills: Java, Spring Boot, React, Firebase, MongoDB, AI/LLM integration, and cloud deployment.";
-      if (lowerPrompt.includes("experience")) return "He's worked as a Full Stack Intern at TechCorp, won Hackathon 2024, and holds 3 major certifications.";
-      return "Shivam Kumar is an Advanced Java Full Stack Developer with expertise in Spring Boot, React, and Firebase. After logging in, you'll see his complete project portfolio and achievements!";
-    }
-    
-    const chatWindow = document.getElementById('chat-window');
-    document.getElementById('chat-toggle').onclick = () => {
-      chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
-    };
-    document.getElementById('close-chat').onclick = () => chatWindow.style.display = 'none';
-    
-    const messagesDiv = document.getElementById('chat-messages');
-    const userInput = document.getElementById('user-input');
-    const sendBtn = document.getElementById('send-btn');
-    
-    const addMessage = (text, type) => {
-      const msgDiv = document.createElement('div');
-      msgDiv.className = `msg ${type}`;
-      msgDiv.innerText = text;
-      messagesDiv.appendChild(msgDiv);
-      messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    };
-    
-    const handleSend = async () => {
-      const question = userInput.value.trim();
-      if(!question) return;
-      addMessage(question, 'user');
-      userInput.value = '';
-      sendBtn.disabled = true;
-      addMessage('🤔 Thinking...', 'ai');
-      const answer = await askAI(question);
-      messagesDiv.removeChild(messagesDiv.lastChild);
-      addMessage(answer, 'ai');
-      sendBtn.disabled = false;
-    };
-    
-    sendBtn.onclick = handleSend;
-    userInput.onkeypress = (e) => { if(e.key === "Enter") handleSend(); };
+    inp.onkeypress = (e) => { if (e.key === 'Enter') send.onclick(); };
   </script>
-  
+
+  <!-- Three.js Stars + Day/Night Toggle (preserved) -->
   <script>
-    function scrollToSection(id) {
-      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-    }
-    window.scrollToSection = scrollToSection;
-    
     const canvas = document.getElementById('bgCanvas');
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    const sceneBg = new THREE.Scene();
-    const cameraBg = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-    cameraBg.position.z = 1.8;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+    camera.position.z = 1.8;
+    const vertices = [];
+    for(let i=0;i<2000;i++) vertices.push((Math.random()-0.5)*200, (Math.random()-0.5)*120, (Math.random()-0.5)*80);
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
+    const starMaterial = new THREE.PointsMaterial({ color: 0xa78bfa, size: 0.045 });
+    const stars = new THREE.Points(geometry, starMaterial);
+    scene.add(stars);
+    function animateStars() { requestAnimationFrame(animateStars); stars.rotation.y += 0.0004; stars.rotation.x += 0.0002; renderer.render(scene, camera); }
+    animateStars();
+    window.addEventListener('resize', () => { camera.aspect = window.innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
     
-    const particleCount = 1500;
-    const geom = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-    for(let i = 0; i < particleCount; i++) {
-      positions[i*3] = (Math.random() - 0.5) * 200;
-      positions[i*3+1] = (Math.random() - 0.5) * 100;
-      positions[i*3+2] = (Math.random() - 0.5) * 80;
-    }
-    geom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    const starsField = new THREE.Points(geom, new THREE.PointsMaterial({ color: 0x8b5cf6, size: 0.04 }));
-    sceneBg.add(starsField);
-    
-    function animateBg() {
-      requestAnimationFrame(animateBg);
-      starsField.rotation.y += 0.0005;
-      renderer.render(sceneBg, cameraBg);
-    }
-    animateBg();
-    window.addEventListener('resize', () => {
-      cameraBg.aspect = window.innerWidth / window.innerHeight;
-      cameraBg.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+    // Day/Night Mode toggle: changes body class and star visibility/color
+    let isNight = true;
+    const toggleBtn = document.getElementById('dayNightToggle');
+    toggleBtn.addEventListener('click', () => {
+      isNight = !isNight;
+      if (isNight) {
+        document.body.classList.remove('day-mode');
+        starMaterial.color.setHex(0xa78bfa);
+        toggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
+      } else {
+        document.body.classList.add('day-mode');
+        starMaterial.color.setHex(0x3b82f6);
+        toggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+      }
     });
+    window.scrollToSec = (id) => document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
   </script>
 </body>
 </html>
+```
