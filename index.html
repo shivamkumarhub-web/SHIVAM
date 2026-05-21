@@ -17,7 +17,6 @@
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
       color: #1e1e2f;
-      transition: background 0.4s ease;
     }
     canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; display: block; }
     .container { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
@@ -34,53 +33,16 @@
       box-shadow: 0 4px 20px rgba(0,0,0,0.06);
     }
     .nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-    .logo {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.8rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .nav-links { display: flex; list-style: none; gap: 2rem; }
-    .nav-links a { text-decoration: none; color: #2d2d3a; font-weight: 600; transition: color 0.2s; position: relative; }
-    .nav-links a:hover { color: #667eea; }
-    .nav-links a::after {
-      content: ''; position: absolute; width: 0%; height: 2px; bottom: -6px; left: 0;
-      background: linear-gradient(135deg, #667eea, #764ba2); transition: 0.25s;
-    }
-    .nav-links a:hover::after { width: 100%; }
-    .toggle-btn {
-      background: rgba(255,255,255,0.9); border: 1px solid #ddd; border-radius: 60px;
-      padding: 8px 18px; cursor: pointer; font-size: 1.2rem; font-weight: 600; transition: all 0.2s ease;
-    }
-    .toggle-btn:hover { background: #667eea; color: white; transform: scale(0.97); }
+    .logo { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 
     /* Hero */
     .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; color: white; }
     .hero-content h1 { font-family: 'Syne', sans-serif; font-size: clamp(2.5rem, 6vw, 4.8rem); font-weight: 800; margin-bottom: 1rem; }
-    .hero-subtitle { font-size: clamp(1.2rem, 3vw, 1.9rem); margin-bottom: 1.2rem; font-weight: 500; }
-    .hero-description { font-size: 1.1rem; max-width: 700px; margin: 0 auto 2.5rem; opacity: 0.9; }
-    .cta-buttons { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
-    .btn {
-      padding: 14px 32px; font-size: 1rem; font-weight: 600; border-radius: 50px; cursor: pointer;
-      text-decoration: none; transition: all 0.25s ease; display: inline-flex; align-items: center; gap: 10px; border: none;
-    }
-    .btn-primary { background: rgba(255,255,255,0.18); color: white; border: 1px solid rgba(255,255,255,0.3); }
-    .btn-primary:hover { background: white; color: #4a4a6a; transform: translateY(-3px); box-shadow: 0 14px 28px rgba(0,0,0,0.2); }
-    .btn-secondary { background: rgba(255,255,255,0.08); color: white; border: 1px solid rgba(255,255,255,0.25); }
-    .btn-secondary:hover { background: rgba(255,255,255,0.25); transform: translateY(-3px); }
 
     /* Skills Section */
     .skills-section { padding: 100px 0 80px; background: rgba(255,255,255,0.96); backdrop-filter: blur(4px); border-radius: 48px 48px 0 0; margin-top: 20px; }
-    .section-title {
-      font-family: 'Syne', sans-serif; text-align: center; font-size: 2.8rem; font-weight: 800; margin-bottom: 3rem;
-      background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-    }
     .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 900px; margin: 0 auto; }
-    .skill-card { background: white; padding: 2rem; border-radius: 28px; box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1); text-align: center; transition: all 0.3s; }
-    .skill-card i { font-size: 3rem; margin-bottom: 1rem; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; }
+    .skill-card { background: white; padding: 2rem; border-radius: 28px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
 
     /* Chat widget */
     #ai-chat-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; }
@@ -101,11 +63,6 @@
   <header class="header">
     <nav class="nav">
       <div class="logo">⚡ Shivam Kumar</div>
-      <ul class="nav-links">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#skills">Skills</a></li>
-      </ul>
-      <button class="toggle-btn" id="toggleBtn">🌞 Day</button>
     </nav>
   </header>
 
@@ -113,23 +70,7 @@
     <div class="container">
       <div class="hero-content">
         <h1>Crafting Digital Excellence</h1>
-        <p class="hero-subtitle">Advanced Java Full Stack Developer</p>
-        <p class="hero-description">
-          I'm <strong>Shivam Kumar</strong> — Java expert, React architect, and problem solver.
-        </p>
-        <div class="cta-buttons">
-          <a href="#skills" class="btn btn-primary">Explore Work</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="skills-section" id="skills">
-    <div class="container">
-      <h2 class="section-title">⚙️ Tech Stack & Mastery</h2>
-      <div class="skills-grid">
-        <div class="skill-card"><i class="fab fa-java"></i><h3>Java</h3><p>Microservices & Security</p></div>
-        <div class="skill-card"><i class="fab fa-react"></i><h3>React</h3><p>Modern Web Apps</p></div>
+        <p>Java Full Stack Developer | AI Enthusiast</p>
       </div>
     </div>
   </section>
@@ -137,8 +78,13 @@
   <div id="ai-chat-container">
     <button id="chat-toggle"><i class="fas fa-robot"></i></button>
     <div id="chat-window">
-      <div class="chat-header"><span>🤖 Shivam AI Assistant</span><i class="fas fa-times" id="close-chat" style="cursor:pointer;"></i></div>
-      <div id="chat-messages"><div class="chat-message ai">Hi! I'm Shivam's AI. Ask me about his React or Firebase skills!</div></div>
+      <div class="chat-header">
+        <span>🤖 Shivam AI Assistant</span>
+        <i class="fas fa-times" id="close-chat" style="cursor:pointer;"></i>
+      </div>
+      <div id="chat-messages">
+        <div class="chat-message ai">Hi! Ask me anything about Shivam's projects!</div>
+      </div>
       <div style="display: flex; padding: 12px; gap: 8px; background: white; border-top: 1px solid #ddd;">
         <input type="text" id="user-input" placeholder="Ask me..." style="flex:1; padding: 10px; border-radius: 30px; border: 1px solid #ccc; outline: none;">
         <button id="send-btn" style="background: #667eea; border: none; border-radius: 30px; width: 44px; color: white;"><i class="fas fa-paper-plane"></i></button>
@@ -149,10 +95,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   
   <script type="module">
-    // IMPORT your specific function from gemini.js
     import { askAI } from './gemini.js';
 
-    // --- Background (Three.js) ---
+    // --- Background Logic ---
     const canvas = document.getElementById('bgCanvas');
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -167,10 +112,21 @@
     function animate() { requestAnimationFrame(animate); particles.rotation.y += 0.001; renderer.render(scene, camera); }
     animate();
 
-    // --- AI CHAT INTERACTION ---
+    // --- CHAT UI LOGIC ---
+    const chatWindow = document.getElementById('chat-window');
+    const chatToggle = document.getElementById('chat-toggle');
+    const closeChat = document.getElementById('close-chat');
     const chatMessagesDiv = document.getElementById('chat-messages');
     const userInputField = document.getElementById('user-input');
     const sendBtn = document.getElementById('send-btn');
+
+    // OPEN/CLOSE TOGGLE (FIXED)
+    chatToggle.onclick = () => {
+      chatWindow.style.display = (chatWindow.style.display === 'flex') ? 'none' : 'flex';
+    };
+    closeChat.onclick = () => {
+      chatWindow.style.display = 'none';
+    };
 
     const addMsg = (txt, isUser) => {
       const d = document.createElement('div');
@@ -181,7 +137,7 @@
       return d;
     };
 
-    sendBtn.addEventListener('click', async () => {
+    sendBtn.onclick = async () => {
       const val = userInputField.value.trim();
       if(!val) return;
 
@@ -191,23 +147,16 @@
       const loadingBubble = addMsg("Thinking...", false);
 
       try {
-        // CALLING THE askAI FUNCTION FROM YOUR gemini.js
+        // Correctly calls your askAI export from gemini.js
         const reply = await askAI(val);
         loadingBubble.innerText = reply;
       } catch (e) {
-        loadingBubble.innerText = "Error connecting to AI. Please try again.";
+        loadingBubble.innerText = "Error: Could not reach the AI. Check gemini.js.";
+        console.error(e);
       }
-    });
-
-    // Enter Key Support
-    userInputField.addEventListener("keypress", (e) => { if (e.key === "Enter") sendBtn.click(); });
-
-    // UI Toggle logic
-    document.getElementById('chat-toggle').onclick = () => {
-      const win = document.getElementById('chat-window');
-      win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
     };
-    document.getElementById('close-chat').onclick = () => { document.getElementById('chat-window').style.display = 'none'; };
+
+    userInputField.onkeypress = (e) => { if(e.key === "Enter") sendBtn.click(); };
   </script>
 </body>
 </html>
