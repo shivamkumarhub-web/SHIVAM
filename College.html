@@ -1,0 +1,2392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal International University — Excellence in Education</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --navy: #0a1628;
+            --navy-deep: #060e1a;
+            --navy-light: #12243d;
+            --navy-surface: #162a4a;
+            --gold: #c8a951;
+            --gold-light: #e5d08e;
+            --gold-dim: #8a7535;
+            --maroon: #7b2d26;
+            --white: #ffffff;
+            --off-white: #f7f5f0;
+            --cream: #ede8dd;
+            --text-dark: #1a1a1a;
+            --text-body: #3d3d3d;
+            --text-muted: #6b6b6b;
+            --border-light: #e2ddd3;
+            --font-heading: 'Playfair Display', Georgia, serif;
+            --font-body: 'Source Sans 3', 'Segoe UI', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --shadow-sm: 0 2px 8px rgba(10,22,40,0.06);
+            --shadow-md: 0 8px 30px rgba(10,22,40,0.1);
+            --shadow-lg: 0 20px 60px rgba(10,22,40,0.15);
+        }
+
+        html { scroll-behavior: smooth; font-size: 16px; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--off-white);
+            color: var(--text-body);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        ::selection { background: var(--navy); color: var(--gold-light); }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+        button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+        /* ========== TOP BAR ========== */
+        .top-bar {
+            background: var(--navy-deep);
+            padding: 0.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.6);
+            border-bottom: 1px solid rgba(200,169,81,0.15);
+        }
+
+        .top-bar-left { display: flex; gap: 1.5rem; align-items: center; }
+        .top-bar-left a { color: rgba(255,255,255,0.6); transition: color 0.3s; }
+        .top-bar-left a:hover { color: var(--gold); }
+        .top-bar-left span { display: flex; align-items: center; gap: 0.4rem; }
+
+        .top-bar-right { display: flex; gap: 1rem; align-items: center; }
+        .top-bar-right a {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.7rem;
+            letter-spacing: 0.05em;
+            transition: color 0.3s;
+        }
+        .top-bar-right a:hover { color: var(--gold); }
+
+        /* ========== HEADER / NAV ========== */
+        .header {
+            background: var(--navy);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+        }
+
+        .nav-logo { display: flex; align-items: center; gap: 1rem; }
+        .nav-logo-icon {
+            width: 50px; height: 50px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dim) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--navy);
+        }
+        .nav-logo-text h1 {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--white);
+            line-height: 1.2;
+        }
+        .nav-logo-text span {
+            font-family: var(--font-mono);
+            font-size: 0.55rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        .nav-menu { display: flex; align-items: center; gap: 0; height: 100%; }
+
+        .nav-item {
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-item > a {
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.85);
+            padding: 0 1.2rem;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: color 0.3s;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-item > a::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 3px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-item:hover > a { color: var(--gold); }
+        .nav-item:hover > a::after { width: 70%; }
+
+        /* Dropdown */
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 240px;
+            background: var(--white);
+            box-shadow: var(--shadow-lg);
+            border-top: 3px solid var(--gold);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .nav-item:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 0.8rem 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-body);
+            border-bottom: 1px solid #f0ece3;
+            transition: all 0.2s;
+        }
+
+        .dropdown a:hover {
+            background: var(--navy);
+            color: var(--gold);
+            padding-left: 2rem;
+        }
+
+        .nav-apply {
+            font-family: var(--font-body) !important;
+            font-size: 0.8rem !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.1em !important;
+            text-transform: uppercase;
+            padding: 0.7rem 1.8rem !important;
+            background: var(--gold) !important;
+            color: var(--navy) !important;
+            border-radius: 0;
+            transition: all 0.3s !important;
+            height: auto !important;
+        }
+
+        .nav-apply:hover {
+            background: var(--gold-light) !important;
+            color: var(--navy) !important;
+        }
+
+        .nav-apply::after { display: none !important; }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        .hamburger span {
+            width: 25px; height: 2px;
+            background: var(--white);
+            transition: all 0.3s;
+        }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translateY(5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translateY(-5px); }
+
+        /* ========== HERO ========== */
+        .hero {
+            position: relative;
+            height: 92vh;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute; inset: 0;
+            background:
+                linear-gradient(135deg, rgba(10,22,40,0.88) 0%, rgba(10,22,40,0.5) 50%, rgba(10,22,40,0.3) 100%),
+                url('https://images.unsplash.com/photo-1562774053-701939374585?w=1920&q=80') center/cover no-repeat;
+            animation: heroPan 30s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroPan {
+            0% { transform: scale(1) translateX(0); }
+            100% { transform: scale(1.08) translateX(-2%); }
+        }
+
+        .hero-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            height: 200px;
+            background: linear-gradient(to top, var(--off-white) 0%, transparent 100%);
+        }
+
+        .hero-content {
+            position: relative; z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            width: 100%;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.5rem 1.2rem;
+            background: rgba(200,169,81,0.15);
+            border: 1px solid rgba(200,169,81,0.3);
+            color: var(--gold);
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.3s forwards;
+        }
+
+        .hero-badge-dot {
+            width: 6px; height: 6px;
+            background: var(--gold);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.3); }
+        }
+
+        .hero-title {
+            font-family: var(--font-heading);
+            font-size: clamp(2.8rem, 6vw, 5rem);
+            font-weight: 600;
+            color: var(--white);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            max-width: 700px;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.5s forwards;
+        }
+
+        .hero-title em {
+            color: var(--gold-light);
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        .hero-desc {
+            font-size: 1.15rem;
+            font-weight: 300;
+            color: rgba(255,255,255,0.75);
+            max-width: 550px;
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.7s forwards;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.9s forwards;
+        }
+
+        .btn-gold {
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 1rem 2.5rem;
+            background: var(--gold);
+            color: var(--navy);
+            border: 2px solid var(--gold);
+            transition: all 0.3s ease;
+        }
+        .btn-gold:hover {
+            background: var(--gold-light);
+            border-color: var(--gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(200,169,81,0.3);
+        }
+
+        .btn-ghost {
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 1rem 2.5rem;
+            background: transparent;
+            color: var(--white);
+            border: 2px solid rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-ghost:hover {
+            border-color: var(--white);
+            background: rgba(255,255,255,0.1);
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== QUICK LINKS STRIP ========== */
+        .quick-links {
+            background: var(--white);
+            margin-top: -50px;
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: var(--shadow-lg);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .quick-link {
+            padding: 2rem;
+            text-align: center;
+            border-right: 1px solid var(--border-light);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .quick-link:last-child { border-right: none; }
+        .quick-link:hover { background: var(--navy); }
+
+        .quick-link-icon {
+            width: 50px; height: 50px;
+            margin: 0 auto 1rem;
+            border: 2px solid var(--gold-dim);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .quick-link:hover .quick-link-icon { border-color: var(--gold); }
+
+        .quick-link-icon svg {
+            width: 22px; height: 22px;
+            stroke: var(--navy);
+            fill: none;
+            stroke-width: 1.5;
+            transition: stroke 0.3s;
+        }
+
+        .quick-link:hover .quick-link-icon svg { stroke: var(--gold); }
+
+        .quick-link h4 {
+            font-family: var(--font-heading);
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 0.3rem;
+            transition: color 0.3s;
+        }
+
+        .quick-link:hover h4 { color: var(--gold); }
+
+        .quick-link p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            transition: color 0.3s;
+        }
+
+        .quick-link:hover p { color: rgba(255,255,255,0.6); }
+
+        /* ========== ABOUT ========== */
+        .section { padding: 6rem 2rem; }
+        .section-inner { max-width: 1200px; margin: 0 auto; }
+
+        .section-header-center {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .section-label::before,
+        .section-label::after {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--gold-dim);
+        }
+
+        .section-heading {
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 600;
+            color: var(--navy);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .section-heading em { font-style: italic; color: var(--gold); }
+
+        .section-subtitle {
+            font-size: 1.05rem;
+            font-weight: 300;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image-wrap {
+            position: relative;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .about-image-accent {
+            position: absolute;
+            bottom: -20px; right: -20px;
+            width: 200px; height: 200px;
+            border: 3px solid var(--gold);
+            z-index: -1;
+        }
+
+        .about-image-stat {
+            position: absolute;
+            bottom: 30px; left: -30px;
+            background: var(--navy);
+            padding: 1.5rem 2rem;
+            color: var(--white);
+            box-shadow: var(--shadow-md);
+        }
+
+        .about-image-stat .num {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gold);
+            line-height: 1;
+        }
+
+        .about-image-stat .label {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .about-content h3 {
+            font-family: var(--font-heading);
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: var(--navy);
+            line-height: 1.25;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-content h3 em { font-style: italic; color: var(--gold); }
+
+        .about-content p {
+            font-size: 1rem;
+            color: var(--text-body);
+            line-height: 1.8;
+            margin-bottom: 1.2rem;
+        }
+
+        .about-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .about-feat {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .about-feat-check {
+            width: 24px; height: 24px;
+            background: var(--navy);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .about-feat-check svg {
+            width: 12px; height: 12px;
+            stroke: var(--gold);
+            fill: none;
+            stroke-width: 3;
+        }
+
+        .about-feat span {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        /* ========== PROGRAMS ========== */
+        .programs-section { background: var(--white); }
+
+        .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .program-card {
+            background: var(--off-white);
+            border: 1px solid var(--border-light);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .program-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--gold);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .program-card:hover::before { transform: scaleX(1); }
+        .program-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--gold);
+        }
+
+        .program-icon {
+            width: 70px; height: 70px;
+            margin: 0 auto 1.5rem;
+            background: var(--navy);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .program-card:hover .program-icon { background: var(--gold); }
+
+        .program-icon svg {
+            width: 30px; height: 30px;
+            stroke: var(--gold);
+            fill: none;
+            stroke-width: 1.5;
+            transition: stroke 0.3s;
+        }
+
+        .program-card:hover .program-icon svg { stroke: var(--navy); }
+
+        .program-card h3 {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 0.8rem;
+        }
+
+        .program-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .program-link {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: gap 0.3s;
+        }
+
+        .program-card:hover .program-link { gap: 1rem; }
+
+        /* ========== STATS ========== */
+        .stats-section {
+            background:
+                linear-gradient(135deg, rgba(10,22,40,0.92) 0%, rgba(22,42,74,0.95) 100%),
+                url('https://images.unsplash.com/photo-1523050854058-8df90110c476?w=1920&q=80') center/cover;
+            padding: 5rem 2rem;
+        }
+
+        .stats-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .stat-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0; top: 20%;
+            height: 60%; width: 1px;
+            background: rgba(200,169,81,0.2);
+        }
+
+        .stat-num {
+            font-family: var(--font-heading);
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--gold);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* ========== CAMPUS LIFE ========== */
+        .campus-section { background: var(--off-white); }
+
+        .campus-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .campus-card {
+            position: relative;
+            overflow: hidden;
+            height: 350px;
+            cursor: pointer;
+        }
+
+        .campus-card img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .campus-card:hover img { transform: scale(1.08); }
+
+        .campus-card-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(10,22,40,0.85) 0%, rgba(10,22,40,0.2) 50%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2rem;
+        }
+
+        .campus-card-overlay h3 {
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 0.4rem;
+        }
+
+        .campus-card-overlay p {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .campus-card:nth-child(1) { grid-column: span 2; height: 400px; }
+
+        /* ========== FACULTY ========== */
+        .faculty-section { background: var(--white); }
+
+        .faculty-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .faculty-card {
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .faculty-card:hover { transform: translateY(-5px); }
+
+        .faculty-photo-wrap {
+            position: relative;
+            width: 180px; height: 180px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--border-light);
+            transition: border-color 0.3s;
+        }
+
+        .faculty-card:hover .faculty-photo-wrap { border-color: var(--gold); }
+
+        .faculty-photo-wrap img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+
+        .faculty-card h4 {
+            font-family: var(--font-heading);
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 0.3rem;
+        }
+
+        .faculty-card .position {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.8rem;
+        }
+
+        .faculty-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            padding: 0 0.5rem;
+        }
+
+        /* ========== ADMISSIONS CTA ========== */
+        .admissions-section {
+            background:
+                linear-gradient(135deg, var(--navy) 0%, var(--navy-surface) 100%);
+            padding: 5rem 2rem;
+        }
+
+        .admissions-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .admissions-content h2 {
+            font-family: var(--font-heading);
+            font-size: 2.8rem;
+            font-weight: 600;
+            color: var(--white);
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .admissions-content h2 em { color: var(--gold-light); font-style: italic; }
+
+        .admissions-content p {
+            font-size: 1.05rem;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .admissions-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .admission-step {
+            display: flex;
+            gap: 1.2rem;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            width: 40px; height: 40px;
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--gold);
+            flex-shrink: 0;
+        }
+
+        .step-text h5 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 0.2rem;
+        }
+
+        .step-text p {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+            margin: 0;
+        }
+
+        .admissions-deadlines {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(200,169,81,0.2);
+            padding: 2.5rem;
+        }
+
+        .admissions-deadlines h3 {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 2rem;
+        }
+
+        .deadline-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .deadline-item:last-child { border-bottom: none; }
+
+        .deadline-label {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .deadline-date {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--gold);
+            letter-spacing: 0.05em;
+        }
+
+        .deadline-status {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.3rem 0.8rem;
+            border-radius: 2px;
+        }
+
+        .status-open {
+            background: rgba(76,175,80,0.2);
+            color: #6fcf73;
+            border: 1px solid rgba(76,175,80,0.3);
+        }
+
+        .status-closing {
+            background: rgba(255,152,0,0.15);
+            color: #ffb74d;
+            border: 1px solid rgba(255,152,0,0.3);
+        }
+
+        .status-closed {
+            background: rgba(244,67,54,0.15);
+            color: #ef9a9a;
+            border: 1px solid rgba(244,67,54,0.3);
+        }
+
+        /* ========== EVENTS / NEWS ========== */
+        .events-section { background: var(--off-white); }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .event-featured {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: var(--white);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow 0.3s;
+        }
+
+        .event-featured:hover { box-shadow: var(--shadow-md); }
+
+        .event-featured-img {
+            height: 100%;
+            min-height: 350px;
+        }
+
+        .event-featured-img img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+
+        .event-featured-content {
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .event-tag {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.8rem;
+        }
+
+        .event-featured-content h3 {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .event-featured-content p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .event-meta {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .events-sidebar { display: flex; flex-direction: column; gap: 1rem; }
+
+        .event-small {
+            display: flex;
+            gap: 1rem;
+            background: var(--white);
+            padding: 1.2rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s;
+        }
+
+        .event-small:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateX(5px);
+        }
+
+        .event-date-box {
+            width: 60px; height: 60px;
+            background: var(--navy);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .event-date-box .day {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--gold);
+            line-height: 1;
+        }
+
+        .event-date-box .month {
+            font-family: var(--font-mono);
+            font-size: 0.5rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .event-small-info h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 0.3rem;
+            line-height: 1.3;
+        }
+
+        .event-small-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* ========== TESTIMONIALS ========== */
+        .testimonials-section {
+            background:
+                linear-gradient(135deg, var(--navy) 0%, var(--navy-surface) 100%);
+            padding: 5rem 2rem;
+        }
+
+        .testimonials-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(200,169,81,0.15);
+            padding: 2.5rem;
+            transition: all 0.3s;
+        }
+
+        .testimonial-card:hover {
+            border-color: var(--gold);
+            background: rgba(200,169,81,0.08);
+        }
+
+        .testimonial-quote {
+            font-family: var(--font-heading);
+            font-size: 3rem;
+            color: var(--gold);
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-card > p {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.75);
+            line-height: 1.8;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .testimonial-avatar {
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--gold-dim);
+        }
+
+        .testimonial-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+        .testimonial-author-info strong {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .testimonial-author-info span {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            color: var(--gold);
+            text-transform: uppercase;
+        }
+
+        /* ========== CONTACT ========== */
+        .contact-section { background: var(--white); }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-form h3 {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-form input,
+        .contact-form textarea,
+        .contact-form select {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            border: 1px solid var(--border-light);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            background: var(--off-white);
+            transition: border-color 0.3s;
+            outline: none;
+            margin-bottom: 1rem;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus,
+        .contact-form select:focus {
+            border-color: var(--gold);
+        }
+
+        .contact-form textarea { resize: vertical; min-height: 120px; }
+
+        .contact-form select { -webkit-appearance: none; cursor: pointer; }
+
+        .contact-submit {
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 1rem 3rem;
+            background: var(--navy);
+            color: var(--white);
+            border: 2px solid var(--navy);
+            transition: all 0.3s;
+        }
+
+        .contact-submit:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--navy);
+        }
+
+        .contact-info-cards { display: flex; flex-direction: column; gap: 1.5rem; }
+
+        .contact-card {
+            display: flex;
+            gap: 1.2rem;
+            padding: 1.5rem;
+            background: var(--off-white);
+            border: 1px solid var(--border-light);
+            transition: all 0.3s;
+        }
+
+        .contact-card:hover {
+            border-color: var(--gold);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .contact-card-icon {
+            width: 50px; height: 50px;
+            background: var(--navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .contact-card-icon svg {
+            width: 20px; height: 20px;
+            stroke: var(--gold);
+            fill: none;
+            stroke-width: 1.5;
+        }
+
+        .contact-card-text h4 {
+            font-family: var(--font-heading);
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 0.3rem;
+        }
+
+        .contact-card-text p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .contact-card-text a {
+            color: var(--gold);
+            transition: color 0.3s;
+        }
+
+        .contact-card-text a:hover { color: var(--navy); }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            background: var(--navy-deep);
+            border-top: 3px solid var(--gold);
+        }
+
+        .footer-main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem 3rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1.2fr;
+            gap: 2.5rem;
+        }
+
+        .footer-brand h3 {
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand p {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-social { display: flex; gap: 0.8rem; }
+
+        .footer-social a {
+            width: 36px; height: 36px;
+            border: 1px solid rgba(200,169,81,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .footer-social a:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+        }
+
+        .footer-social a svg {
+            width: 16px; height: 16px;
+            fill: var(--gold);
+            transition: fill 0.3s;
+        }
+
+        .footer-social a:hover svg { fill: var(--navy); }
+
+        .footer-col h4 {
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 1.2rem;
+        }
+
+        .footer-col ul li { margin-bottom: 0.6rem; }
+
+        .footer-col ul li a {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .footer-col ul li a:hover { color: var(--gold); padding-left: 0.3rem; }
+
+        .footer-newsletter p {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 1rem;
+        }
+
+        .footer-newsletter-form {
+            display: flex;
+        }
+
+        .footer-newsletter-form input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(200,169,81,0.2);
+            color: var(--white);
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        .footer-newsletter-form input:focus { border-color: var(--gold); }
+
+        .footer-newsletter-form button {
+            padding: 0.8rem 1.5rem;
+            background: var(--gold);
+            color: var(--navy);
+            border: 1px solid var(--gold);
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .footer-newsletter-form button:hover {
+            background: var(--gold-light);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 1.5rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-bottom p {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.35);
+        }
+
+        .footer-bottom a { color: var(--gold); }
+        .footer-bottom a:hover { color: var(--gold-light); }
+
+        .dev-badge-footer {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.08em;
+            color: rgba(255,255,255,0.4);
+            padding: 0.4rem 1rem;
+            border: 1px solid rgba(200,169,81,0.15);
+            transition: border-color 0.3s;
+        }
+
+        .dev-badge-footer:hover { border-color: var(--gold-dim); }
+        .dev-badge-footer strong { color: var(--gold); }
+
+        /* ========== BACK TO TOP ========== */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem; right: 2rem;
+            width: 45px; height: 45px;
+            background: var(--navy);
+            border: 1px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            opacity: 0; visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s;
+        }
+
+        .back-to-top.visible {
+            opacity: 1; visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover { background: var(--gold); }
+
+        .back-to-top svg {
+            width: 18px; height: 18px;
+            stroke: var(--gold);
+            fill: none;
+            stroke-width: 2;
+            transition: stroke 0.3s;
+        }
+
+        .back-to-top:hover svg { stroke: var(--navy); }
+
+        /* ========== SCROLL REVEAL ========== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(35px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-d1 { transition-delay: 0.1s; }
+        .reveal-d2 { transition-delay: 0.2s; }
+        .reveal-d3 { transition-delay: 0.3s; }
+        .reveal-d4 { transition-delay: 0.4s; }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1024px) {
+            .programs-grid { grid-template-columns: repeat(2, 1fr); }
+            .faculty-grid { grid-template-columns: repeat(2, 1fr); }
+            .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-main { grid-template-columns: repeat(3, 1fr); }
+            .stats-grid { grid-template-columns: repeat(3, 1fr); }
+            .stat-item:nth-child(3)::after { display: none; }
+            .admissions-inner { grid-template-columns: 1fr; }
+            .events-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .top-bar { display: none; }
+            .nav-menu { display: none; }
+            .hamburger { display: flex; }
+            .hero { height: 80vh; }
+            .hero-content { padding: 0 1.5rem; }
+            .section { padding: 4rem 1.5rem; }
+            .quick-links { grid-template-columns: repeat(2, 1fr); margin-left: 1rem; margin-right: 1rem; }
+            .quick-link:nth-child(2) { border-right: none; }
+            .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .about-image-stat { left: 20px; }
+            .programs-grid { grid-template-columns: 1fr; }
+            .campus-grid { grid-template-columns: 1fr; }
+            .campus-card:nth-child(1) { grid-column: span 1; height: 300px; }
+            .campus-card { height: 250px; }
+            .faculty-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .event-featured { grid-template-columns: 1fr; }
+            .event-featured-img { min-height: 200px; }
+            .footer-main { grid-template-columns: 1fr 1fr; }
+            .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .stat-item::after { display: none !important; }
+            .nav-container { padding: 0 1rem; }
+        }
+
+        @media (max-width: 480px) {
+            .quick-links { grid-template-columns: 1fr; }
+            .quick-link { border-right: none; border-bottom: 1px solid var(--border-light); }
+            .hero-actions { flex-direction: column; }
+            .hero-actions a { text-align: center; }
+            .faculty-grid { grid-template-columns: 1fr; }
+            .testimonials-grid { grid-template-columns: 1fr; }
+            .footer-main { grid-template-columns: 1fr; }
+            .about-features { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Knowledge Park, Academic City, New Delhi 110025
+            </span>
+            <a href="tel:+916281382297">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.11 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.58 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                +91 6281382297
+            </a>
+            <a href="mailto:shivamkumarhub@gmail.com">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                shivamkumarhub@gmail.com
+            </a>
+        </div>
+        <div class="top-bar-right">
+            <a href="#">Alumni Portal</a>
+            <a href="#">Student Login</a>
+            <a href="#">Faculty Login</a>
+            <a href="#">Library</a>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <div class="nav-logo-icon">RI</div>
+                <div class="nav-logo-text">
+                    <h1>Royal International</h1>
+                    <span>University &mdash; Est. 1998</span>
+                </div>
+            </a>
+
+            <nav class="nav-menu">
+                <div class="nav-item">
+                    <a href="#">About</a>
+                    <div class="dropdown">
+                        <a href="#">About the University</a>
+                        <a href="#">Vision & Mission</a>
+                        <a href="#">Leadership</a>
+                        <a href="#">History & Heritage</a>
+                        <a href="#">Campus Tour</a>
+                        <a href="#">Accreditation</a>
+                    </div>
+                </div>
+                <div class="nav-item">
+                    <a href="#programs">Academics</a>
+                    <div class="dropdown">
+                        <a href="#">Undergraduate Programs</a>
+                        <a href="#">Postgraduate Programs</a>
+                        <a href="#">Doctoral Programs</a>
+                        <a href="#">Diploma & Certificates</a>
+                        <a href="#">Distance Learning</a>
+                        <a href="#">Academic Calendar</a>
+                    </div>
+                </div>
+                <div class="nav-item">
+                    <a href="#campus">Campus Life</a>
+                    <div class="dropdown">
+                        <a href="#">Student Clubs</a>
+                        <a href="#">Sports & Athletics</a>
+                        <a href="#">Hostel & Housing</a>
+                        <a href="#">Health Services</a>
+                        <a href="#">Cafeteria & Dining</a>
+                    </div>
+                </div>
+                <div class="nav-item">
+                    <a href="#">Research</a>
+                    <div class="dropdown">
+                        <a href="#">Research Centers</a>
+                        <a href="#">Publications</a>
+                        <a href="#">Innovation Hub</a>
+                        <a href="#">Industry Partnerships</a>
+                    </div>
+                </div>
+                <div class="nav-item">
+                    <a href="#events">News & Events</a>
+                </div>
+                <div class="nav-item">
+                    <a href="#contact">Contact</a>
+                </div>
+                <div class="nav-item">
+                    <a href="#admissions" class="nav-apply">Apply Now</a>
+                </div>
+            </nav>
+
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu" style="position:fixed;inset:0;background:var(--navy);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;opacity:0;visibility:hidden;transition:all 0.4s;">
+        <a href="#about" onclick="closeMobile()" style="font-family:var(--font-heading);font-size:1.8rem;color:var(--white);">About</a>
+        <a href="#programs" onclick="closeMobile()" style="font-family:var(--font-heading);font-size:1.8rem;color:var(--white);">Academics</a>
+        <a href="#campus" onclick="closeMobile()" style="font-family:var(--font-heading);font-size:1.8rem;color:var(--white);">Campus Life</a>
+        <a href="#faculty" onclick="closeMobile()" style="font-family:var(--font-heading);font-size:1.8rem;color:var(--white);">Faculty</a>
+        <a href="#admissions" onclick="closeMobile()" style="font-family:var(--font-heading);font-size:1.8rem;color:var(--white);">Admissions</a>
+        <a href="#events" onclick="closeMobile()" style="font-family:var(--font-heading);font-size:1.8rem;color:var(--white);">News</a>
+        <a href="#contact" onclick="closeMobile()" style="font-family:var(--font-heading);font-size:1.8rem;color:var(--white);">Contact</a>
+        <a href="#admissions" onclick="closeMobile()" style="font-family:var(--font-body);font-size:0.85rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.8rem 2.5rem;background:var(--gold);color:var(--navy);">Apply Now</a>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="hero-badge-dot"></span>
+                Admissions Open 2025-26
+            </div>
+            <h1 class="hero-title">Shaping Minds,<br>Building <em>Futures</em></h1>
+            <p class="hero-desc">Ranked among India's top universities, Royal International offers world-class education, cutting-edge research facilities, and a vibrant campus community that transforms students into global leaders.</p>
+            <div class="hero-actions">
+                <a href="#admissions" class="btn-gold">Apply for Admission</a>
+                <a href="#about" class="btn-ghost">Explore Campus</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUICK LINKS -->
+    <div class="quick-links">
+        <div class="quick-link">
+            <div class="quick-link-icon">
+                <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            </div>
+            <h4>Programs</h4>
+            <p>180+ courses across 12 faculties</p>
+        </div>
+        <div class="quick-link">
+            <div class="quick-link-icon">
+                <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <h4>Admissions</h4>
+            <p>Apply now for 2025-26 batch</p>
+        </div>
+        <div class="quick-link">
+            <div class="quick-link-icon">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+            </div>
+            <h4>Research</h4>
+            <p>500+ publications annually</p>
+        </div>
+        <div class="quick-link">
+            <div class="quick-link-icon">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <h4>Placements</h4>
+            <p>95% placement record</p>
+        </div>
+    </div>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+        <div class="section-inner">
+            <div class="about-grid">
+                <div class="about-image-wrap reveal">
+                    <img class="about-image" src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&q=80" alt="University campus building with students" loading="lazy" onerror="this.style.background='var(--navy-light)';this.alt='Campus';">
+                    <div class="about-image-accent"></div>
+                    <div class="about-image-stat">
+                        <div class="num">27</div>
+                        <div class="label">Years of Excellence</div>
+                    </div>
+                </div>
+                <div class="about-content reveal reveal-d1">
+                    <div class="section-label" style="justify-content:flex-start;"><span style="display:none;"></span>About Us</div>
+                    <h3>A Tradition of <em>Academic Excellence</em> Since 1998</h3>
+                    <p>Royal International University stands as a beacon of higher education, nurturing intellectual curiosity and fostering innovation across disciplines. Our 200-acre campus provides an inspiring environment where students discover their potential.</p>
+                    <p>With a faculty of 850+ distinguished professors, state-of-the-art laboratories, and partnerships with 120+ global institutions, we prepare graduates who lead with knowledge, integrity, and vision.</p>
+                    <div class="about-features">
+                        <div class="about-feat">
+                            <div class="about-feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                            <span>NAAC A++ Accredited</span>
+                        </div>
+                        <div class="about-feat">
+                            <div class="about-feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                            <span>UGC Recognized</span>
+                        </div>
+                        <div class="about-feat">
+                            <div class="about-feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                            <span>120+ Global Partners</span>
+                        </div>
+                        <div class="about-feat">
+                            <div class="about-feat-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                            <span>NIRF Top 50 Ranked</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROGRAMS -->
+    <section class="section programs-section" id="programs">
+        <div class="section-inner">
+            <div class="section-header-center">
+                <div class="section-label">Academic Programs</div>
+                <h2 class="section-heading">World-Class <em>Education</em> Across Disciplines</h2>
+                <p class="section-subtitle">Our diverse range of undergraduate, postgraduate, and doctoral programs are designed to meet the demands of a rapidly evolving global landscape.</p>
+            </div>
+
+            <div class="programs-grid">
+                <div class="program-card reveal">
+                    <div class="program-icon">
+                        <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+                    </div>
+                    <h3>Engineering & Technology</h3>
+                    <p>Computer Science, AI & ML, Mechanical, Civil, Electrical, and Electronics Engineering programs.</p>
+                    <span class="program-link">Explore Programs &rarr;</span>
+                </div>
+
+                <div class="program-card reveal reveal-d1">
+                    <div class="program-icon">
+                        <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                    </div>
+                    <h3>Medical & Health Sciences</h3>
+                    <p>MBBS, BDS, Nursing, Pharmacy, Physiotherapy, and Public Health programs.</p>
+                    <span class="program-link">Explore Programs &rarr;</span>
+                </div>
+
+                <div class="program-card reveal reveal-d2">
+                    <div class="program-icon">
+                        <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </div>
+                    <h3>Business & Management</h3>
+                    <p>BBA, MBA, Finance, Marketing, Human Resources, and International Business programs.</p>
+                    <span class="program-link">Explore Programs &rarr;</span>
+                </div>
+
+                <div class="program-card reveal reveal-d3">
+                    <div class="program-icon">
+                        <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    </div>
+                    <h3>Arts & Humanities</h3>
+                    <p>English, History, Psychology, Sociology, Political Science, and Fine Arts programs.</p>
+                    <span class="program-link">Explore Programs &rarr;</span>
+                </div>
+
+                <div class="program-card reveal">
+                    <div class="program-icon">
+                        <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                    </div>
+                    <h3>Law & Legal Studies</h3>
+                    <p>BA LLB, BBA LLB, LLM, and specialized diploma programs in Corporate and Criminal Law.</p>
+                    <span class="program-link">Explore Programs &rarr;</span>
+                </div>
+
+                <div class="program-card reveal reveal-d1">
+                    <div class="program-icon">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    </div>
+                    <h3>Sciences</h3>
+                    <p>Physics, Chemistry, Mathematics, Biotechnology, Environmental Science programs.</p>
+                    <span class="program-link">Explore Programs &rarr;</span>
+                </div>
+
+                <div class="program-card reveal reveal-d2">
+                    <div class="program-icon">
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                    </div>
+                    <h3>Architecture & Design</h3>
+                    <p>B.Arch, Interior Design, Urban Planning, and Sustainable Architecture programs.</p>
+                    <span class="program-link">Explore Programs &rarr;</span>
+                </div>
+
+                <div class="program-card reveal reveal-d3">
+                    <div class="program-icon">
+                        <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                    </div>
+                    <h3>Computer Applications</h3>
+                    <p>BCA, MCA, Data Science, Cyber Security, Cloud Computing, and Full Stack Development.</p>
+                    <span class="program-link">Explore Programs &rarr;</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-item reveal">
+                <div class="stat-num">35,000+</div>
+                <div class="stat-label">Students Enrolled</div>
+            </div>
+            <div class="stat-item reveal reveal-d1">
+                <div class="stat-num">850+</div>
+                <div class="stat-label">Faculty Members</div>
+            </div>
+            <div class="stat-item reveal reveal-d2">
+                <div class="stat-num">180+</div>
+                <div class="stat-label">Programs Offered</div>
+            </div>
+            <div class="stat-item reveal reveal-d3">
+                <div class="stat-num">95%</div>
+                <div class="stat-label">Placement Rate</div>
+            </div>
+            <div class="stat-item reveal reveal-d4">
+                <div class="stat-num">120+</div>
+                <div class="stat-label">Global Partners</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CAMPUS LIFE -->
+    <section class="section campus-section" id="campus">
+        <div class="section-inner">
+            <div class="section-header-center">
+                <div class="section-label">Campus Life</div>
+                <h2 class="section-heading">A Vibrant <em>Community</em> Beyond Classrooms</h2>
+                <p class="section-subtitle">Our 200-acre campus offers world-class facilities, diverse student organizations, and endless opportunities for personal growth.</p>
+            </div>
+
+            <div class="campus-grid">
+                <div class="campus-card reveal">
+                    <img src="https://images.unsplash.com/photo-1562774053-701939374585?w=1200&q=80" alt="University campus aerial view" loading="lazy" onerror="this.style.background='var(--navy-light)';">
+                    <div class="campus-card-overlay">
+                        <h3>State-of-the-Art Campus</h3>
+                        <p>200 acres of lush green campus with modern infrastructure, smart classrooms, and advanced research labs.</p>
+                    </div>
+                </div>
+                <div class="campus-card reveal reveal-d1">
+                    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80" alt="Students in sports activity" loading="lazy" onerror="this.style.background='var(--navy-light)';">
+                    <div class="campus-card-overlay">
+                        <h3>Sports & Athletics</h3>
+                        <p>Olympic-size pool, indoor stadium, and 15+ sports facilities.</p>
+                    </div>
+                </div>
+                <div class="campus-card reveal reveal-d2">
+                    <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&q=80" alt="Students collaborating" loading="lazy" onerror="this.style.background='var(--navy-light)';">
+                    <div class="campus-card-overlay">
+                        <h3>Student Organizations</h3>
+                        <p>80+ clubs, societies, and organizations to nurture every passion.</p>
+                    </div>
+                </div>
+                <div class="campus-card reveal reveal-d1">
+                    <img src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=600&q=80" alt="Student hostel accommodation" loading="lazy" onerror="this.style.background='var(--navy-light)';">
+                    <div class="campus-card-overlay">
+                        <h3>Modern Hostels</h3>
+                        <p>AC rooms, Wi-Fi, recreation areas, and 24/7 security for 8,000+ residents.</p>
+                    </div>
+                </div>
+                <div class="campus-card reveal reveal-d2">
+                    <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80" alt="Library and study area" loading="lazy" onerror="this.style.background='var(--navy-light)';">
+                    <div class="campus-card-overlay">
+                        <h3>Central Library</h3>
+                        <p>500,000+ volumes, digital resources, and 24/7 reading halls.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FACULTY -->
+    <section class="section faculty-section" id="faculty">
+        <div class="section-inner">
+            <div class="section-header-center">
+                <div class="section-label">Our Faculty</div>
+                <h2 class="section-heading">Learn from the <em>Best Minds</em></h2>
+                <p class="section-subtitle">Our distinguished faculty comprises industry leaders, published researchers, and passionate educators committed to student success.</p>
+            </div>
+
+            <div class="faculty-grid">
+                <div class="faculty-card reveal">
+                    <div class="faculty-photo-wrap">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&q=80" alt="Prof. Rajesh Sharma" loading="lazy" onerror="this.style.background='var(--navy-light)';">
+                    </div>
+                    <h4>Prof. Rajesh Sharma</h4>
+                    <p class="position">Dean, Engineering</p>
+                    <p>Ph.D. IIT Delhi. 25+ years in AI research with 150+ publications in top journals.</p>
+                </div>
+                <div class="faculty-card reveal reveal-d1">
+                    <div class="faculty-photo-wrap">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&q=80" alt="Dr. Priya Malhotra" loading="lazy" onerror="this.style.background='var(--navy-light)';">
+                    </div>
+                    <h4>Dr. Priya Malhotra</h4>
+                    <p class="position">Head, Medical Sciences</p>
+                    <p>MD AIIMS. Pioneer in community health research. Padma Shri awardee.</p>
+                </div>
+                <div class="faculty-card reveal reveal-d2">
+                    <div class="faculty-photo-wrap">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&q=80" alt="Prof. Anil Kapoor" loading="lazy" onerror="this.style.background='var(--navy-light)';">
+                    </div>
+                    <h4>Prof. Anil Kapoor</h4>
+                    <p class="position">Director, Business School</p>
+                    <p>MBA Wharton. Former McKinsey partner. Expert in strategic management.</p>
+                </div>
+                <div class="faculty-card reveal reveal-d3">
+                    <div class="faculty-photo-wrap">
+                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&q=80" alt="Dr. Sunita Reddy" loading="lazy" onerror="this.style.background='var(--navy-light)';">
+                    </div>
+                    <h4>Dr. Sunita Reddy</h4>
+                    <p class="position">Head, Law Department</p>
+                    <p>LLM Harvard. Supreme Court advocate. Constitutional law expert.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ADMISSIONS -->
+    <section class="admissions-section" id="admissions">
+        <div class="admissions-inner">
+            <div class="admissions-content reveal">
+                <div class="section-label" style="justify-content:flex-start;color:var(--gold);">Admissions 2025-26</div>
+                <h2>Your Journey to <em>Excellence</em> Begins Here</h2>
+                <p>Join a community of 35,000+ students from 28 countries. Our streamlined admission process ensures you find your perfect program.</p>
+
+                <div class="admissions-steps">
+                    <div class="admission-step">
+                        <div class="step-num">1</div>
+                        <div class="step-text">
+                            <h5>Online Application</h5>
+                            <p>Fill out the application form with your academic details and preferences.</p>
+                        </div>
+                    </div>
+                    <div class="admission-step">
+                        <div class="step-num">2</div>
+                        <div class="step-text">
+                            <h5>Entrance Examination</h5>
+                            <p>Appear for RIUEE or submit valid national-level test scores.</p>
+                        </div>
+                    </div>
+                    <div class="admission-step">
+                        <div class="step-num">3</div>
+                        <div class="step-text">
+                            <h5>Counseling & Admission</h5>
+                            <p>Attend counseling, choose your program, and complete enrollment.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admissions-deadlines reveal reveal-d1">
+                <h3>Important Dates</h3>
+                <div class="deadline-item">
+                    <span class="deadline-label">Application Portal Opens</span>
+                    <span class="deadline-date">Jan 15, 2025</span>
+                    <span class="deadline-status status-open">Open</span>
+                </div>
+                <div class="deadline-item">
+                    <span class="deadline-label">Last Date to Apply (UG)</span>
+                    <span class="deadline-date">Apr 30, 2025</span>
+                    <span class="deadline-status status-open">Open</span>
+                </div>
+                <div class="deadline-item">
+                    <span class="deadline-label">Last Date to Apply (PG)</span>
+                    <span class="deadline-date">May 31, 2025</span>
+                    <span class="deadline-status status-open">Open</span>
+                </div>
+                <div class="deadline-item">
+                    <span class="deadline-label">RIUEE Entrance Exam</span>
+                    <span class="deadline-date">Jun 15, 2025</span>
+                    <span class="deadline-status status-closing">Upcoming</span>
+                </div>
+                <div class="deadline-item">
+                    <span class="deadline-label">Counseling Begins</span>
+                    <span class="deadline-date">Jul 01, 2025</span>
+                    <span class="deadline-status status-closed">Scheduled</span>
+                </div>
+                <div class="deadline-item">
+                    <span class="deadline-label">Session Commences</span>
+                    <span class="deadline-date">Aug 01, 2025</span>
+                    <span class="deadline-status status-closed">Scheduled</span>
+                </div>
+                <a href="#" class="btn-gold" style="display:inline-block;margin-top:2rem;">Start Application</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- EVENTS / NEWS -->
+    <section class="section events-section" id="events">
+        <div class="section-inner">
+            <div class="section-header-center">
+                <div class="section-label">News & Events</div>
+                <h2 class="section-heading">Stay <em>Connected</em></h2>
+                <p class="section-subtitle">Latest happenings, achievements, and upcoming events at Royal International University.</p>
+            </div>
+
+            <div class="events-grid">
+                <div class="event-featured reveal">
+                    <div class="event-featured-img">
+                        <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800&q=80" alt="Annual convocation ceremony" loading="lazy" onerror="this.style.background='var(--navy-light)';this.style.minHeight='100%';">
+                    </div>
+                    <div class="event-featured-content">
+                        <span class="event-tag">Featured Event</span>
+                        <h3>27th Annual Convocation Ceremony 2025</h3>
+                        <p>Honoring 5,000+ graduating students with Chief Guest Hon'ble President of India. Degrees, medals, and awards will be conferred across all faculties.</p>
+                        <div class="event-meta">
+                            <span>March 15, 2025</span>
+                            <span>Main Auditorium</span>
+                            <span>10:00 AM</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="events-sidebar">
+                    <div class="event-small reveal">
+                        <div class="event-date-box">
+                            <span class="day">22</span>
+                            <span class="month">Feb</span>
+                        </div>
+                        <div class="event-small-info">
+                            <h4>International Tech Summit 2025</h4>
+                            <p>3-day conference on AI, Blockchain & Quantum Computing.</p>
+                        </div>
+                    </div>
+                    <div class="event-small reveal reveal-d1">
+                        <div class="event-date-box">
+                            <span class="day">08</span>
+                            <span class="month">Mar</span>
+                        </div>
+                        <div class="event-small-info">
+                            <h4>Cultural Fest — Horizon 2025</h4>
+                            <p>Music, dance, drama, and art from 200+ colleges nationwide.</p>
+                        </div>
+                    </div>
+                    <div class="event-small reveal reveal-d2">
+                        <div class="event-date-box">
+                            <span class="day">10</span>
+                            <span class="month">Mar</span>
+                        </div>
+                        <div class="event-small-info">
+                            <h4>National Moot Court Competition</h4>
+                            <p>Law students compete in simulated courtroom proceedings.</p>
+                        </div>
+                    </div>
+                    <div class="event-small reveal reveal-d3">
+                        <div class="event-date-box">
+                            <span class="day">25</span>
+                            <span class="month">Apr</span>
+                        </div>
+                        <div class="event-small-info">
+                            <h4>Industry-Academia Meet</h4>
+                            <p>Connect with 50+ top recruiters and industry leaders.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials-section">
+        <div class="section-header-center" style="margin-bottom:3rem;">
+            <div class="section-label" style="color:var(--gold);">Testimonials</div>
+            <h2 class="section-heading" style="color:var(--white);">What Our <em>Alumni</em> Say</h2>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card reveal">
+                <div class="testimonial-quote">&ldquo;</div>
+                <p>Royal International University gave me more than a degree — it gave me a vision. The faculty mentorship and research opportunities shaped my career in ways I never imagined.</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80" alt="Arjun Mehta" loading="lazy" onerror="this.style.background='var(--navy-surface)';">
+                    </div>
+                    <div class="testimonial-author-info">
+                        <strong>Arjun Mehta</strong>
+                        <span>Batch 2018 — Software Engineer, Google</span>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card reveal reveal-d1">
+                <div class="testimonial-quote">&ldquo;</div>
+                <p>The medical program is world-class. Clinical exposure from the second year, state-of-the-art simulation labs, and supportive mentors made all the difference.</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" alt="Dr. Kavya Iyer" loading="lazy" onerror="this.style.background='var(--navy-surface)';">
+                    </div>
+                    <div class="testimonial-author-info">
+                        <strong>Dr. Kavya Iyer</strong>
+                        <span>Batch 2016 — Cardiologist, AIIMS</span>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card reveal reveal-d2">
+                <div class="testimonial-quote">&ldquo;</div>
+                <p>The business school's industry connections are unparalleled. I interned at McKinsey through campus placement and launched my startup with university incubation support.</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">
+                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&q=80" alt="Rohan Kapoor" loading="lazy" onerror="this.style.background='var(--navy-surface)';">
+                    </div>
+                    <div class="testimonial-author-info">
+                        <strong>Rohan Kapoor</strong>
+                        <span>Batch 2020 — Founder, TechNova</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section contact-section" id="contact">
+        <div class="section-inner">
+            <div class="section-header-center">
+                <div class="section-label">Get in Touch</div>
+                <h2 class="section-heading">Contact <em>Us</em></h2>
+                <p class="section-subtitle">Have questions about admissions, programs, or campus life? Our team is here to help you.</p>
+            </div>
+
+            <div class="contact-grid">
+                <div class="contact-form reveal">
+                    <h3>Send Us a Message</h3>
+                    <form onsubmit="handleContact(event)">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+                            <input type="text" placeholder="First Name *" required>
+                            <input type="text" placeholder="Last Name *" required>
+                        </div>
+                        <input type="email" placeholder="Email Address *" required>
+                        <input type="tel" placeholder="Phone Number">
+                        <select required>
+                            <option value="">Select Inquiry Type</option>
+                            <option>Admission Inquiry</option>
+                            <option>Program Information</option>
+                            <option>Campus Visit</option>
+                            <option>Scholarship</option>
+                            <option>Placements</option>
+                            <option>Other</option>
+                        </select>
+                        <textarea placeholder="Your Message *" required></textarea>
+                        <button type="submit" class="contact-submit">Send Message</button>
+                    </form>
+                </div>
+
+                <div class="contact-info-cards reveal reveal-d1">
+                    <div class="contact-card">
+                        <div class="contact-card-icon">
+                            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        </div>
+                        <div class="contact-card-text">
+                            <h4>Main Campus</h4>
+                            <p>Royal International University<br>Knowledge Park, Academic City<br>New Delhi, India — 110025</p>
+                        </div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-card-icon">
+                            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.11 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.58 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        </div>
+                        <div class="contact-card-text">
+                            <h4>Phone</h4>
+                            <p><a href="tel:+916281382297">+91 6281382297</a></p>
+                            <p>Mon-Sat: 9:00 AM - 5:00 PM</p>
+                        </div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-card-icon">
+                            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        </div>
+                        <div class="contact-card-text">
+                            <h4>Email</h4>
+                            <p><a href="mailto:shivamkumarhub@gmail.com">shivamkumarhub@gmail.com</a></p>
+                            <p>We respond within 24 hours</p>
+                        </div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-card-icon">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </div>
+                        <div class="contact-card-text">
+                            <h4>Admissions Office Hours</h4>
+                            <p>Monday - Friday: 9:00 AM - 6:00 PM<br>Saturday: 9:00 AM - 1:00 PM<br>Sunday: Closed</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-main">
+            <div class="footer-brand">
+                <h3>Royal International University</h3>
+                <p>A premier institution dedicated to academic excellence, innovative research, and holistic development since 1998.</p>
+                <div class="footer-social">
+                    <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+                    <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+                    <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+                    <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+                    <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19.1c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.43z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#programs">Programs</a></li>
+                    <li><a href="#admissions">Admissions</a></li>
+                    <li><a href="#">Placements</a></li>
+                    <li><a href="#">Research</a></li>
+                    <li><a href="#">IQAC</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Student Life</h4>
+                <ul>
+                    <li><a href="#">Hostel</a></li>
+                    <li><a href="#">Sports</a></li>
+                    <li><a href="#">Clubs</a></li>
+                    <li><a href="#">Library</a></li>
+                    <li><a href="#">Cafeteria</a></li>
+                    <li><a href="#">Transport</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#">Academic Calendar</a></li>
+                    <li><a href="#">Exam Results</a></li>
+                    <li><a href="#">Scholarships</a></li>
+                    <li><a href="#">Anti-Ragging</a></li>
+                    <li><a href="#">NIRF Rankings</a></li>
+                    <li><a href="#">NAAC Report</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col footer-newsletter">
+                <h4>Stay Updated</h4>
+                <p>Get the latest news about admissions, events, and campus updates directly in your inbox.</p>
+                <div class="footer-newsletter-form">
+                    <input type="email" placeholder="Enter your email">
+                    <button>Subscribe</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Royal International University || Shivam Dev Studio . All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a> | <a href="#">Sitemap</a></p>
+            <a href="https://shivamdevstudio.web.app" target="_blank" class="dev-badge-footer">
+                <span style="width:6px;height:6px;background:var(--gold);border-radius:50%;animation:pulse 2s infinite;"></span>
+                Designed by <strong>Shivam Dev Studio</strong>
+            </a>
+            <p><a href="mailto:shivamkumarhub@gmail.com">shivamkumarhub@gmail.com</a> | <a href="tel:+916281382297">+91 6281382297</a></p>
+        </div>
+    </footer>
+
+    <!-- BACK TO TOP -->
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+    </button>
+
+    <script>
+        // ========== HAMBURGER ==========
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileMenu.style.opacity = mobileMenu.style.opacity === '1' ? '0' : '1';
+            mobileMenu.style.visibility = mobileMenu.style.visibility === 'visible' ? 'hidden' : 'visible';
+            document.body.style.overflow = mobileMenu.style.visibility === 'visible' ? 'hidden' : '';
+        });
+        function closeMobile() {
+            hamburger.classList.remove('active');
+            mobileMenu.style.opacity = '0';
+            mobileMenu.style.visibility = 'hidden';
+            document.body.style.overflow = '';
+        }
+
+        // ========== STICKY HEADER SHADOW ==========
+        const header = document.querySelector('.header');
+        window.addEventListener('scroll', () => {
+            header.style.boxShadow = window.scrollY > 50 ? '0 4px 30px rgba(0,0,0,0.3)' : '0 2px 20px rgba(0,0,0,0.2)';
+        });
+
+        // ========== BACK TO TOP ==========
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            backToTop.classList.toggle('visible', window.scrollY > 500);
+        });
+
+        // ========== SCROLL REVEAL ==========
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+        reveals.forEach(el => observer.observe(el));
+
+        // ========== COUNTER ANIMATION ==========
+        function animateCounters() {
+            const statNums = document.querySelectorAll('.stat-num');
+            statNums.forEach(el => {
+                const text = el.textContent;
+                const hasPlus = text.includes('+');
+                const hasPercent = text.includes('%');
+                const numericText = text.replace(/[^0-9.]/g, '');
+                const target = parseFloat(numericText);
+                let current = 0;
+                const increment = target / 60;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    let display = '';
+                    if (target >= 1000) {
+                        display = Math.floor(current).toLocaleString();
+                    } else if (hasPercent) {
+                        display = Math.floor(current);
+                    } else {
+                        display = Math.floor(current);
+                    }
+                    el.textContent = display + (hasPlus ? '+' : '') + (hasPercent ? '%' : '');
+                }, 25);
+            });
+        }
+
+        const statsSection = document.querySelector('.stats-section');
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+        statsObserver.observe(statsSection);
+
+        // ========== CONTACT FORM ==========
+        function handleContact(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('.contact-submit');
+            btn.textContent = 'Message Sent Successfully!';
+            btn.style.background = '#2e7d32';
+            btn.style.borderColor = '#2e7d32';
+            btn.style.color = '#fff';
+            setTimeout(() => {
+                btn.textContent = 'Send Message';
+                btn.style.background = '';
+                btn.style.borderColor = '';
+                btn.style.color = '';
+                e.target.reset();
+            }, 3000);
+        }
+
+        // ========== SMOOTH SCROLL ==========
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+    </script>
+</body>
+</html>
