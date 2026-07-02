@@ -1,597 +1,991 @@
-Here is an HTML document that creates a complete professional portfolio for a Java Full Stack Developer, integrating the provided resume content, Firebase authentication, and a three.js starfield with day/night toggle.
-```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Shivam Kumar | Java Full Stack Developer Portfolio</title>
-  <!-- Font Awesome, Google Fonts -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <!-- Three.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sartha Bank - Premium Banking Experience</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #0a0c15;
-      color: #eef2ff;
-      overflow-x: hidden;
-      transition: background-color 0.4s ease, color 0.3s ease;
-    }
-
-    /* DAY MODE STYLES (will be toggled) */
-    body.day-mode {
-      background: #f0f4fa;
-      color: #0f172a;
-    }
-    body.day-mode .card,
-    body.day-mode .auth-card,
-    body.day-mode .skill-card {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(10px);
-      border: 1px solid #cbd5e1;
-      color: #0f172a;
-    }
-    body.day-mode .header {
-      background: rgba(255, 255, 255, 0.85);
-      border-bottom: 1px solid #94a3b8;
-    }
-    body.day-mode .nav-links a,
-    body.day-mode .logo {
-      color: #1e293b;
-    }
-    body.day-mode .btn-outline-light {
-      border-color: #3b82f6;
-      color: #1e40af;
-    }
-    body.day-mode .btn-outline-light:hover {
-      background: #3b82f6;
-      color: white;
-    }
-    body.day-mode .tech-badge {
-      background: rgba(59, 130, 246, 0.15);
-      border-color: #93c5fd;
-      color: #1e3a8a;
-    }
-    body.day-mode .gradient-overlay {
-      background: radial-gradient(circle at 30% 10%, rgba(200, 220, 255, 0.5), rgba(240, 248, 255, 0.85));
-    }
-    body.day-mode .msg.user { background: #3b82f6; color: white; }
-    body.day-mode .msg.ai { background: #e2e8f0; color: #0f172a; }
-    body.day-mode footer { color: #334155; }
-
-    canvas#bgCanvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -2;
-      width: 100%;
-      height: 100%;
-      transition: opacity 0.5s;
-    }
-    .gradient-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 30% 20%, rgba(15, 25, 55, 0.85), rgba(5, 8, 18, 0.92));
-      z-index: -1;
-      pointer-events: none;
-      transition: background 0.4s;
-    }
-    .container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 28px;
-      position: relative;
-      z-index: 2;
-    }
-
-    /* Header */
-    .header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      padding: 18px 0;
-      background: rgba(12, 15, 28, 0.75);
-      backdrop-filter: blur(14px);
-      z-index: 1000;
-      border-bottom: 1px solid rgba(99, 102, 241, 0.3);
-      transition: all 0.3s;
-    }
-    .nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .logo {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1.5rem;
-      font-weight: 700;
-      background: linear-gradient(125deg, #818cf8, #c084fc);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .nav-links {
-      display: flex;
-      gap: 28px;
-      align-items: center;
-    }
-    .nav-links a {
-      color: #e2e8f0;
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 0.95rem;
-      transition: 0.2s;
-      cursor: pointer;
-    }
-    .nav-links a:hover { color: #a78bfa; }
-    .btn-outline-light {
-      border: 1.5px solid #818cf8;
-      padding: 7px 20px;
-      border-radius: 40px;
-      background: transparent;
-      color: white;
-      font-weight: 600;
-      transition: 0.25s;
-      cursor: pointer;
-    }
-    .theme-toggle {
-      background: transparent;
-      border: none;
-      font-size: 1.6rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      color: #fbbf24;
-      transition: 0.2s;
-    }
-    /* Hero */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding-top: 70px;
-    }
-    .hero h1 {
-      font-size: clamp(2.4rem, 7vw, 4.5rem);
-      font-weight: 800;
-      background: linear-gradient(135deg, #ffffff, #a5b4fc, #c084fc);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .badge-container {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin: 20px 0 28px;
-    }
-    .tech-badge {
-      background: rgba(129, 140, 248, 0.15);
-      backdrop-filter: blur(4px);
-      padding: 6px 18px;
-      border-radius: 40px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      border: 1px solid rgba(129, 140, 248, 0.4);
-    }
-    .btn-primary-glow {
-      background: linear-gradient(95deg, #4f46e5, #a855f7);
-      padding: 14px 36px;
-      border-radius: 50px;
-      font-weight: 700;
-      border: none;
-      color: white;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
-      transition: 0.2s;
-    }
-    section { padding: 85px 0; }
-    .section-title { font-size: 2.2rem; font-weight: 700; text-align: center; margin-bottom: 12px; }
-    .section-sub { text-align: center; opacity: 0.7; margin-bottom: 55px; }
-    .grid-3, .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 30px;
-    }
-    .card, .skill-card {
-      background: rgba(20, 24, 40, 0.6);
-      backdrop-filter: blur(10px);
-      border-radius: 32px;
-      padding: 32px 24px;
-      border: 1px solid rgba(129, 140, 248, 0.25);
-      transition: 0.25s;
-    }
-    .card:hover { transform: translateY(-5px); border-color: #818cf8; }
-    .card i { font-size: 2.5rem; color: #a78bfa; margin-bottom: 18px; }
-
-    /* Auth Card */
-    .auth-card {
-      background: rgba(15, 18, 32, 0.8);
-      backdrop-filter: blur(16px);
-      border-radius: 38px;
-      padding: 36px;
-      max-width: 550px;
-      margin: 40px auto 0;
-      border: 1px solid #4f46e5;
-    }
-    .input-group input {
-      width: 100%;
-      padding: 14px 18px;
-      background: #10131f;
-      border: 1px solid #2d2f4a;
-      border-radius: 50px;
-      color: white;
-      margin-bottom: 16px;
-      outline: none;
-    }
-    .input-group input:focus { border-color: #818cf8; }
-    .auth-buttons { display: flex; flex-direction: column; gap: 12px; }
-    .btn-google-white {
-      background: white;
-      color: #1e1e2a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-    }
-    .user-stats {
-      display: flex;
-      justify-content: space-around;
-      margin: 24px 0;
-      gap: 15px;
-    }
-    .stat-circle {
-      background: rgba(129, 140, 248, 0.15);
-      padding: 14px;
-      border-radius: 30px;
-      text-align: center;
-      flex: 1;
-    }
-    .hidden-premium { display: none; animation: fadeUp 0.6s ease; }
-    .hidden-premium.show { display: block; }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* Chatbot */
-    #ai-chat-container {
-      position: fixed;
-      bottom: 25px;
-      right: 25px;
-      z-index: 9999;
-    }
-    #chat-toggle {
-      width: 60px; height: 60px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #4f46e5, #a855f7);
-      border: none;
-      color: white;
-      font-size: 26px;
-      cursor: pointer;
-      box-shadow: 0 8px 20px black;
-    }
-    #chat-window {
-      display: none;
-      width: 350px;
-      height: 500px;
-      background: #0f111f;
-      border-radius: 28px;
-      position: absolute;
-      bottom: 75px;
-      right: 0;
-      flex-direction: column;
-      overflow: hidden;
-      border: 1px solid #4f46e5;
-    }
-    .chat-header {
-      background: #1a1d31;
-      padding: 15px;
-      font-weight: bold;
-      display: flex;
-      justify-content: space-between;
-    }
-    #chat-messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .msg { padding: 10px 15px; border-radius: 20px; max-width: 85%; font-size: 0.85rem; }
-    .msg.user { background: #4f46e5; align-self: flex-end; }
-    .msg.ai { background: #262b44; align-self: flex-start; }
-    .chat-input-area { display: flex; padding: 12px; gap: 10px; background: #0a0c18; }
-    #user-input { flex: 1; padding: 10px; border-radius: 30px; border: none; background: #1e2238; color: white; }
-    #send-btn { background: #a855f7; border: none; width: 42px; border-radius: 50%; color: white; cursor: pointer; }
-    footer { text-align: center; padding: 35px; opacity: 0.7; font-size: 0.85rem; }
-    @media (max-width: 700px) { .container { padding: 0 20px; } #chat-window { width: 300px; } }
-  </style>
-</head>
-<body>
-  <canvas id="bgCanvas"></canvas>
-  <div class="gradient-overlay"></div>
-
-  <header class="header">
-    <div class="container nav">
-      <div class="logo">&lt;Shivam.FullStack/&gt;</div>
-      <div class="nav-links">
-        <a onclick="scrollToSec('home')">Home</a>
-        <a onclick="scrollToSec('skills')">Skills</a>
-        <a onclick="scrollToSec('projects')">Projects</a>
-        <a onclick="scrollToSec('resume')">Resume</a>
-        <button id="dayNightToggle" class="theme-toggle" title="Day/Night"><i class="fas fa-moon"></i></button>
-        <div id="authNavBtn"></div>
-      </div>
-    </div>
-  </header>
-
-  <section id="home" class="hero">
-    <div class="container">
-      <h1>Shivam Kumar<br>Java Full Stack Developer</h1>
-      <div class="badge-container">
-        <span class="tech-badge"><i class="fab fa-java"></i> Java/Spring Boot</span>
-        <span class="tech-badge"><i class="fab fa-react"></i> React.js</span>
-        <span class="tech-badge"><i class="fas fa-cloud"></i> AWS/Heroku</span>
-        <span class="tech-badge"><i class="fas fa-database"></i> MySQL/PostgreSQL</span>
-      </div>
-      <p style="max-width: 680px; margin: 0 auto 32px;">Building scalable microservices, secure REST APIs, and modern React frontends. 5+ projects delivered. Open to opportunities at Olympus Corporation.</p>
-      <button class="btn-primary-glow" onclick="scrollToSec('resume')">View Full Resume →</button>
-      <div style="margin-top: 20px;"><span class="tech-badge"><i class="fas fa-lock"></i> Login to unlock full portfolio & projects</span></div>
-    </div>
-  </section>
-
-  <!-- Skills Section (public) -->
-  <section id="skills">
-    <div class="container">
-      <h2 class="section-title">⚡ Technical Mastery</h2>
-      <p class="section-sub">Backend • Frontend • DevOps</p>
-      <div class="grid-3">
-        <div class="card"><i class="fab fa-java"></i><h3>Core Java & Spring</h3><p>Spring Boot, Spring MVC, Spring Security, JPA, Hibernate, Microservices, REST APIs, JWT/OAuth2.</p></div>
-        <div class="card"><i class="fab fa-react"></i><h3>React & Modern UI</h3><p>React.js, Hooks, Redux, Bootstrap, Tailwind, Responsive design, component lifecycle.</p></div>
-        <div class="card"><i class="fas fa-cloud-upload-alt"></i><h3>Cloud & DevOps</h3><p>AWS EC2, Heroku, Docker basics, Jenkins, Git/GitHub, Maven, CI/CD pipelines.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Firebase Auth + hidden premium content -->
-  <div class="container">
-    <div class="auth-card" id="authCard">
-      <div id="authForms">
-        <div class="input-group"><input type="email" id="loginEmail" placeholder="📧 Email address"></div>
-        <div class="input-group"><input type="password" id="loginPassword" placeholder="🔒 Password"></div>
-        <div class="auth-buttons">
-          <button id="emailSignInBtn" class="btn-primary-glow" style="background:#4f46e5;">Sign In with Email</button>
-          <button id="createAccountBtn" class="btn-outline-light">➕ Create Account</button>
-          <button id="googleAuthBtn" class="btn-google-white" style="background:white; color:#1f1f2e;"><i class="fab fa-google"></i> Continue with Google</button>
-        </div>
-        <p id="authMessage" style="margin-top: 18px; font-size:0.85rem; text-align:center;"></p>
-      </div>
-      <div id="userProfile" style="display:none;">
-        <div style="text-align:center;">
-          <img id="userAvatar" src="" style="width:80px; height:80px; border-radius:50%; border:3px solid #a78bfa;">
-          <h3 id="userDisplayName"></h3>
-          <p id="userEmail"></p>
-          <div class="user-stats">
-            <div class="stat-circle"><i class="fas fa-code"></i><br><strong>8+</strong><br>Projects</div>
-            <div class="stat-circle"><i class="fas fa-certificate"></i><br><strong>Certified</strong><br>Java Full Stack</div>
-            <div class="stat-circle"><i class="fas fa-trophy"></i><br><strong>Spring Boot</strong><br>Expert</div>
-          </div>
-          <button id="logoutFinalBtn" class="btn-outline-light">🚪 Sign Out</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PREMIUM CONTENT (unlocks after login) -->
-  <div id="premiumSections" class="hidden-premium">
-    <section id="projects">
-      <div class="container">
-        <h2 class="section-title">📌 Featured Projects</h2>
-        <p class="section-sub">Real-world full stack applications</p>
-        <div class="projects-grid">
-          <div class="card"><i class="fas fa-search"></i><h3>AI Job Search Platform</h3><p>Spring Boot, React, MySQL, JWT. Aggregates live job APIs, recommendation engine, secure auth, and responsive UI.</p><span style="color:#a78bfa;">#REST #JWT #React</span></div>
-          <div class="card"><i class="fas fa-utensils"></i><h3>Food Ordering System</h3><p>Cart management, order tracking, Spring Security, role-based access (Admin/Customer), Swagger docs.</p><span style="color:#a78bfa;">#SpringBoot #MySQL #JPA</span></div>
-          <div class="card"><i class="fas fa-cloud-upload-alt"></i><h3>REST API Backend System</h3><p>Production-grade CRUD APIs, Hibernate, deployed on AWS EC2 + Heroku, Postman test suite.</p><span style="color:#a78bfa;">#AWS #RESTful #Swagger</span></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Resume Section: fully extracted from PDF -->
-    <section id="resume">
-      <div class="container">
-        <h2 class="section-title">📄 Professional Resume</h2>
-        <div class="card" style="padding: 35px;">
-          <h3><i class="fas fa-bullhorn"></i> Professional Summary</h3>
-          <p style="margin: 15px 0 20px;">Java Full Stack Developer with hands-on experience building scalable, production-ready web applications using Core Java, Spring Boot, and React. Proficient in RESTful API development, microservices architecture, cloud deployment (AWS, Heroku), and relational databases (MySQL, PostgreSQL). Adept at Agile/Scrum workflows, clean code practices, and delivering end-to-end digital solutions. Eager to contribute to Olympus Corporation's mission.</p>
-          <h3><i class="fas fa-tools"></i> Technical Skills</h3>
-          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0;">
-            <span class="tech-badge">Core Java, Spring Boot, Spring MVC</span>
-            <span class="tech-badge">Spring Security, JWT, OAuth2</span>
-            <span class="tech-badge">React.js, Bootstrap, JS ES6+</span>
-            <span class="tech-badge">MySQL, PostgreSQL, Hibernate</span>
-            <span class="tech-badge">REST APIs, Swagger, Postman</span>
-            <span class="tech-badge">AWS EC2, Heroku, Docker basics</span>
-            <span class="tech-badge">Git, Maven, Agile/Scrum</span>
-          </div>
-          <h3><i class="fas fa-graduation-cap"></i> Education & Certification</h3>
-          <p><strong>Bachelor of Commerce (B.Com)</strong> - Osmania University, Hyderabad<br>
-          <strong>Java Full Stack Development</strong> - ExcelR Solutions, Cyber Towers</p>
-          <h3><i class="fas fa-flag-checkered"></i> Core Competencies</h3>
-          <ul style="margin-left: 20px; line-height: 1.6;">
-            <li>Problem Solving & Analytics: debugging distributed systems</li>
-            <li>Clean Code & Documentation: Swagger/OpenAPI, Postman docs</li>
-            <li>Agile Collaboration: sprint planning, code reviews</li>
-            <li>Self-Driven Learner: cloud-native & backend engineering</li>
-          </ul>
-          <h3><i class="fas fa-language"></i> Languages</h3>
-          <p>English (Professional) | Hindi (Native) | Telugu (Native)</p>
-          <div style="margin-top: 20px;"><button id="downloadResumeBtn" class="btn-primary-glow" style="background:#0f172a; border:1px solid #818cf8;"><i class="fas fa-download"></i> Download Full Resume (PDF)</button></div>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <footer>
-    <div class="container">
-      <p>© 2025 Shivam Kumar — Java Full Stack Portfolio | <i class="fab fa-github"></i> <i class="fab fa-linkedin"></i> | “Login to explore premium projects & resume”</p>
-    </div>
-  </footer>
-
-  <!-- AI Chat Container -->
-  <div id="ai-chat-container">
-    <button id="chat-toggle"><i class="fas fa-robot"></i></button>
-    <div id="chat-window">
-      <div class="chat-header"><span>🤖 Shivam's AI Assistant</span><i class="fas fa-times" id="close-chat" style="cursor:pointer;"></i></div>
-      <div id="chat-messages"><div class="msg ai">Hi! I’m Shivam’s AI. Ask me about his Java projects, Spring Boot microservices, React expertise, or resume details. Log in for full content!</div></div>
-      <div class="chat-input-area">
-        <input type="text" id="user-input" placeholder="e.g., What projects has he built?">
-        <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Firebase + Full Stack JS -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyB49vgbQRfmg6XCj_A_ocyC7Vd9J_fgWbQ",
-      authDomain: "shivamportfolio-7c458.firebaseapp.com",
-      projectId: "shivamportfolio-7c458",
-      storageBucket: "shivamportfolio-7c458.firebasestorage.app",
-      messagingSenderId: "166581393688",
-      appId: "1:166581393688:web:7fb06e67d3640f120d666d"
-    };
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
-
-    const authForms = document.getElementById('authForms');
-    const userProfileDiv = document.getElementById('userProfile');
-    const authMsg = document.getElementById('authMessage');
-    const premiumContainer = document.getElementById('premiumSections');
-    const authNavBtn = document.getElementById('authNavBtn');
-    const loginEmail = document.getElementById('loginEmail');
-    const loginPass = document.getElementById('loginPassword');
-
-    function updateUIForLoggedIn(user) {
-      authForms.style.display = 'none';
-      userProfileDiv.style.display = 'block';
-      document.getElementById('userDisplayName').innerText = user.displayName || user.email.split('@')[0];
-      document.getElementById('userEmail').innerText = user.email;
-      const avatarUrl = user.photoURL || `https://ui-avatars.com/api/?background=818cf8&color=fff&name=${encodeURIComponent(user.displayName || user.email)}`;
-      document.getElementById('userAvatar').src = avatarUrl;
-      premiumContainer.classList.add('show');
-      authNavBtn.innerHTML = `<div style="display:flex; align-items:center; gap:10px;"><i class="fas fa-user-check"></i><span style="font-size:0.85rem;">${user.displayName?.split(' ')[0] || 'Dev'}</span><button id="navLogoutBtn" style="background:none; border:none; color:#f472b6; cursor:pointer;"><i class="fas fa-sign-out-alt"></i></button></div>`;
-      const navLog = document.getElementById('navLogoutBtn');
-      if (navLog) navLog.addEventListener('click', () => signOut(auth));
-    }
-    function updateUIForLoggedOut() {
-      authForms.style.display = 'block';
-      userProfileDiv.style.display = 'none';
-      premiumContainer.classList.remove('show');
-      authNavBtn.innerHTML = '<button class="btn-outline-light" onclick="document.getElementById(\'authCard\').scrollIntoView({behavior: \'smooth\'})">🔐 Login</button>';
-    }
-    onAuthStateChanged(auth, (user) => { if (user) updateUIForLoggedIn(user); else updateUIForLoggedOut(); });
-
-    document.getElementById('emailSignInBtn').onclick = async () => {
-      const email = loginEmail.value.trim(); const pwd = loginPass.value.trim();
-      if (!email || !pwd) { authMsg.innerText = "Enter email & password"; return; }
-      try { await signInWithEmailAndPassword(auth, email, pwd); authMsg.innerText = "✅ Welcome! Full portfolio unlocked."; } 
-      catch (err) { authMsg.innerText = err.message; }
-    };
-    document.getElementById('createAccountBtn').onclick = async () => {
-      const email = loginEmail.value.trim(); const pwd = loginPass.value.trim();
-      if (!email || pwd.length < 6) { authMsg.innerText = "Password 6+ chars"; return; }
-      try { await createUserWithEmailAndPassword(auth, email, pwd); authMsg.innerText = "Account created! Now logged in."; } 
-      catch (err) { authMsg.innerText = err.message; }
-    };
-    document.getElementById('googleAuthBtn').onclick = async () => {
-      try { await signInWithPopup(auth, provider); authMsg.innerText = "Google sign-in success!"; } 
-      catch (err) { authMsg.innerText = err.message; }
-    };
-    document.getElementById('logoutFinalBtn').onclick = () => signOut(auth);
-    document.getElementById('downloadResumeBtn')?.addEventListener('click', () => alert("📄 Shivam_Kumar_Resume_FullStack.pdf — ready to download. (demo contact: shivam@olympus.com)"));
-
-    // AI Chat based on resume
-    window.askAI = async (prompt) => {
-      const q = prompt.toLowerCase();
-      if (q.includes("project") || q.includes("job search")) return "Shivam built an AI Job Search Platform with Spring Boot, React, and JWT, plus a Food Ordering System with cart & order tracking.";
-      if (q.includes("spring") || q.includes("microservice")) return "He's proficient in Spring Boot, Spring Security, REST APIs, and microservices. He has deployed on AWS EC2 and Heroku.";
-      if (q.includes("frontend") || q.includes("react")) return "Expert in React.js, hooks, state management, and responsive UI using Bootstrap/Tailwind.";
-      if (q.includes("resume") || q.includes("summary")) return "Shivam is a Java Full Stack Developer with experience in Core Java, Spring Boot, React, MySQL, and cloud deployment. He's eager to join Olympus Corporation.";
-      if (q.includes("certification")) return "He completed Java Full Stack Development at ExcelR Solutions, and holds expertise in Spring Security, JWT, and Hibernate.";
-      return "Shivam Kumar: Java Full Stack Developer skilled in Spring Boot, React, MySQL, AWS. Login to see full project details and professional resume.";
-    };
-    const chatWin = document.getElementById('chat-window');
-    document.getElementById('chat-toggle').onclick = () => chatWin.style.display = chatWin.style.display === 'flex' ? 'none' : 'flex';
-    document.getElementById('close-chat').onclick = () => chatWin.style.display = 'none';
-    const msgDiv = document.getElementById('chat-messages');
-    const inp = document.getElementById('user-input');
-    const send = document.getElementById('send-btn');
-    const addMsg = (txt, type) => { const d = document.createElement('div'); d.className = `msg ${type}`; d.innerText = txt; msgDiv.appendChild(d); msgDiv.scrollTop = msgDiv.scrollHeight; };
-    send.onclick = async () => {
-      const val = inp.value.trim(); if (!val) return;
-      addMsg(val, 'user'); inp.value = ''; send.disabled = true;
-      addMsg('🧠 thinking...', 'ai');
-      const ans = await window.askAI(val);
-      msgDiv.removeChild(msgDiv.lastChild);
-      addMsg(ans, 'ai'); send.disabled = false;
-    };
-    inp.onkeypress = (e) => { if (e.key === 'Enter') send.onclick(); };
-  </script>
-
-  <!-- Three.js Stars + Day/Night Toggle (preserved) -->
-  <script>
-    const canvas = document.getElementById('bgCanvas');
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-    camera.position.z = 1.8;
-    const vertices = [];
-    for(let i=0;i<2000;i++) vertices.push((Math.random()-0.5)*200, (Math.random()-0.5)*120, (Math.random()-0.5)*80);
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
-    const starMaterial = new THREE.PointsMaterial({ color: 0xa78bfa, size: 0.045 });
-    const stars = new THREE.Points(geometry, starMaterial);
-    scene.add(stars);
-    function animateStars() { requestAnimationFrame(animateStars); stars.rotation.y += 0.0004; stars.rotation.x += 0.0002; renderer.render(scene, camera); }
-    animateStars();
-    window.addEventListener('resize', () => { camera.aspect = window.innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
-    
-    // Day/Night Mode toggle: changes body class and star visibility/color
-    let isNight = true;
-    const toggleBtn = document.getElementById('dayNightToggle');
-    toggleBtn.addEventListener('click', () => {
-      isNight = !isNight;
-      if (isNight) {
-        document.body.classList.remove('day-mode');
-        starMaterial.color.setHex(0xa78bfa);
-        toggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
-      } else {
-        document.body.classList.add('day-mode');
-        starMaterial.color.setHex(0x3b82f6);
-        toggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
       }
-    });
-    window.scrollToSec = (id) => document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-  </script>
-</body>
+
+      body {
+        background-image: url('rename_itas_sartha_bank_2K_202606300943.jpeg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        color: #333;
+        overflow-x: hidden;
+        min-height: 100vh;
+      }
+
+      /* 3D Animation Container */
+      .animation-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+        overflow: hidden;
+      }
+
+      /* Floating 3D Elements */
+      .floating-element {
+        position: absolute;
+        border-radius: 50%;
+        background: linear-gradient(135deg, rgba(255,165,0,0.8), rgba(255,215,0,0.6));
+        animation: float 15s infinite ease-in-out;
+        box-shadow: 0 0 30px rgba(255,165,0,0.5);
+        opacity: 0.7;
+      }
+
+      .floating-element:nth-child(1) {
+        width: 100px;
+        height: 100px;
+        top: 10%;
+        left: 10%;
+        animation-delay: 0s;
+      }
+
+      .floating-element:nth-child(2) {
+        width: 150px;
+        height: 150px;
+        top: 20%;
+        right: 15%;
+        animation-delay: 2s;
+        background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(200,200,255,0.6));
+      }
+
+      .floating-element:nth-child(3) {
+        width: 80px;
+        height: 80px;
+        top: 60%;
+        left: 5%;
+        animation-delay: 4s;
+        background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(220,220,255,0.7));
+      }
+
+      .floating-element:nth-child(4) {
+        width: 120px;
+        height: 120px;
+        top: 70%;
+        right: 10%;
+        animation-delay: 6s;
+        background: linear-gradient(135deg, rgba(255,165,0,0.6), rgba(255,215,0,0.8));
+      }
+
+      .floating-element:nth-child(5) {
+        width: 60px;
+        height: 60px;
+        top: 30%;
+        left: 80%;
+        animation-delay: 8s;
+        background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(240,240,255,0.9));
+      }
+
+      @keyframes float {
+        0%, 100% {
+          transform: translateY(0) rotate(0deg) scale(1);
+          opacity: 0.7;
+        }
+        25% {
+          transform: translateY(-20px) rotate(5deg) scale(1.1);
+          opacity: 0.9;
+        }
+        50% {
+          transform: translateY(10px) rotate(-5deg) scale(0.9);
+          opacity: 0.6;
+        }
+        75% {
+          transform: translateY(-15px) rotate(3deg) scale(1.05);
+          opacity: 0.8;
+        }
+      }
+
+      /* 3D Particles */
+      .particle {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 50%;
+        animation: particleFloat 10s infinite ease-in-out;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      }
+
+      @keyframes particleFloat {
+        0%, 100% {
+          transform: translateY(0) translateX(0);
+          opacity: 0;
+        }
+        10% {
+          opacity: 0.8;
+        }
+        90% {
+          opacity: 0.8;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+
+      /* 3D Shapes */
+      .shape-3d {
+        position: absolute;
+        animation: rotate3d 20s infinite linear;
+        opacity: 0.6;
+      }
+
+      .cube {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, rgba(255,165,0,0.8), rgba(255,215,0,0.6));
+        transform-style: preserve-3d;
+      }
+
+      .pyramid {
+        width: 0;
+        height: 0;
+        border-left: 30px solid transparent;
+        border-right: 30px solid transparent;
+        border-bottom: 50px solid rgba(255, 255, 255, 0.7);
+      }
+
+      @keyframes rotate3d {
+        0% {
+          transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+        }
+        100% {
+          transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+        }
+      }
+
+      /* Sparkle Effects */
+      .sparkle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: white;
+        border-radius: 50%;
+        animation: sparkle 2s infinite ease-in-out;
+        box-shadow: 0 0 10px 2px white;
+      }
+
+      @keyframes sparkle {
+        0%, 100% {
+          opacity: 0;
+          transform: scale(0);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      /* Navigation bar with 3D effect */
+      .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(255, 102, 0, 0.85);
+        backdrop-filter: blur(10px);
+        border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+        position: fixed;
+        width: 100%;
+        padding: 15px 50px;
+        color: rgb(255, 255, 255);
+        z-index: 1000;
+        box-shadow: 0 4px 30px rgba(255, 102, 0, 0.3);
+        transform-style: preserve-3d;
+        transition: all 0.3s ease;
+      }
+
+      .navbar:hover {
+        box-shadow: 0 6px 40px rgba(255, 102, 0, 0.4);
+      }
+
+      .navbar h1 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        letter-spacing: 1px;
+        color: white;
+        position: relative;
+      }
+
+      .navbar h1::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, white, transparent);
+        animation: shine 3s infinite;
+      }
+
+      @keyframes shine {
+        0% { background-position: -100px; }
+        100% { background-position: 100px; }
+      }
+
+      .navbar a {
+        text-decoration: none;
+        color: white;
+        margin: 0 15px;
+        padding: 8px 16px;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .navbar a::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+      }
+
+      .navbar a:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .navbar a:hover::before {
+        left: 100%;
+      }
+
+      /* Hero section with 3D effect */
+      .hero {
+        text-align: center;
+        padding: 150px 20px 100px;
+        color: white;
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2));
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, 
+          rgba(255,165,0,0.1) 0%,
+          rgba(255,255,255,0.05) 50%,
+          rgba(255,165,0,0.1) 100%);
+        animation: gradientShift 8s infinite ease-in-out;
+        background-size: 200% 200%;
+      }
+
+      @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero h1 {
+        font-size: 56px;
+        margin-bottom: 20px;
+        text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+        font-weight: 700;
+        letter-spacing: 2px;
+        animation: fadeInDown 1s ease-out;
+      }
+
+      .hero p {
+        font-size: 22px;
+        margin-bottom: 40px;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        font-weight: 300;
+        animation: fadeInUp 1s ease-out 0.3s both;
+      }
+
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .hero button {
+        background: linear-gradient(135deg, #ff8c00, #ffa500);
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: 600;
+        box-shadow: 0 4px 20px rgba(255, 140, 0, 0.4);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        animation: fadeInUp 1s ease-out 0.6s both;
+      }
+
+      .hero button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.5s;
+      }
+
+      .hero button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(255, 140, 0, 0.6);
+      }
+
+      .hero button:hover::before {
+        left: 100%;
+      }
+
+      .hero button a {
+        color: white;
+        text-decoration: none;
+      }
+
+      /* Services with 3D cards */
+      .services {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        padding: 80px 50px;
+        flex-wrap: wrap;
+        position: relative;
+      }
+
+      .services::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(180deg, transparent, rgba(255,255,255,0.05), transparent);
+        pointer-events: none;
+      }
+
+      .service-card {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        width: 280px;
+        text-align: center;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .service-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(255,165,0,0.1), rgba(255,215,0,0.05));
+        opacity: 0;
+        transition: opacity 0.4s;
+      }
+
+      .service-card:hover {
+        transform: translateY(-15px) scale(1.05);
+        box-shadow: 0 20px 50px rgba(255, 165, 0, 0.3);
+      }
+
+      .service-card:hover::before {
+        opacity: 1;
+      }
+
+      .service-card .icon {
+        font-size: 40px;
+        color: #ff8c00;
+        margin-bottom: 15px;
+        animation: iconPulse 2s infinite;
+      }
+
+      @keyframes iconPulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+      }
+
+      .service-card h3 {
+        color: #ff8c00;
+        font-size: 22px;
+        margin-bottom: 12px;
+        font-weight: 600;
+      }
+
+      .service-card p {
+        color: #666;
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      /* Feedback form with 3D effect */
+      .form-container {
+        max-width: 600px;
+        margin: 80px auto;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .form-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,165,0,0.1), transparent);
+        transition: left 0.5s;
+      }
+
+      .form-container:hover::before {
+        left: 100%;
+      }
+
+      fieldset {
+        border: 1px solid rgba(255, 165, 0, 0.3);
+        border-radius: 8px;
+        padding: 25px;
+        position: relative;
+      }
+
+      legend {
+        font-weight: 600;
+        font-size: 20px;
+        color: #ff8c00;
+        padding: 0 10px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #555;
+        font-weight: 500;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px 15px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(255, 165, 0, 0.2);
+        border-radius: 6px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.8);
+      }
+
+      input:focus {
+        outline: none;
+        border-color: #ff8c00;
+        box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.1);
+      }
+
+      input::placeholder {
+        color: #aaa;
+      }
+
+      button.submit {
+        background: linear-gradient(135deg, #ff8c00, #ffa500);
+        color: white;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        width: 100%;
+        box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+      }
+
+      button.submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+        background: linear-gradient(135deg, #ffa500, #ff8c00);
+      }
+
+      /* Footer with 3D effect */
+      footer {
+        background: rgba(255, 109, 5, 0.95);
+        color: white;
+        text-align: center;
+        padding: 30px 20px;
+        margin-top: 80px;
+        backdrop-filter: blur(10px);
+        position: relative;
+        overflow: hidden;
+      }
+
+      footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(255,165,0,0.2), rgba(255,215,0,0.1));
+        animation: gradientShift 10s infinite ease-in-out;
+        background-size: 200% 200%;
+      }
+
+      footer .content {
+        position: relative;
+        z-index: 2;
+      }
+
+      footer p {
+        margin-bottom: 10px;
+        font-size: 16px;
+      }
+
+      footer .contact-info {
+        font-size: 18px;
+        margin-bottom: 15px;
+        font-weight: 500;
+      }
+
+      footer a {
+        color: #ffffff;
+        text-decoration: none;
+        margin: 0 15px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      footer a::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: white;
+        transition: width 0.3s ease;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+
+      footer a:hover::after {
+        width: 100%;
+      }
+
+      footer .copyright {
+        margin-top: 15px;
+        font-size: 14px;
+        opacity: 0.9;
+      }
+
+      /* Scrollbar styling */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: rgba(255, 165, 0, 0.1);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #ffa500, #ff8c00);
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, #ff8c00, #ffa500);
+      }
+
+      /* Responsive design */
+      @media (max-width: 768px) {
+        .navbar {
+          flex-direction: column;
+          padding: 10px;
+        }
+
+        .navbar h1 {
+          margin-bottom: 10px;
+        }
+
+        .navbar div {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        .hero h1 {
+          font-size: 40px;
+        }
+
+        .hero p {
+          font-size: 18px;
+        }
+
+        .services {
+          padding: 50px 20px;
+          gap: 20px;
+        }
+
+        .service-card {
+          width: 250px;
+        }
+
+        .form-container {
+          margin: 50px 20px;
+          padding: 20px;
+        }
+      }
+
+      /* Animation for page load */
+      @keyframes pageLoad {
+        0% {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      body {
+        animation: pageLoad 0.5s ease-out;
+      }
+
+      /* Glow effect for interactive elements */
+      .glow {
+        position: absolute;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,165,0,0.4) 0%, transparent 70%);
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s, transform 0.3s;
+      }
+
+      /* 3D Hover effects */
+      .hover-3d {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .hover-3d:hover {
+        transform: translateZ(10px) scale(1.02);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 3D Animation Container -->
+    <div class="animation-container" id="animationContainer">
+      <!-- Floating elements will be added by JavaScript -->
+    </div>
+
+    <!-- Navigation -->
+    <div class="navbar">
+      <h1>Sartha Bank</h1>
+      <div>
+        <a href="./Components/home.html">Home</a>
+        <a href="./Components/services.html">Services</a>
+        <a href="#">About Us</a>
+        <a href="./Components/AccountOpeningPage.html">Customer Page</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Welcome to Sartha Bank</h1>
+        <p>Secure, reliable, and customer-first banking solutions for your financial freedom.</p>
+        <button class="hover-3d"><a href="./Components/AccountOpeningPage.html">Open an Account</a></button>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services">
+      <div class="service-card hover-3d">
+        <div class="icon"><i class="fas fa-piggy-bank"></i></div>
+        <h3>Savings Accounts</h3>
+        <p>Grow your money with flexible savings options and competitive interest rates.</p>
+      </div>
+      <div class="service-card hover-3d">
+        <div class="icon"><i class="fas fa-hand-holding-usd"></i></div>
+        <h3>Loans</h3>
+        <p>Affordable loans tailored to your needs with quick approval process.</p>
+      </div>
+      <div class="service-card hover-3d">
+        <div class="icon"><i class="fas fa-mobile-alt"></i></div>
+        <h3>Online Banking</h3>
+        <p>Bank anytime, anywhere with secure 24/7 access to your accounts.</p>
+      </div>
+      <div class="service-card hover-3d">
+        <div class="icon"><i class="fas fa-chart-line"></i></div>
+        <h3>Investments</h3>
+        <p>Smart investment plans for your future with expert guidance.</p>
+      </div>
+    </section>
+
+    <!-- Feedback Form -->
+    <div class="form-container">
+      <form action="">
+        <fieldset>
+          <legend>Customer Feedback</legend>
+
+          <label for="customerName">Customer Name:</label>
+          <input type="text" id="customerName" placeholder="Enter your name..." required>
+
+          <label for="customerEmail">Customer Email ID:</label>
+          <input type="email" id="customerEmail" placeholder="Enter your email..." required>
+
+          <label for="customerContact">Customer Contact No:</label>
+          <input type="tel" id="customerContact" placeholder="Enter your phone number..." required>
+
+          <label for="customerFeedback">Customer Feedback:</label>
+          <input type="text" id="customerFeedback" placeholder="Share your feedback..." required>
+
+          <label for="customerSignature">Customer Signature:</label>
+          <input type="text" id="customerSignature" placeholder="Your signature..." required>
+
+          <button type="submit" class="submit hover-3d">Submit Feedback</button>
+        </fieldset>
+      </form>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="content">
+        <p class="contact-info">📞 Contact us: +91-9876543210 | ✉️ info@sarthabank.com</p>
+        <p>
+          <a href="#">Privacy Policy</a> | 
+          <a href="#">Careers</a> | 
+          <a href="#">FAQs</a>
+        </p>
+        <p class="copyright">© 2026 Sartha Bank. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      // Create floating 3D elements
+      const container = document.getElementById('animationContainer');
+      
+      // Create floating elements
+      for (let i = 0; i < 8; i++) {
+        const element = document.createElement('div');
+        element.className = 'floating-element';
+        element.style.width = `${Math.random() * 100 + 50}px`;
+        element.style.height = element.style.width;
+        element.style.top = `${Math.random() * 80 + 10}%`;
+        element.style.left = `${Math.random() * 80 + 10}%`;
+        element.style.animationDelay = `${Math.random() * 10}s`;
+        element.style.animationDuration = `${Math.random() * 10 + 10}s`;
+        
+        // Random gradient colors
+        const colors = [
+          'rgba(255,165,0,0.8)',
+          'rgba(255,215,0,0.6)',
+          'rgba(255,255,255,0.8)',
+          'rgba(200,200,255,0.6)'
+        ];
+        const color1 = colors[Math.floor(Math.random() * colors.length)];
+        const color2 = colors[Math.floor(Math.random() * colors.length)];
+        element.style.background = `linear-gradient(135deg, ${color1}, ${color2})`;
+        
+        container.appendChild(element);
+      }
+
+      // Create particles
+      for (let i = 0; i < 30; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.top = `${Math.random() * 100}%`;
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.animationDelay = `${Math.random() * 10}s`;
+        particle.style.animationDuration = `${Math.random() * 5 + 5}s`;
+        particle.style.width = `${Math.random() * 6 + 4}px`;
+        particle.style.height = particle.style.width;
+        
+        container.appendChild(particle);
+      }
+
+      // Create 3D shapes
+      const shapes = ['cube', 'pyramid'];
+      for (let i = 0; i < 5; i++) {
+        const shape = document.createElement('div');
+        shape.className = `shape-3d ${shapes[Math.floor(Math.random() * shapes.length)]}`;
+        shape.style.top = `${Math.random() * 80 + 10}%`;
+        shape.style.left = `${Math.random() * 80 + 10}%`;
+        shape.style.animationDelay = `${Math.random() * 10}s`;
+        shape.style.animationDuration = `${Math.random() * 15 + 15}s`;
+        
+        container.appendChild(shape);
+      }
+
+      // Create sparkles
+      for (let i = 0; i < 50; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        sparkle.style.top = `${Math.random() * 100}%`;
+        sparkle.style.left = `${Math.random() * 100}%`;
+        sparkle.style.animationDelay = `${Math.random() * 5}s`;
+        sparkle.style.animationDuration = `${Math.random() * 2 + 1}s`;
+        
+        container.appendChild(sparkle);
+      }
+
+      // Mouse move effect for 3D elements
+      document.addEventListener('mousemove', (e) => {
+        const mouseX = e.clientX / window.innerWidth;
+        const mouseY = e.clientY / window.innerHeight;
+        
+        const floatingElements = document.querySelectorAll('.floating-element');
+        floatingElements.forEach((element, index) => {
+          const speed = 0.1 + (index * 0.02);
+          const x = (mouseX - 0.5) * 20 * speed;
+          const y = (mouseY - 0.5) * 20 * speed;
+          element.style.transform = `translate(${x}px, ${y}px)`;
+        });
+      });
+
+      // Scroll effect
+      window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const parallax = scrolled * 0.5;
+        const container = document.getElementById('animationContainer');
+        container.style.transform = `translateY(${parallax}px)`;
+      });
+
+      // Form submission
+      document.querySelector('form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('Thank you for your feedback! We will contact you soon.');
+        e.target.reset();
+      });
+
+      // Add glow effect on hover
+      const cards = document.querySelectorAll('.service-card');
+      cards.forEach(card => {
+        card.addEventListener('mouseenter', (e) => {
+          const glow = document.createElement('div');
+          glow.className = 'glow';
+          glow.style.width = '200px';
+          glow.style.height = '200px';
+          glow.style.top = `${e.clientY - 100}px`;
+          glow.style.left = `${e.clientX - 100}px`;
+          document.body.appendChild(glow);
+          
+          setTimeout(() => {
+            glow.style.opacity = '1';
+          }, 10);
+          
+          card.addEventListener('mouseleave', () => {
+            glow.style.opacity = '0';
+            setTimeout(() => {
+              glow.remove();
+            }, 300);
+          }, { once: true });
+        });
+      });
+
+      // Animate numbers (if you want to add counters)
+      function animateValue(element, start, end, duration) {
+        let startTimestamp = null;
+        const step = (timestamp) => {
+          if (!startTimestamp) startTimestamp = timestamp;
+          const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+          element.innerHTML = Math.floor(progress * (end - start) + start);
+          if (progress < 1) {
+            window.requestAnimationFrame(step);
+          }
+        };
+        window.requestAnimationFrame(step);
+      }
+
+      // Add some floating text animations
+      const floatingTexts = ['Secure', 'Reliable', 'Fast', 'Trusted', 'Innovative'];
+      floatingTexts.forEach((text, index) => {
+        const textElement = document.createElement('div');
+        textElement.style.position = 'absolute';
+        textElement.style.color = 'rgba(255, 255, 255, 0.3)';
+        textElement.style.fontSize = '14px';
+        textElement.style.fontWeight = 'bold';
+        textElement.style.textShadow = '0 0 10px rgba(255, 255, 255, 0.5)';
+        textElement.style.animation = `floatText 10s infinite ease-in-out`;
+        textElement.style.animationDelay = `${index * 2}s`;
+        textElement.textContent = text;
+        
+        container.appendChild(textElement);
+      });
+
+      // Add CSS for floating text
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes floatText {
+          0%, 100% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 0.3;
+          }
+          50% {
+            transform: translateY(-20px) rotate(5deg);
+            opacity: 0.6;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+    </script>
+  </body>
 </html>
-```
